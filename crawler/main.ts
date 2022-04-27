@@ -5,18 +5,33 @@ import { appendFileSync } from "fs";
 
 const c = new Crawler({
 	maxConnections: 1,
+	retries: 10,
+});
+const childrenC = new Crawler({
+	maxConnections: 1,
+	retries: 10,
 });
 let page = 1;
 const data: any[] = [];
 const baseUrl = "https://www.dayi.org.cn";
 const list = baseUrl + "/list/5?";
-const limit = 1;
-const queue = [];
-c.direct({
-	callback: (e, resp) => {
-		//
-	},
-});
+const limit = 1071;
+const queue: {
+	uri: string;
+	callback: (
+		e: Error,
+		res: Crawler.CrawlerRequestResponse,
+		done: () => void
+	) => void;
+}[] = [];
+const childrenQueue: {
+	uri: string;
+	callback: (
+		e: Error,
+		res: Crawler.CrawlerRequestResponse,
+		done: () => void
+	) => void;
+}[] = [];
 for (let i = 0; i < limit; i++) {
 	queue.push({
 		uri: list + stringify({ pageNo: page + i }),
@@ -31,7 +46,7 @@ for (let i = 0; i < limit; i++) {
 					res.request.uri.href,
 					res.$(el).attr("href") || ""
 				);
-				queue.push({
+				childrenQueue.push({
 					uri: url,
 					callback: (
 						e: Error,
@@ -112,6 +127,7 @@ for (let i = 0; i < limit; i++) {
 						});
 						content.push(tmp);
 						data.push(content);
+						done();
 					},
 				});
 			});
@@ -120,4 +136,13 @@ for (let i = 0; i < limit; i++) {
 	});
 }
 c.queue(queue);
+c.on("drain", () => {
+	childrenC.queue(childrenQueue);
+	childrenC.on("drain", () => {
+		appendFileSync("./data.json", JSON.stringify(data));
+	});
+});
+c.on("request", (opt) => {
+	console.log(opt.uri);
+});
 // appendFileSync("./data.json", JSON.stringify(data));
