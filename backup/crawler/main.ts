@@ -1,7 +1,11 @@
 import Crawler from "crawler";
 import { stringify } from "querystring";
 import URL from "url";
-import { appendFileSync } from "fs";
+import { appendFileSync, readFileSync } from "fs";
+import result from "../data.json";
+
+// @ts-ignore
+import lzwcompress from "lzwcompress";
 
 const c = new Crawler({
 	maxConnections: 1,
@@ -135,14 +139,20 @@ for (let i = 0; i < limit; i++) {
 		},
 	});
 }
-c.queue(queue);
-c.on("drain", () => {
-	childrenC.queue(childrenQueue);
-	childrenC.on("drain", () => {
-		appendFileSync("./data.json", JSON.stringify(data));
-	});
-});
-c.on("request", (opt) => {
-	console.log(opt.uri);
-});
+// c.queue(queue);
+// c.on("drain", () => {
+// 	childrenC.queue(childrenQueue);
+// 	childrenC.on("drain", () => {
+// 		appendFileSync("./data.json", JSON.stringify(data));
+// 	});
+// });
+// c.on("request", (opt) => {
+// 	console.log(opt.uri);
+// });
 // appendFileSync("./data.json", JSON.stringify(data));
+const str = result.toString();
+const bytes = Buffer.from(str, "utf-8").map((v) => +v);
+console.log(bytes);
+
+// const packed = lzwcompress.pack(result);
+// appendFileSync("./packed.json", packed);
