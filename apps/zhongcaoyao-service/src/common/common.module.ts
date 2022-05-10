@@ -1,20 +1,29 @@
 import { Global, Module } from '@nestjs/common';
-import { CommonService } from './common.service';
-import { CommonResolver } from './common.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
-import { join } from 'path';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommonService } from './common.service';
 
 @Global()
 @Module({
   imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'zhongcaoyaominglu',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
-      graphiql: false,
+      graphiql: process.env.NODE_ENV == 'production' ? false : true,
       autoSchemaFile: true,
       routes: true,
     }),
   ],
-  providers: [CommonResolver, CommonService],
+  providers: [CommonService],
 })
 export class CommonModule {}
