@@ -1,6 +1,8 @@
-import { Global, Module } from '@nestjs/common';
+import { CacheModule, Global, Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonService } from './common.service';
 
@@ -23,6 +25,12 @@ import { CommonService } from './common.service';
       autoSchemaFile: true,
       routes: true,
     }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
+    CacheModule.register(),
+    CqrsModule,
   ],
   providers: [CommonService],
 })

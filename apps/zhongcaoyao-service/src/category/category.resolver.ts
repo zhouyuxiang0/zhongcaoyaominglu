@@ -1,18 +1,25 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { CommandBus } from '@nestjs/cqrs';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CategoryService } from './category.service';
-import { Category } from './entities/category.entity';
+import { CreateCategoryCommand } from './commands/impl/create-category.command';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
+import { Category } from './models/category.entity';
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService,
+    private readonly commandBus: CommandBus
+  ) {}
 
   @Mutation(() => Category)
   createCategory(
     @Args('createCategoryInput') createCategoryInput: CreateCategoryInput
   ) {
-    return this.categoryService.create(createCategoryInput);
+    return this.commandBus.execute(
+      new CreateCategoryCommand(createCategoryInput)
+    );
   }
 
   @Query(() => [Category], { name: 'category' })

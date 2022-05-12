@@ -3,12 +3,14 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import compression from 'fastify-compress';
+import * as helmet from 'fastify-helmet';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -16,13 +18,21 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({
       logger: true,
-    })
+    }),
+    {
+      logger: ['debug', 'error', 'log', 'verbose', 'warn'],
+    }
   );
+  app.enableVersioning({
+    type: VersioningType.HEADER,
+    header: 'version',
+  });
+  app.register(compression);
+  await app.register(helmet, {
+    contentSecurityPolicy: false,
+  });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  console.log(process.env.PORT, process.env.NODE_ENV);
-  console.log(process.env.production);
-
   const port = process.env.PORT || 3333;
   await app.listen(port);
   Logger.log(
