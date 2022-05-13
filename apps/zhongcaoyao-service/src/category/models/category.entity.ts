@@ -13,7 +13,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { CategoryCreatedEvent } from '../events/impl/category-created.event';
+import { CategoryCreatedEvent } from '../cqrs/events/impl/category-created.event';
+import { CategoryUpdatedEvent } from '../cqrs/events/impl/category-updated.event';
 
 @Directive(`@key(fields: "id")`)
 @ObjectType()
@@ -37,5 +38,9 @@ export class Category extends AggregateRoot {
 
   createCategory() {
     this.apply(new CategoryCreatedEvent(this));
+  }
+
+  updateCategory() {
+    this.apply(new CategoryUpdatedEvent(this));
   }
 }

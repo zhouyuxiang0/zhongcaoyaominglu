@@ -3,10 +3,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryResolver } from './category.resolver';
 import { CategoryService } from './category.service';
-import { CommandHandlers } from './commands/handler';
-import { EventHandlers } from './events/handler';
+import { CommandHandlers } from './cqrs/commands/handler';
+import { EventHandlers } from './cqrs/events/handler';
 import { Category } from './models/category.entity';
-import { CategorySagas } from './sagas/category.saga';
+import { CategorySagas } from './cqrs/sagas/category.saga';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Category]), CqrsModule],

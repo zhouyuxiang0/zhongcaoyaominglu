@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { CategoryService } from '../../category.service';
+import { CategoryService } from '../../../category.service';
 import { CreateCategoryCommand } from '../impl/create-category.command';
 
 @CommandHandler(CreateCategoryCommand)

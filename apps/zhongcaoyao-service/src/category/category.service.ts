@@ -1,8 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { CreateCategoryCommand } from './commands/impl/create-category.command';
+import { CreateCategoryCommand } from './cqrs/commands/impl/create-category.command';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './models/category.entity';
@@ -13,7 +17,7 @@ export class CategoryService {
   @InjectRepository(Category)
   private readonly categoryRepo: Repository<Category>;
   async create(createCategoryInput: CreateCategoryInput) {
-    const category = this.categoryRepo.findOne({
+    const category = await this.categoryRepo.findOne({
       where: {
         name: createCategoryInput.name,
       },
@@ -25,7 +29,7 @@ export class CategoryService {
   }
 
   findAll() {
-    return `This action returns all category`;
+    return this.categoryRepo.find();
   }
 
   async find(category: FindOptionsWhere<Category>) {
@@ -36,8 +40,11 @@ export class CategoryService {
     return await this.categoryRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateCategoryInput: UpdateCategoryInput) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryInput: UpdateCategoryInput) {
+    const category = await this.categoryRepo.findOne({ where: { id } });
+    if (!category) throw new InternalServerErrorException('更新失败');
+    category.name = updateCategoryInput.name;
+    return await this.categoryRepo.save(category);
   }
 
   remove(id: number) {

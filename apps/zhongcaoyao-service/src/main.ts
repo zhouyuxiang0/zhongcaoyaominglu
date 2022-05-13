@@ -9,8 +9,8 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import compression from 'fastify-compress';
-import * as helmet from 'fastify-helmet';
+import compression from '@fastify/compress';
+import helmet from '@fastify/helmet';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
