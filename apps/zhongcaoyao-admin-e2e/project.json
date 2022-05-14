@@ -1,0 +1,27 @@
+{
+  "sourceRoot": "apps/zhongcaoyao-admin-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/zhongcaoyao-admin-e2e/cypress.json",
+        "devServerTarget": "zhongcaoyao-admin:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "zhongcaoyao-admin:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/zhongcaoyao-admin-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["zhongcaoyao-admin"]
+}

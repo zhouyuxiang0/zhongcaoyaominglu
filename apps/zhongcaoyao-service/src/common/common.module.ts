@@ -1,5 +1,4 @@
 import { CacheModule, Global, Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -30,8 +29,8 @@ import { CommonService } from './common.service';
       limit: 10,
     }),
     CacheModule.register(),
-    CqrsModule,
   ],
   providers: [CommonService],
+  exports: [],
 })
 export class CommonModule {}

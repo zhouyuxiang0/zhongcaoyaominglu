@@ -1,19 +1,12 @@
-import {
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { CreateCategoryCommand } from './cqrs/commands/impl/create-category.command';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
-import { Category } from './models/category.entity';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-  @Inject() private readonly commandBus: CommandBus;
   @InjectRepository(Category)
   private readonly categoryRepo: Repository<Category>;
   async create(createCategoryInput: CreateCategoryInput) {
@@ -25,7 +18,7 @@ export class CategoryService {
     if (category) return category;
     const newCategory = new Category();
     newCategory.name = createCategoryInput.name;
-    return await this.categoryRepo.save(newCategory);
+    return await newCategory.save();
   }
 
   findAll() {

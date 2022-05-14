@@ -1,12 +1,13 @@
 import { Field, GraphQLISODateTime, ID, InterfaceType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @InterfaceType()
-export abstract class BaseEntity {
+export abstract class CommonEntity extends BaseEntity {
   @Field(() => ID, { description: 'ID' })
   @PrimaryGeneratedColumn()
   public id: number;
