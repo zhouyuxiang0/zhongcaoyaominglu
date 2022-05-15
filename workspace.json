@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "projects": {
-    "zhongcaoyao-admin": "apps/zhongcaoyao-admin",
-    "zhongcaoyao-admin-e2e": "apps/zhongcaoyao-admin-e2e",
-    "zhongcaoyao-service": "apps/zhongcaoyao-service"
-  }
-}
