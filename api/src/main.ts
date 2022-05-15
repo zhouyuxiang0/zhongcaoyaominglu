@@ -31,7 +31,6 @@ async function bootstrap() {
   await app.register(helmet, {
     contentSecurityPolicy: false,
   });
-  app.enableCors();
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
