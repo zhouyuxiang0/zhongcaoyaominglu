@@ -26,13 +26,6 @@ d-content {
   background-color: $devui-global-bg;
 }
 
-d-footer {
-  color: $devui-light-text;
-  background-color: $devui-base-bg-dark;
-  padding: 8px 24px;
-  flex: 0 0 auto;
-}
-
 
 
 
@@ -56,11 +49,6 @@ d-card {
   transition:
     box-shadow $devui-animation-duration-slow $devui-animation-ease-in-out-smooth,
     transform $devui-animation-duration-slow $devui-animation-ease-in-out-smooth;
-
-  &:hover {
-    box-shadow: $devui-shadow-length-hover $devui-light-shadow;
-    transform: translateY(-5px);
-  }
 }
 
 .card-container {
