@@ -24,6 +24,10 @@ d-content {
   // line-height: 200px;
   text-align: center;
   background-color: $devui-global-bg;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 
