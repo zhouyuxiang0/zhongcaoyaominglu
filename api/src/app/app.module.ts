@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminModule } from 'src/admin/admin.module';
+import { AuthModule } from 'src/auth/auth.module';
 import { CategoryModule } from '../category/category.module';
 import { ChineseMedicineModule } from '../chinese-medicine/chinese-medicine.module';
 import { CommonModule } from '../common/common.module';
@@ -18,6 +19,7 @@ import { AppService } from './app.service';
     NatureModule,
     TasteModule,
     AdminModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

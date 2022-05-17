@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateAdminInput } from './dto/create-admin.input';
 import { UpdateAdminInput } from './dto/update-admin.input';
+import { Admin } from './entities/admin.entity';
 
 @Injectable()
 export class AdminService {
+  @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>;
   create(createAdminInput: CreateAdminInput) {
     return 'This action adds a new admin';
   }
@@ -12,8 +16,8 @@ export class AdminService {
     return `This action returns all admin`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
+  async findOne(where: FindOptionsWhere<Admin> | FindOptionsWhere<Admin>[]) {
+    return await this.adminRepo.findOneBy(where);
   }
 
   update(id: number, updateAdminInput: UpdateAdminInput) {

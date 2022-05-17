@@ -1,14 +1,16 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { forwardRef, Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { AuthModule } from 'src/auth/auth.module';
+import { getRepository } from 'typeorm';
 import { AdminResolver } from './admin.resolver';
 import { AdminService } from './admin.service';
 import { Admin } from './entities/admin.entity';
-import { getRepository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admin])],
+  imports: [TypeOrmModule.forFeature([Admin]), forwardRef(() => AuthModule)],
   providers: [AdminResolver, AdminService],
+  exports: [AdminService],
 })
 export class AdminModule implements OnModuleInit {
   onModuleInit() {
@@ -25,8 +27,7 @@ export class AdminModule implements OnModuleInit {
         if (admin) return;
         const newAdmin = new Admin();
         newAdmin.username = username;
-        newAdmin.salt = bcrypt.genSaltSync();
-        newAdmin.password = bcrypt.hashSync(password, newAdmin.salt);
+        newAdmin.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
         newAdmin.save().then((v) => {
           console.log(v);
         });

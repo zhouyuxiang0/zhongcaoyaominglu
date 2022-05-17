@@ -11,7 +11,4 @@ export class Admin extends CommonEntity {
 
   @Column()
   password: string;
-
-  @Column()
-  salt: string;
 }

@@ -1,7 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { AdminModule } from 'src/admin/admin.module';
 import { AuthService } from './auth.service';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
-  providers: [AuthService]
+  imports: [forwardRef(() => AdminModule)],
+  providers: [AuthService, LocalStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

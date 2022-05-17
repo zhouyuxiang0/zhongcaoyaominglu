@@ -4,7 +4,7 @@ import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonService } from './common.service';
-
+import { JwtModule } from '@nestjs/jwt';
 @Global()
 @Module({
   imports: [
@@ -29,8 +29,12 @@ import { CommonService } from './common.service';
       limit: 10,
     }),
     CacheModule.register(),
+    JwtModule.register({
+      secret: '',
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   providers: [CommonService],
-  exports: [],
+  exports: [JwtModule],
 })
 export class CommonModule {}
