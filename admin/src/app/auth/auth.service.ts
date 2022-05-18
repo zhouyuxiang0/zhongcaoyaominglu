@@ -12,11 +12,12 @@ export class AuthService {
   redirectUrl: string = '';
 
   login(username: string, password: string) {
-    //TODO
-    this.apollo
+    return this.apollo
       .watchQuery({
         query: gql`{
-
+          login(username: "${username}", password: "${password}") {
+            token
+          }
       }`,
       })
       .valueChanges.pipe(

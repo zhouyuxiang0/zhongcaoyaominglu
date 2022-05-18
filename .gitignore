@@ -1,1 +1,3 @@
 node_modules
+api/mysql/mysql
+!api/mysql/mysql/zhongcaoyaominglu

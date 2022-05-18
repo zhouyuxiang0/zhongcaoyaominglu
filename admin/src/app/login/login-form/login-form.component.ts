@@ -77,16 +77,10 @@ export class LoginFormComponent implements OnInit {
     console.log(directive);
     // do something for submitting
     if (valid) {
-      this.authService.login(this.formData.userName, this.formData.password);
-      console.log(this.formData);
-      this.apollo
-        .watchQuery({
-          query: gql`{
-
-        }`,
-        })
-        .valueChanges.subscribe((res) => {
-          console.log(res, res.data);
+      this.authService
+        .login(this.formData.userName, this.formData.password)
+        .subscribe((res) => {
+          console.log(res);
           this.showToast('success', '成功', '登录成功！');
         });
     } else {
