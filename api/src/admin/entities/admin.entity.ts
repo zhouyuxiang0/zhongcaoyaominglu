@@ -1,14 +1,14 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { CommonEntity } from 'src/common/entities/base.entity';
-import { Column, Entity } from 'typeorm';
+import { DateColumn } from 'src/common/entities/date.entity';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@ObjectType()
-@Entity('admin')
-export class Admin extends CommonEntity {
-  @Field(() => String, { description: '用户名' })
+@Entity()
+export class Admin extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  public id: number;
   @Column()
   username: string;
-
   @Column()
   password: string;
+  @Column(() => DateColumn)
+  date: DateColumn;
 }

@@ -1,22 +1,36 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GraphQLModule } from './graphql.module';
-import { DevUIModule } from 'ng-devui';
-import { LoginModule } from './login/login.module';
+import { CoreModule } from './@core/core.module';
+import { SharedModule } from './@shared/shared.module';
+import { Observable, of } from 'rxjs'; 
+import { I18N } from '../config/language-config';
+
+class I18NLoader implements TranslateLoader {
+  getTranslation(lang: 'zh-cn' | 'en-us'): Observable<Object> {
+    return of(I18N[lang]);
+  }
+}
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    GraphQLModule,
+    BrowserAnimationsModule,
     HttpClientModule,
-    DevUIModule,
-    LoginModule,
+    AppRoutingModule,
+    CoreModule.forRoot(),
+    SharedModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: I18NLoader
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],

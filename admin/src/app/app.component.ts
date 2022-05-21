@@ -1,30 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-
+import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { DEFAULT_LANG, I18N_LANGUAGES } from '../config/language-config';
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'da-app',
+  template: `<router-outlet></router-outlet>`,
 })
-export class AppComponent implements OnInit {
-  constructor(private apollo: Apollo) {}
-  ngOnInit(): void {
-    this.apollo
-      .watchQuery({
-        query: gql`
-          {
-            category(id: 1) {
-              id
-              name
-              createTime
-              updateTime
-            }
-          }
-        `,
-      })
-      .valueChanges.subscribe((res) => {
-        console.log(res);
-      });
+export class AppComponent {
+  currentLang = localStorage.getItem('lang') || window.navigator.language.toLowerCase() || DEFAULT_LANG;
+
+  constructor(private translate: TranslateService) {
+    this.translate.addLangs(I18N_LANGUAGES);
+    translate.setDefaultLang(DEFAULT_LANG);
+    translate.use(this.currentLang);
   }
-  title = 'admin';
 }

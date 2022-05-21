@@ -1,11 +1,12 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity } from 'typeorm';
-import { CommonEntity } from '../../common/entities/base.entity';
+import { DateColumn } from 'src/common/entities/date.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@ObjectType()
 @Entity()
-export class Taste extends CommonEntity {
-  @Field(() => String, { description: '' })
+export class Taste {
+  @PrimaryGeneratedColumn()
+  public id: number;
   @Column()
   name: string;
+  @Column(() => DateColumn)
+  date: DateColumn;
 }

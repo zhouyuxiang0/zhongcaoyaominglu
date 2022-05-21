@@ -1,12 +1,12 @@
-import { Directive, Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity } from 'typeorm';
-import { CommonEntity } from '../../common/entities/base.entity';
+import { DateColumn } from 'src/common/entities/date.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Directive(`@key(fields: "id")`)
-@ObjectType()
-@Entity('category')
-export class Category extends CommonEntity {
-  @Field(() => String, { description: '分类名称' })
+@Entity()
+export class Category {
+  @PrimaryGeneratedColumn()
+  public id: number;
   @Column()
-  name: string;
+  public name: string;
+  @Column(() => DateColumn)
+  date: DateColumn;
 }

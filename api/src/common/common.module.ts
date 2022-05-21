@@ -18,19 +18,13 @@ import { JwtModule } from '@nestjs/jwt';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    GraphQLModule.forRoot<MercuriusDriverConfig>({
-      driver: MercuriusDriver,
-      graphiql: process.env.NODE_ENV == 'production' ? false : true,
-      autoSchemaFile: true,
-      routes: true,
-    }),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
     }),
     CacheModule.register(),
     JwtModule.register({
-      secret: '',
+      secret: '123',
       signOptions: { expiresIn: '1d' },
     }),
   ],

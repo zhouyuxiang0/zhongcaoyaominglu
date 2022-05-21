@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Nature } from './entities/nature.entity';
-import { NatureResolver } from './nature.resolver';
 import { NatureService } from './nature.service';
+import { NatureController } from './nature.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Nature])],
-  providers: [NatureResolver, NatureService],
+  controllers: [NatureController],
+  providers: [NatureService]
 })
 export class NatureModule {}

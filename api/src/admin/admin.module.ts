@@ -3,13 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { AuthModule } from 'src/auth/auth.module';
 import { getRepository } from 'typeorm';
-import { AdminResolver } from './admin.resolver';
+import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { Admin } from './entities/admin.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Admin]), forwardRef(() => AuthModule)],
-  providers: [AdminResolver, AdminService],
+  controllers: [AdminController],
+  providers: [AdminService],
   exports: [AdminService],
 })
 export class AdminModule implements OnModuleInit {

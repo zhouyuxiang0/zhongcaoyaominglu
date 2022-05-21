@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNatureInput } from './dto/create-nature.input';
-import { UpdateNatureInput } from './dto/update-nature.input';
+import { CreateNatureDto } from './dto/create-nature.dto';
+import { UpdateNatureDto } from './dto/update-nature.dto';
 
 @Injectable()
 export class NatureService {
-  create(createNatureInput: CreateNatureInput) {
+  create(createNatureDto: CreateNatureDto) {
     return 'This action adds a new nature';
   }
 
@@ -16,7 +16,7 @@ export class NatureService {
     return `This action returns a #${id} nature`;
   }
 
-  update(id: number, updateNatureInput: UpdateNatureInput) {
+  update(id: number, updateNatureDto: UpdateNatureDto) {
     return `This action updates a #${id} nature`;
   }
 

@@ -1,43 +1,23 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
-import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
-import { Category } from './entities/category.entity';
+import { Injectable } from '@nestjs/common';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoryService {
-  @InjectRepository(Category)
-  private readonly categoryRepo: Repository<Category>;
-  async create(createCategoryInput: CreateCategoryInput) {
-    const category = await this.categoryRepo.findOne({
-      where: {
-        name: createCategoryInput.name,
-      },
-    });
-    if (category) return category;
-    const newCategory = new Category();
-    newCategory.name = createCategoryInput.name;
-    return await newCategory.save();
+  create(createCategoryDto: CreateCategoryDto) {
+    return 'This action adds a new category';
   }
 
   findAll() {
-    return this.categoryRepo.find();
+    return `This action returns all category`;
   }
 
-  async find(category: FindOptionsWhere<Category>) {
-    return await this.categoryRepo.findOne({ where: category });
+  findOne(id: number) {
+    return `This action returns a #${id} category`;
   }
 
-  async findOne(id: number) {
-    return await this.categoryRepo.findOne({ where: { id } });
-  }
-
-  async update(id: number, updateCategoryInput: UpdateCategoryInput) {
-    const category = await this.categoryRepo.findOne({ where: { id } });
-    if (!category) throw new InternalServerErrorException('更新失败');
-    category.name = updateCategoryInput.name;
-    return await this.categoryRepo.save(category);
+  update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    return `This action updates a #${id} category`;
   }
 
   remove(id: number) {

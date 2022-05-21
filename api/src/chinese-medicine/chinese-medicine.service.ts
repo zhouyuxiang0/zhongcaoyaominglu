@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateChineseMedicineInput } from './dto/create-chinese-medicine.input';
-import { UpdateChineseMedicineInput } from './dto/update-chinese-medicine.input';
+import { CreateChineseMedicineDto } from './dto/create-chinese-medicine.dto';
+import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 
 @Injectable()
 export class ChineseMedicineService {
-  create(createChineseMedicineInput: CreateChineseMedicineInput) {
+  create(createChineseMedicineDto: CreateChineseMedicineDto) {
     return 'This action adds a new chineseMedicine';
   }
 
@@ -16,7 +16,7 @@ export class ChineseMedicineService {
     return `This action returns a #${id} chineseMedicine`;
   }
 
-  update(id: number, updateChineseMedicineInput: UpdateChineseMedicineInput) {
+  update(id: number, updateChineseMedicineDto: UpdateChineseMedicineDto) {
     return `This action updates a #${id} chineseMedicine`;
   }
 

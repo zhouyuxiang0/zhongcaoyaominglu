@@ -1,25 +1,24 @@
-import { ObjectType } from '@nestjs/graphql';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { CommonEntity } from '../../common/entities/base.entity';
-import { MeridianTropism } from '../../meridian-tropism/entities/meridian-tropism.entity';
-import { Nature } from '../../nature/entities/nature.entity';
-import { Taste } from '../../taste/entities/taste.entity';
+import { DateColumn } from 'src/common/entities/date.entity';
+import { MeridianTropism } from 'src/meridian-tropism/entities/meridian-tropism.entity';
+import { Nature } from 'src/nature/entities/nature.entity';
+import { Taste } from 'src/taste/entities/taste.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@ObjectType()
-@Entity('chinese_medicine')
-export class ChineseMedicine extends CommonEntity {
+@Entity()
+export class ChineseMedicine {
+  @PrimaryGeneratedColumn()
+  public id: number;
   @Column()
-  name: string;
+  public name: string;
 
-  @ManyToOne(() => Nature)
-  @JoinColumn({ name: 'nature_id' })
-  nature: Nature;
+  @ManyToMany(() => Nature)
+  public nature: Nature;
 
-  @ManyToOne(() => Taste)
-  @JoinColumn({ name: 'taste_id' })
-  taste: Taste;
+  @ManyToMany(() => Taste)
+  public taste: Taste;
 
-  @ManyToOne(() => MeridianTropism)
-  @JoinColumn({ name: 'meridian_tropism_id' })
-  meridianTropism: MeridianTropism;
+  @ManyToMany(() => MeridianTropism)
+  public meridianTropism: MeridianTropism;
+  @Column(() => DateColumn)
+  date: DateColumn;
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMeridianTropismInput } from './dto/create-meridian-tropism.input';
-import { UpdateMeridianTropismInput } from './dto/update-meridian-tropism.input';
+import { CreateMeridianTropismDto } from './dto/create-meridian-tropism.dto';
+import { UpdateMeridianTropismDto } from './dto/update-meridian-tropism.dto';
 
 @Injectable()
 export class MeridianTropismService {
-  create(createMeridianTropismInput: CreateMeridianTropismInput) {
+  create(createMeridianTropismDto: CreateMeridianTropismDto) {
     return 'This action adds a new meridianTropism';
   }
 
@@ -16,7 +16,7 @@ export class MeridianTropismService {
     return `This action returns a #${id} meridianTropism`;
   }
 
-  update(id: number, updateMeridianTropismInput: UpdateMeridianTropismInput) {
+  update(id: number, updateMeridianTropismDto: UpdateMeridianTropismDto) {
     return `This action updates a #${id} meridianTropism`;
   }
 

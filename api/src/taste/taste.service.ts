@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTasteInput } from './dto/create-taste.input';
-import { UpdateTasteInput } from './dto/update-taste.input';
+import { CreateTasteDto } from './dto/create-taste.dto';
+import { UpdateTasteDto } from './dto/update-taste.dto';
 
 @Injectable()
 export class TasteService {
-  create(createTasteInput: CreateTasteInput) {
+  create(createTasteDto: CreateTasteDto) {
     return 'This action adds a new taste';
   }
 
@@ -16,7 +16,7 @@ export class TasteService {
     return `This action returns a #${id} taste`;
   }
 
-  update(id: number, updateTasteInput: UpdateTasteInput) {
+  update(id: number, updateTasteDto: UpdateTasteDto) {
     return `This action updates a #${id} taste`;
   }
 
