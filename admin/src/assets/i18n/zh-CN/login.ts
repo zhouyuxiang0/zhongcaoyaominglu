@@ -1,6 +1,6 @@
 export default {
   loginPage: {
-    coperation: 'DevUI Design 出品',
+    coperation: '中草药名录',
     loginWays: {
       account: '账号密码登录',
       email: '邮箱登录',
