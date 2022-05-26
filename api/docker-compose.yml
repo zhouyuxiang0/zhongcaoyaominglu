@@ -5,9 +5,10 @@ services:
     restart: always
     environment:
        MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: zhongcaoyaominglu
     ports:
       - 3306:3306
     volumes:
       - ./mysql/mysql:/var/lib/mysql
       - ./mysql/conf:/etc/mysql/conf.d
-      - ./mysql/init:/docker-entrypoint-initdb.d/
+      - ./mysql/init:/docker-entrypoint-initdb.d

@@ -12,11 +12,12 @@ import { ThemeType } from '../../models/theme';
 import { FormLayout } from 'ng-devui/form';
 import { environment } from 'src/environments/environment';
 import { LANGUAGES } from 'src/config/language-config';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'da-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   private destroy$ = new Subject();
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
     userAccount: 'Admin',
     userAccountPassword: 'DevUI.admin',
     userEmail: 'admin@devui.com',
-    userEmailPassword: 'devuiadmin'
+    userEmailPassword: 'devuiadmin',
   };
 
   formRules: { [key: string]: DValidateRules } = {
@@ -50,13 +51,10 @@ export class LoginComponent implements OnInit {
           pattern: /^[a-zA-Z0-9]+(\s+[a-zA-Z0-9]+)*$/,
           message: 'The user name cannot contain characters except uppercase and lowercase letters.',
         },
-      ]
+      ],
     },
     emailRules: {
-      validators: [
-        { required: true },
-        { email: true },
-      ],
+      validators: [{ required: true }, { email: true }],
     },
     passwordRules: {
       validators: [{ required: true }, { minlength: 6 }, { maxlength: 15 }, { pattern: /^[a-zA-Z0-9\d@$!%*?&.]+(\s+[a-zA-Z0-9]+)*$/ }],
@@ -89,19 +87,15 @@ export class LoginComponent implements OnInit {
         this.updateTabItems(res);
       });
 
-    this.translate.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: TranslationChangeEvent) => {
-        this.i18nValues = this.translate.instant('loginPage');
-        this.updateTabItems(this.i18nValues);
-      });
+    this.translate.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((event: TranslationChangeEvent) => {
+      this.i18nValues = this.translate.instant('loginPage');
+      this.updateTabItems(this.i18nValues);
+    });
     this.language = this.translate.currentLang;
     this.personalizeService.setRefTheme(ThemeType.Default);
 
-    this.route.queryParams.pipe(
-      map(param => param.code)
-    ).subscribe(code => {
-      if(code && code.length > 0) {
+    this.route.queryParams.pipe(map((param) => param.code)).subscribe((code) => {
+      if (code && code.length > 0) {
         setTimeout(() => {
           this.toastMessage = [
             {
@@ -117,43 +111,38 @@ export class LoginComponent implements OnInit {
   onClick(tabId: string | number) {
     switch (tabId) {
       case 'tab1':
-        this.authService
-          .login(this.formData.userAccount, this.formData.userAccountPassword)
-          .subscribe(
-            (res) => {
-              this.authService.setSession(res);
-              this.router.navigate(['/']);
-            },
-            (error) => {
-              this.toastMessage = [
-                {
-                  severity: 'error',
-                  summary: this.i18nValues['noticeMessage']['summary'],
-                  content: this.i18nValues['noticeMessage']['accountContent']
-                  
-                }
-              ];
-            }
-          );
+        this.authService.login(this.formData.userAccount, this.formData.userAccountPassword).subscribe(
+          (res: User) => {
+            this.authService.setSession(res);
+            this.router.navigate(['/']);
+          },
+          (error) => {
+            this.toastMessage = [
+              {
+                severity: 'error',
+                summary: this.i18nValues['noticeMessage']['summary'],
+                content: this.i18nValues['noticeMessage']['accountContent'],
+              },
+            ];
+          }
+        );
         break;
       case 'tab2':
-        this.authService
-          .login(this.formData.userEmail, this.formData.userEmailPassword)
-          .subscribe(
-            (res) => {
-              this.authService.setSession(res);
-              this.router.navigate(['/']);
-            },
-            (error) => {
-              this.toastMessage = [
-                {
-                  severity: 'error',
-                  summary: this.i18nValues['noticeMessage']['summary'],
-                  content: this.i18nValues['noticeMessage']['emailContent']
-                }
-              ];
-            }
-          );
+        this.authService.login(this.formData.userEmail, this.formData.userEmailPassword).subscribe(
+          (res) => {
+            this.authService.setSession(res);
+            this.router.navigate(['/']);
+          },
+          (error) => {
+            this.toastMessage = [
+              {
+                severity: 'error',
+                summary: this.i18nValues['noticeMessage']['summary'],
+                content: this.i18nValues['noticeMessage']['emailContent'],
+              },
+            ];
+          }
+        );
         break;
       default:
         break;
@@ -171,12 +160,12 @@ export class LoginComponent implements OnInit {
     this.tabItems = [
       {
         id: 'tab1',
-        title: values['loginWays']['account']
+        title: values['loginWays']['account'],
       },
       {
         id: 'tab2',
-        title: values['loginWays']['email']
-      }
+        title: values['loginWays']['email'],
+      },
     ];
   }
 
@@ -186,17 +175,17 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  handleAuth(type: string){
+  handleAuth(type: string) {
     console.log(type);
     const config = {
       oauth_uri: 'https://github.com/login/oauth/authorize',
       redirect_uri: 'https://devui.design/admin/login',
-      client_id: 'ef3ce924fcf915c50910'
+      client_id: 'ef3ce924fcf915c50910',
     };
     if (!environment.production) {
       config.redirect_uri = 'http://localhost:4200/login';
       config.client_id = 'ecf5e43d804e8e003196';
     }
-    window.location.href = `${config.oauth_uri}?client_id=${config.client_id}&redirect_uri=${config.redirect_uri}`
+    window.location.href = `${config.oauth_uri}?client_id=${config.client_id}&redirect_uri=${config.redirect_uri}`;
   }
 }

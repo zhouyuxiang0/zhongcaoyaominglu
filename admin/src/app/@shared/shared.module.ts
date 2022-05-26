@@ -1,41 +1,44 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import {
-  LayoutModule,
   AccordionModule,
-  SearchModule,
+  AlertModule,
   AvatarModule,
   BadgeModule,
+  BreadcrumbModule,
+  ButtonModule,
+  CardModule,
+  CascaderModule,
+  DCommonModule,
+  DrawerModule,
   DropDownModule,
   FormModule,
+  LayoutModule,
+  ModalModule,
+  RadioModule,
+  SearchModule,
+  SelectModule,
   TabsModule,
   TextInputModule,
-  ToggleModule,
-  ButtonModule,
-  DrawerModule,
-  DCommonModule,
-  AlertModule,
   ToastModule,
+  ToggleModule,
   TooltipModule,
-  RadioModule,
-  BreadcrumbModule,
-  ModalModule,
 } from 'ng-devui';
 import { I18nModule } from 'ng-devui/i18n';
-import { TranslateModule } from '@ngx-translate/core';
-import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { HeaderLogoComponent } from './components/header/header-logo/header-logo.component';
+import { HeaderOperationComponent } from './components/header/header-operation/header-operation.component';
+import { HeaderComponent } from './components/header/header.component';
+import { NavbarComponent } from './components/header/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { PersonalizeComponent } from './components/personalize/personalize.component';
-import { HeaderOperationComponent } from './components/header/header-operation/header-operation.component';
-import { NavbarComponent } from './components/header/navbar/navbar.component';
-import { DaGridModule } from './layouts/da-grid';
-import { HeaderLogoComponent } from './components/header/header-logo/header-logo.component';
-import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { RegisterComponent } from './components/register/register.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { DaGridModule } from './layouts/da-grid';
 
 const DEVUI_MODULES = [
   LayoutModule,
@@ -52,23 +55,14 @@ const DEVUI_MODULES = [
   DrawerModule,
   BreadcrumbModule,
   RadioModule,
-  ModalModule
+  ModalModule,
+  CascaderModule,
+  SelectModule,
+  CardModule,
 ];
-const COMPONENTS = [
-  HeaderComponent,
-  FooterComponent,
-  NavbarComponent,
-  PersonalizeComponent
-];
+const COMPONENTS = [HeaderComponent, FooterComponent, NavbarComponent, PersonalizeComponent];
 @NgModule({
-  declarations: [
-    LoginComponent,
-    HeaderOperationComponent,
-    HeaderLogoComponent,
-    SideMenuComponent,
-    RegisterComponent,
-    ...COMPONENTS
-  ],
+  declarations: [LoginComponent, HeaderOperationComponent, HeaderLogoComponent, SideMenuComponent, RegisterComponent, ...COMPONENTS],
   imports: [
     CommonModule,
     FormsModule,
@@ -81,7 +75,7 @@ const COMPONENTS = [
     TooltipModule,
     I18nModule,
     DaGridModule,
-    ...DEVUI_MODULES
+    ...DEVUI_MODULES,
   ],
   exports: [
     CommonModule,
@@ -93,14 +87,14 @@ const COMPONENTS = [
     DaGridModule,
     SideMenuComponent,
     ...DEVUI_MODULES,
-    ...COMPONENTS
-  ]
+    ...COMPONENTS,
+  ],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
-      providers: []
+      providers: [],
     };
   }
 }

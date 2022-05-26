@@ -23,9 +23,11 @@
   <da-layout-row [daGutter]="[24, 24]">
     <da-col-item [daSpan]="24" [daXs]="24">
       <div class="da-content-card">
-        <p>
+        <!-- <d-button id="primaryBtn" style="margin-right: 8px">新增</d-button> -->
+        <d-button (click)="openstandardDialog('standard')">新增</d-button>
+        <!-- <p>
           {{ 'startUsing.examplePage.content' | translate }} <a href="https://devui.design/admin-page/docs" target="_blank">{{ 'startUsing.docLink' | translate }}</a>
-        </p>
+        </p> -->
       </div>
     </da-col-item>
   </da-layout-row>

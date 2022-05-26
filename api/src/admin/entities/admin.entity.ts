@@ -9,6 +9,8 @@ export class Admin extends BaseEntity {
   username: string;
   @Column()
   password: string;
+  @Column()
+  email: string;
   @Column(() => DateColumn)
   date: DateColumn;
 }

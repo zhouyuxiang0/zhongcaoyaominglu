@@ -25,10 +25,10 @@ export class AdminModule implements OnModuleInit {
         },
       })
       .then((admin) => {
-        if (admin) return;
-        const newAdmin = new Admin();
+        const newAdmin = admin || new Admin();
         newAdmin.username = username;
         newAdmin.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
+        newAdmin.email = '1521350289@qq.com';
         newAdmin.save().then((v) => {
           console.log(v);
         });

@@ -1,10 +1,8 @@
 import { CacheModule, Global, Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
+import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonService } from './common.service';
-import { JwtModule } from '@nestjs/jwt';
 @Global()
 @Module({
   imports: [

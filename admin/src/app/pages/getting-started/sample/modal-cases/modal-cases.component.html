@@ -1,0 +1,164 @@
+<div class="modal-cases-component">
+  <form dForm [layout]="layoutDirection" ngForm>
+    <d-form-item>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'请输入未录入中药名'">名称</d-form-label>
+      <d-form-control>
+        <div>
+          <input
+            dTextInput
+            autocomplete="off"
+            name="branch"
+            placeholder="请输入未录入中药名"
+            [(ngModel)]="name"
+            (ngModelChange)="formChange()"
+          />
+        </div>
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [required]="true">选择分类</d-form-label>
+      <d-form-control>
+        <d-cascader
+          [options]="options"
+          [placeholder]="'请选择'"
+          name="categories"
+          [(ngModel)]="categories"
+          [trigger]="'click'"
+          (ngModelChange)="onChanges($event)"
+          [showPath]="true"
+          [allowClear]="true"
+          [width]="300"
+          [loadChildrenFn]="loadChildren"
+        ></d-cascader>
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [required]="true">性状</d-form-label>
+      <d-form-control>
+        <div class="row">
+          <div class="col-md-5">
+            <d-select
+              name="natureOptions"
+              [options]="natureOptions"
+              [isSearch]="true"
+              [readonly]="true"
+              [multiple]="true"
+              [(ngModel)]="natureSelects"
+              [filterKey]="'name'"
+              [extraConfig]="{
+                labelization: { enable: true, labelMaxWidth: '120px' }
+              }"
+              [size]="'sm'"
+            ></d-select>
+          </div>
+        </div>
+        <!-- <div>
+          <input
+            dTextInput
+            autocomplete="off"
+            name="tag"
+            placeholder="请填写标签名，最长200个字符"
+            maxlength="200"
+            [(ngModel)]="tagName"
+            (ngModelChange)="formChange()"
+          />
+        </div> -->
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [required]="true">味</d-form-label>
+      <d-form-control>
+        <div class="row">
+          <div class="col-md-5">
+            <d-select
+              name="tasteOptions"
+              [options]="tasteOptions"
+              [isSearch]="true"
+              [readonly]="true"
+              [multiple]="true"
+              [(ngModel)]="tasteSelects"
+              [filterKey]="'name'"
+              [extraConfig]="{
+                labelization: { enable: true, labelMaxWidth: '120px' }
+              }"
+              [size]="'sm'"
+            ></d-select>
+          </div>
+        </div>
+        <!-- <div>
+          <input
+            dTextInput
+            autocomplete="off"
+            name="tag"
+            placeholder="请填写标签名，最长200个字符"
+            maxlength="200"
+            [(ngModel)]="tagName"
+            (ngModelChange)="formChange()"
+          />
+        </div> -->
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [required]="true">归经</d-form-label>
+      <d-form-control>
+        <div class="row">
+          <div class="col-md-5">
+            <d-select
+              name="meridianTropismOptions"
+              [options]="meridianTropismOptions"
+              [isSearch]="true"
+              [readonly]="true"
+              [multiple]="true"
+              [(ngModel)]="meridianTropismSelects"
+              [filterKey]="'name'"
+              [extraConfig]="{
+                labelization: { enable: true, labelMaxWidth: '120px' }
+              }"
+              [size]="'sm'"
+            ></d-select>
+          </div>
+        </div>
+        <!-- <div>
+          <input
+            dTextInput
+            autocomplete="off"
+            name="tag"
+            placeholder="请填写标签名，最长200个字符"
+            maxlength="200"
+            [(ngModel)]="tagName"
+            (ngModelChange)="formChange()"
+          />
+        </div> -->
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [required]="true">内容</d-form-label>
+      <d-button>添加内容</d-button>
+      <d-form-control>
+        <d-card style="width: 350px">
+          <d-card-header>
+            <d-card-title>内容1标题：<input type="text"></d-card-title>
+          </d-card-header>
+          <d-card-actions [align]="'spaceBetween'">
+            <textarea
+              dTextarea
+              name="des"
+              maxlength="2000"
+              style="height: 100px; resize: none"
+              placeholder="请输入内容"
+              [(ngModel)]="des"
+            ></textarea>
+          </d-card-actions>
+        </d-card>
+        <!-- <textarea
+          dTextarea
+          name="des"
+          maxlength="2000"
+          style="height: 100px; resize: none"
+          placeholder="请输入描述信息"
+          [(ngModel)]="des"
+        ></textarea> -->
+      </d-form-control>
+    </d-form-item>
+  </form>
+</div>
