@@ -1,5 +1,5 @@
 export default {
   footer: {
-    presented: 'DevUI Design 出品'
-  }
+    presented: '中草药名录 出品',
+  },
 };

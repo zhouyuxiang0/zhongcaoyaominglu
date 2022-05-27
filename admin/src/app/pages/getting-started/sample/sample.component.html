@@ -23,11 +23,38 @@
   <da-layout-row [daGutter]="[24, 24]">
     <da-col-item [daSpan]="24" [daXs]="24">
       <div class="da-content-card">
-        <!-- <d-button id="primaryBtn" style="margin-right: 8px">新增</d-button> -->
         <d-button (click)="openstandardDialog('standard')">新增</d-button>
-        <!-- <p>
-          {{ 'startUsing.examplePage.content' | translate }} <a href="https://devui.design/admin-page/docs" target="_blank">{{ 'startUsing.docLink' | translate }}</a>
-        </p> -->
+        <d-data-table [dataSource]="chineseMedicines" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
+          <thead dTableHead>
+            <tr dTableRow>
+              <th dHeadCell>#</th>
+              <th dHeadCell *ngFor="let colOption of dataTableOptions.columns">{{ colOption.header }}</th>
+            </tr>
+          </thead>
+          <tbody dTableBody>
+            <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
+              <tr dTableRow>
+                <td dTableCell>{{ rowIndex + 1 }}</td>
+                <td dTableCell *ngFor="let colOption of dataTableOptions.columns">
+                  {{ colOption.fieldType === 'date' ? (rowItem[colOption.field] | i18nDate: 'short':false) : rowItem[colOption.field] }}
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </d-data-table>
+        <d-pagination
+          [size]="'sm'"
+          [total]="pager.total"
+          [(pageSize)]="pager.pageSize"
+          [(pageIndex)]="pager.pageIndex"
+          [maxItems]="10"
+          [canViewTotal]="true"
+          [canJumpPage]="true"
+          [canChangePageSize]="true"
+          (pageIndexChange)="pageIndexChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+        >
+        </d-pagination>
       </div>
     </da-col-item>
   </da-layout-row>

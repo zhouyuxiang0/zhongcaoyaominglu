@@ -13,20 +13,23 @@ import {
   ButtonModule,
   CardModule,
   CascaderModule,
+  DataTableModule,
   DCommonModule,
   DrawerModule,
   DropDownModule,
   FormModule,
   LayoutModule,
   ModalModule,
+  PaginationModule,
   RadioModule,
   SearchModule,
   SelectModule,
   TabsModule,
+  TagsInputModule,
   TextInputModule,
   ToastModule,
   ToggleModule,
-  TooltipModule,
+  TooltipModule
 } from 'ng-devui';
 import { I18nModule } from 'ng-devui/i18n';
 import { FooterComponent } from './components/footer/footer.component';
@@ -59,6 +62,9 @@ const DEVUI_MODULES = [
   CascaderModule,
   SelectModule,
   CardModule,
+  TagsInputModule,
+  DataTableModule,
+  PaginationModule
 ];
 const COMPONENTS = [HeaderComponent, FooterComponent, NavbarComponent, PersonalizeComponent];
 @NgModule({
