@@ -93,6 +93,20 @@ export class ModalCasesComponent implements OnInit {
   @Input() data: any;
   // 名称
   name = '';
+  aliasTags = [];
+  aliasTagConfig = {
+    displayProperty: 'name',
+    maxLength: 200,
+    minLength: 1,
+    maxTags: 100,
+    placeholder: '添加别名',
+    spellcheck: false,
+    caseSensitivity: false,
+    isAddBySpace: true,
+  };
+  aliasCheck(value) {
+    return true;
+  }
   layoutDirection: FormLayout = FormLayout.Vertical;
 
   categories: Array<string | number> = [];

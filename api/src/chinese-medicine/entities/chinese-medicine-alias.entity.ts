@@ -1,9 +1,15 @@
 import { DateColumn } from 'src/common/entities/date.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ChineseMedicine } from './chinese-medicine.entity';
 
 @Entity()
-export class ChineseMedicineAlias {
+export class ChineseMedicineAlias extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
   @Column()

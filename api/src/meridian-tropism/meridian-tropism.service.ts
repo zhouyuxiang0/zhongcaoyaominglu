@@ -1,15 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateMeridianTropismDto } from './dto/create-meridian-tropism.dto';
 import { UpdateMeridianTropismDto } from './dto/update-meridian-tropism.dto';
+import { MeridianTropism } from './entities/meridian-tropism.entity';
 
 @Injectable()
 export class MeridianTropismService {
-  create(createMeridianTropismDto: CreateMeridianTropismDto) {
-    return 'This action adds a new meridianTropism';
+  @InjectRepository(MeridianTropism)
+  private readonly meridianTropismRepo: Repository<MeridianTropism>;
+  async create(createMeridianTropismDto: CreateMeridianTropismDto) {
+    const meridianTropism = new MeridianTropism();
+    meridianTropism.name = createMeridianTropismDto.name;
+    await meridianTropism.save();
+    return {
+      statusCode: HttpStatus.OK,
+      data: meridianTropism,
+    };
   }
 
-  findAll() {
-    return `This action returns all meridianTropism`;
+  async findAll() {
+    const meridianTropism = await this.meridianTropismRepo.find();
+    return {
+      statusCode: HttpStatus.OK,
+      data: meridianTropism,
+    };
   }
 
   findOne(id: number) {

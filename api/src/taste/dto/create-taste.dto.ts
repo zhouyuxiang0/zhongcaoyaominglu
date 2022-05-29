@@ -1,1 +1,3 @@
-export class CreateTasteDto {}
+export class CreateTasteDto {
+  name: string;
+}

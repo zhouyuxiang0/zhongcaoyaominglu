@@ -1,110 +1,25 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DialogService } from 'ng-devui';
 import { ChineseMedicineService } from 'src/app/@core/mock/chinese-medicine.service';
+import { NatureService } from 'src/app/@core/services/nature.service';
 import { ModalCasesComponent } from './modal-cases/modal-cases.component';
-const originSource = [
-  {
-    id: 1,
-    name: 'Mark',
-    category: 'Otto',
-    dob: new Date(1990, 12, 1),
-    gender: 'Male',
-    description: 'handsome man',
-  },
-  {
-    id: 2,
-    name: 'Jacob',
-    category: 'Thornton',
-    gender: 'Female',
-    dob: new Date(1989, 1, 1),
-    description: 'interesting man',
-  },
-  {
-    id: 3,
-    name: 'Danni',
-    category: 'Chen',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-    description: 'pretty man',
-    expandConfig: { description: 'Danni is here' },
-  },
-  {
-    id: 4,
-    name: 'green',
-    category: 'gerong',
-    gender: 'Male',
-    description: 'interesting man',
-    dob: new Date(1991, 3, 1),
-  },
-  {
-    id: 5,
-    name: 'po',
-    category: 'lang',
-    gender: 'Male',
-    dob: new Date(1991, 3, 1),
-    description: 'lang is here',
-  },
-  {
-    id: 6,
-    name: 'john',
-    category: 'li',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-    description: 'pretty man',
-  },
-  {
-    id: 7,
-    name: 'peng',
-    category: 'li',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-  },
-  {
-    id: 8,
-    name: 'Danni',
-    category: 'Yu',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-  },
-  {
-    id: 9,
-    name: 'Danni',
-    category: 'Yu',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-    detail: '这是另外一个行详情',
-  },
-  {
-    id: 10,
-    name: 'Danni',
-    category: 'Yu',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-  },
-  {
-    id: 11,
-    name: 'Danni',
-    category: 'Yu',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-  },
-  {
-    id: 12,
-    name: 'Danni',
-    category: 'Yu',
-    gender: 'Female',
-    dob: new Date(1991, 3, 1),
-  },
-];
+
 @Component({
   selector: 'app-sample',
   templateUrl: './sample.component.html',
   styleUrls: ['./sample.component.scss'],
 })
 export class SampleComponent implements OnInit, AfterViewInit {
-  constructor(private readonly dialogService: DialogService, private readonly chineseMedicineService: ChineseMedicineService) {}
+  constructor(
+    private readonly dialogService: DialogService,
+    private readonly chineseMedicineService: ChineseMedicineService,
+    private readonly natureService: NatureService
+  ) {}
 
   ngOnInit(): void {
+    this.natureService.getNatures().subscribe((val) => {
+      this.natureTags = val;
+    });
     this.chineseMedicineService.getChineseMedicines().subscribe((val) => {
       this.chineseMedicines = val;
       console.log(val);
@@ -155,7 +70,65 @@ export class SampleComponent implements OnInit, AfterViewInit {
     });
   }
   chineseMedicines = [];
-  basicDataSource = JSON.parse(JSON.stringify(originSource.slice(0, 6)));
+  // basicDataSource = JSON.parse(JSON.stringify(originSource.slice(0, 6)));
+  taskTagConfig = {
+    displayProperty: 'name',
+    maxLength: 200,
+    minLength: 7,
+    maxTags: 10,
+    placeholder: '添加图片链接',
+    spellcheck: false,
+    caseSensitivity: false,
+    isAddBySpace: true,
+  };
+  natureTagConfig = {
+    displayProperty: 'name',
+    maxLength: 200,
+    minLength: 1,
+    maxTags: 100,
+    placeholder: '添加性状',
+    spellcheck: false,
+    caseSensitivity: false,
+    isAddBySpace: true,
+  };
+  tasteTagConfig = {
+    displayProperty: 'name',
+    maxLength: 200,
+    minLength: 1,
+    maxTags: 100,
+    placeholder: '添加味',
+    spellcheck: false,
+    caseSensitivity: false,
+    isAddBySpace: true,
+  };
+  meridianTropismTagConfig = {
+    displayProperty: 'name',
+    maxLength: 200,
+    minLength: 1,
+    maxTags: 100,
+    placeholder: '添加归经',
+    spellcheck: false,
+    caseSensitivity: false,
+    isAddBySpace: true,
+  };
+  natureTags = [];
+  tasteTags = [];
+  meridianTropismTags = [];
+  natureCheck(value) {
+    return true;
+  }
+  changeNatureTags($event) {
+    const newNatureTag = this.natureTags.filter((v) => !v.id);
+    newNatureTag.map((nature) => {
+      this.natureService.add(nature.name).subscribe();
+    });
+  }
+  tasteCheck(value) {
+    return true;
+  }
+  meridianTropismCheck(value) {
+    return true;
+  }
   dataTableOptions = {
     columns: [
       {
@@ -223,8 +196,8 @@ export class SampleComponent implements OnInit, AfterViewInit {
   ];
 
   pager = {
-    total: 306,
-    pageIndex: 5,
+    total: 1,
+    pageIndex: 1,
     pageSize: 10,
     pageSizeOptions: [10, 20, 30, 40, 50],
   };

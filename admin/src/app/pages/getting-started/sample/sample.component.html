@@ -20,10 +20,69 @@
   </div>
 </div>
 <div class="da-content-wrapper">
+  <div class="da-content-card" style="height: 100%;">
   <da-layout-row [daGutter]="[24, 24]">
-    <da-col-item [daSpan]="24" [daXs]="24">
-      <div class="da-content-card">
+      <da-col-item [daSpan]="3" [daXs]="3">
         <d-button (click)="openstandardDialog('standard')">新增</d-button>
+      </da-col-item>
+      <da-col-item [daSpan]="1" [daXs]="1" daAlignSelf="center">性状：</da-col-item>
+      <da-col-item [daSpan]="4" [daXs]="4">
+        <d-tags-input
+            style="width: 150px;"
+            name="nature"
+            [(ngModel)]="natureTags"
+            [displayProperty]="natureTagConfig.displayProperty"
+            [placeholder]="natureTagConfig.placeholder"
+            [minLength]="natureTagConfig.minLength"
+            [maxLength]="natureTagConfig.maxLength"
+            [maxTags]="natureTagConfig.maxTags"
+            [spellcheck]="natureTagConfig.spellcheck"
+            [caseSensitivity]="natureTagConfig.caseSensitivity"
+            [isAddBySpace]="natureTagConfig.isAddBySpace"
+            [checkBeforeAdd]="natureCheck"
+            (ngModelChange)="changeNatureTags($event)"
+          >
+          </d-tags-input>
+      </da-col-item>
+      <da-col-item [daSpan]="1" [daXs]="1" daAlignSelf="center">味：</da-col-item>
+      <da-col-item [daSpan]="4" [daXs]="4">
+        <d-tags-input
+            style="width: 150px;"
+            name="nature"
+            [(ngModel)]="tasteTags"
+            [displayProperty]="tasteTagConfig.displayProperty"
+            [placeholder]="tasteTagConfig.placeholder"
+            [minLength]="tasteTagConfig.minLength"
+            [maxLength]="tasteTagConfig.maxLength"
+            [maxTags]="tasteTagConfig.maxTags"
+            [spellcheck]="tasteTagConfig.spellcheck"
+            [caseSensitivity]="tasteTagConfig.caseSensitivity"
+            [isAddBySpace]="tasteTagConfig.isAddBySpace"
+            [checkBeforeAdd]="tasteCheck"
+          >
+          </d-tags-input>
+      </da-col-item>
+      <da-col-item [daSpan]="1" [daXs]="1" daAlignSelf="center">归经：</da-col-item>
+      <da-col-item [daSpan]="4" [daXs]="4">
+        <d-tags-input
+            style="width: 150px;"
+            name="nature"
+            [(ngModel)]="meridianTropismTags"
+            [displayProperty]="meridianTropismTagConfig.displayProperty"
+            [placeholder]="meridianTropismTagConfig.placeholder"
+            [minLength]="meridianTropismTagConfig.minLength"
+            [maxLength]="meridianTropismTagConfig.maxLength"
+            [maxTags]="meridianTropismTagConfig.maxTags"
+            [spellcheck]="meridianTropismTagConfig.spellcheck"
+            [caseSensitivity]="meridianTropismTagConfig.caseSensitivity"
+            [isAddBySpace]="meridianTropismTagConfig.isAddBySpace"
+            [checkBeforeAdd]="meridianTropismCheck"
+          >
+          </d-tags-input>
+      </da-col-item>
+      <da-col-item [daSpan]="24" [daXs]="24"></da-col-item>
+
+      <da-col-item [daSpan]="24" [daXs]="24">
         <d-data-table [dataSource]="chineseMedicines" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
           <thead dTableHead>
             <tr dTableRow>
@@ -42,20 +101,26 @@
             </ng-template>
           </tbody>
         </d-data-table>
+      </da-col-item>
+      <da-col-item [daSpan]="24" [daXs]="24"></da-col-item>
+      <da-col-item [daSpan]="6" [daXs]="6"></da-col-item>
+      <da-col-item [daSpan]="6" [daXs]="6"></da-col-item>
+      <da-col-item [daSpan]="12" [daXs]="12">
         <d-pagination
-          [size]="'sm'"
-          [total]="pager.total"
-          [(pageSize)]="pager.pageSize"
-          [(pageIndex)]="pager.pageIndex"
-          [maxItems]="10"
-          [canViewTotal]="true"
-          [canJumpPage]="true"
-          [canChangePageSize]="true"
-          (pageIndexChange)="pageIndexChange($event)"
-          (pageSizeChange)="pageSizeChange($event)"
-        >
-        </d-pagination>
-      </div>
-    </da-col-item>
-  </da-layout-row>
+            [size]="'sm'"
+            [total]="pager.total"
+            [(pageSize)]="pager.pageSize"
+            [(pageIndex)]="pager.pageIndex"
+            [maxItems]="10"
+            [canViewTotal]="true"
+            [canJumpPage]="true"
+            [canChangePageSize]="true"
+            (pageIndexChange)="pageIndexChange($event)"
+            (pageSizeChange)="pageSizeChange($event)"
+          >
+          </d-pagination>
+      </da-col-item>
+    </da-layout-row>
+  </div>
+
 </div>

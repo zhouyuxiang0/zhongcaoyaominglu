@@ -13,11 +13,11 @@ import { AppService } from './app.service';
 @Module({
   imports: [
     CommonModule,
-    // CategoryModule,
-    // ChineseMedicineModule,
-    // MeridianTropismModule,
-    // NatureModule,
-    // TasteModule,
+    CategoryModule,
+    ChineseMedicineModule,
+    MeridianTropismModule,
+    NatureModule,
+    TasteModule,
     AdminModule,
     AuthModule,
   ],

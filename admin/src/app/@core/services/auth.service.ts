@@ -64,6 +64,10 @@ export class AuthService {
     localStorage.setItem('expires_at', '120');
   }
 
+  getAuthorizationToken() {
+    return `Bearer ${localStorage.getItem('token')}`;
+  }
+
   isUserLoggedIn() {
     if (localStorage.getItem('userinfo')) {
       return true;

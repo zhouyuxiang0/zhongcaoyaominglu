@@ -1,17 +1,16 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService, TranslationChangeEvent } from '@ngx-translate/core';
+import { DValidateRules } from 'ng-devui';
+import { FormLayout } from 'ng-devui/form';
 import { I18nService } from 'ng-devui/i18n';
 import { Subject } from 'rxjs';
-import { DValidateRules } from 'ng-devui';
-import { takeUntil } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/@core/services/auth.service';
 import { PersonalizeService } from 'src/app/@core/services/personalize.service';
-import { ThemeType } from '../../models/theme';
-import { FormLayout } from 'ng-devui/form';
-import { environment } from 'src/environments/environment';
 import { LANGUAGES } from 'src/config/language-config';
+import { environment } from 'src/environments/environment';
+import { ThemeType } from '../../models/theme';
 import { User } from '../../models/user';
 
 @Component({
@@ -35,8 +34,8 @@ export class LoginComponent implements OnInit {
   i18nValues: any;
 
   formData = {
-    userAccount: 'Admin',
-    userAccountPassword: 'DevUI.admin',
+    userAccount: '18395433055',
+    userAccountPassword: '929957640',
     userEmail: 'admin@devui.com',
     userEmailPassword: 'devuiadmin',
   };

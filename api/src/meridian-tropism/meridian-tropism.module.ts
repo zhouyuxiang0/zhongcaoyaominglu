@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MeridianTropismService } from './meridian-tropism.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MeridianTropism } from './entities/meridian-tropism.entity';
 import { MeridianTropismController } from './meridian-tropism.controller';
+import { MeridianTropismService } from './meridian-tropism.service';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([MeridianTropism])],
   controllers: [MeridianTropismController],
-  providers: [MeridianTropismService]
+  providers: [MeridianTropismService],
 })
 export class MeridianTropismModule {}

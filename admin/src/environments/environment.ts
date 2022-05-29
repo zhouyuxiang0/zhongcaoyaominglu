@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   api: {
     adminLogin: 'api/admin/login',
+    getNature: 'api/nature',
   },
 };
 

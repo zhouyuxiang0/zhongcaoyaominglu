@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -22,6 +22,11 @@ async function bootstrap() {
     {
       logger: ['debug', 'error', 'log', 'verbose', 'warn'],
     },
+  );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
   );
   app.enableVersioning({
     type: VersioningType.HEADER,

@@ -16,7 +16,27 @@
       </d-form-control>
     </d-form-item>
     <d-form-item>
-      <d-form-label [required]="true">图片链接</d-form-label>
+      <d-form-label [required]="true">别名</d-form-label>
+      <d-form-control>
+        <d-tags-input
+            style="width: 150px;"
+            name="alias"
+            [(ngModel)]="aliasTags"
+            [displayProperty]="aliasTagConfig.displayProperty"
+            [placeholder]="aliasTagConfig.placeholder"
+            [minLength]="aliasTagConfig.minLength"
+            [maxLength]="aliasTagConfig.maxLength"
+            [maxTags]="aliasTagConfig.maxTags"
+            [spellcheck]="aliasTagConfig.spellcheck"
+            [caseSensitivity]="aliasTagConfig.caseSensitivity"
+            [isAddBySpace]="aliasTagConfig.isAddBySpace"
+            [checkBeforeAdd]="aliasCheck"
+          >
+          </d-tags-input>
+      </d-form-control>
+    </d-form-item>
+    <d-form-item>
+      <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'需可正常访问的图片链接'">图片链接</d-form-label>
       <d-form-control>
         <d-tags-input
           name="imgList"

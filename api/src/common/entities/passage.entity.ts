@@ -1,21 +1,29 @@
 import { ChineseMedicine } from 'src/chinese-medicine/entities/chinese-medicine.entity';
-import { DateColumn } from 'src/common/entities/date.entity';
 import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DateColumn } from './date.entity';
 
 @Entity()
-export class Nature extends BaseEntity {
+export class Passage extends BaseEntity {
   @PrimaryGeneratedColumn()
-  public id: number;
-  @ManyToMany(() => ChineseMedicine)
-  chineseMedicine: ChineseMedicine[];
+  id: number;
+
+  @ManyToOne(() => ChineseMedicine)
+  chineseMedicine: ChineseMedicine;
+
   @Column()
-  name: string;
+  title: string;
+
+  @Column({
+    type: 'text',
+  })
+  content: string;
+
   @Column(() => DateColumn)
   date: DateColumn;
 }
