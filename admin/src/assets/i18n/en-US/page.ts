@@ -3,6 +3,7 @@ export default {
     gettingStarted: {
       title: 'Getting Started',
       sample: 'Sample Page',
+      category: 'category',
     },
   },
 };

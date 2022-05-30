@@ -6,10 +6,10 @@ import { environment } from 'src/environments/environment';
 import { ApiResponse } from '../data/response';
 
 @Injectable()
-export class TasteService {
+export class MeridianTropismService {
   constructor(private readonly httpClient: HttpClient) {}
-  getTastes() {
-    return this.httpClient.get<ApiResponse<any[]>>(environment.api.getTaste).pipe(
+  getMeridianTropism() {
+    return this.httpClient.get<ApiResponse<any[]>>(environment.api.getMeridianTropism).pipe(
       map((val) => {
         if (val.statusCode == 200) {
           return val.data;
@@ -19,9 +19,8 @@ export class TasteService {
       })
     );
   }
-
   add(name: string) {
-    return this.httpClient.post<ApiResponse<any>>(environment.api.getTaste, { name }).pipe(
+    return this.httpClient.post<ApiResponse<any>>(environment.api.getMeridianTropism, { name }).pipe(
       map((val) => {
         if (val.statusCode == 200) return val.data;
         throwError(val.message);

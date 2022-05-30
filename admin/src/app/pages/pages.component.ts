@@ -11,7 +11,6 @@ import { DaScreenMediaQueryService } from '../@shared/layouts/da-grid';
 import { SideMenuComponent } from '../@shared/components/side-menu/side-menu.component';
 import { Theme } from 'ng-devui/theme';
 
-
 @Component({
   selector: 'da-pages',
   templateUrl: './pages.component.html',
@@ -73,16 +72,12 @@ export class PagesComponent implements OnInit {
         this.updateMenu(res);
       });
 
-    this.translate.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: TranslationChangeEvent) => {
-        const values = this.translate.instant('page');
-        this.updateMenu(values);
-      });
+    this.translate.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((event: TranslationChangeEvent) => {
+      const values = this.translate.instant('page');
+      this.updateMenu(values);
+    });
     this.personalizeService.getUiTheme()!.subscribe((theme) => {
-      const currentTheme = Object.values(
-        (window as { [key: string]: any })['devuiThemes']
-      ).find((i: Theme | unknown) => {
+      const currentTheme = Object.values((window as { [key: string]: any })['devuiThemes']).find((i: Theme | unknown) => {
         return (i as Theme).id === theme;
       });
       if (currentTheme && (<any>currentTheme).isDark) {
@@ -90,7 +85,7 @@ export class PagesComponent implements OnInit {
       } else {
         this.render2.removeClass(document.body, 'is-dark');
       }
-    })
+    });
   }
 
   updateMenu(values: any) {
@@ -102,6 +97,10 @@ export class PagesComponent implements OnInit {
           {
             title: values['gettingStarted']['sample'],
             link: '/pages/getting-started/sample',
+          },
+          {
+            title: values['gettingStarted']['category'],
+            link: '/pages/getting-started/category',
           },
         ],
         link: '/pages/getting-started',
@@ -139,9 +138,7 @@ export class PagesComponent implements OnInit {
     this.isSidebarShrink = isShrink;
 
     if (this.layoutConfig.sidebar.firSidebar) {
-      this.layoutConfig.sidebar.firSidebar.width = this.isSidebarShrink
-        ? 54
-        : 240;
+      this.layoutConfig.sidebar.firSidebar.width = this.isSidebarShrink ? 54 : 240;
     }
     this.layoutConfig.sidebar.shrink = this.isSidebarShrink;
     this.layoutService.updateLayoutConfig(this.layoutConfig);

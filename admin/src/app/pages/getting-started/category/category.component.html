@@ -1,0 +1,117 @@
+<div class="da-content-banner">
+  <d-breadcrumb>
+    <d-breadcrumb-item
+      ><a routerLink="/">
+        {{ 'startUsing.breadcrumb.home' | translate }}
+      </a></d-breadcrumb-item
+    >
+    <d-breadcrumb-item>
+      {{ 'startUsing.breadcrumb.start' | translate }}
+    </d-breadcrumb-item>
+    <d-breadcrumb-item>
+      {{ 'startUsing.breadcrumb.category' | translate }}
+    </d-breadcrumb-item>
+  </d-breadcrumb>
+  <div class="da-content-banner-title">
+    {{ 'startUsing.categoryPage.name' | translate }}
+  </div>
+  <div>
+    {{ 'startUsing.categoryPage.description' | translate }}
+  </div>
+</div>
+<div class="da-content-wrapper">
+  <div class="da-content-card" style="height: 100%;">
+    <da-layout-row [daGutter]="[24, 24]">
+      <da-col-item [daSpan]="2" [daXs]="2" daAlignSelf="center">性状：</da-col-item>
+      <da-col-item [daSpan]="20" [daXs]="20" daAlignSelf="center">
+        <input dTextInput placeholder="Please Enter" [size]="'sm'" [(ngModel)]="newNature" />
+      </da-col-item>
+      <da-col-item [daSpan]="2" [daXs]="2" daAlignSelf="center">
+        <d-button (btnClick)="addNatureTag()">
+            <i class="icon icon-add-2"></i>
+        </d-button>
+      </da-col-item>
+      <da-col-item [daSpan]="24" [daXs]="24" daAlignSelf="center">
+        <!-- TODO: [mode]="'default'"  -->
+        <d-tags
+          [tags]="natureTags"
+          [displayProperty]="'name'"
+          [mode]="'default'"
+          [titleProperty]="'id'"
+          (tagDelete)="deleteNatureTag($event.index)"
+        >
+        </d-tags>
+      </da-col-item>
+      <da-col-item [daSpan]="16" [daXs]="16" daAlignSelf="center">
+      </da-col-item>
+    </da-layout-row>
+    <da-layout-row [daGutter]="[24, 24]">
+      <da-col-item [daSpan]="2" [daXs]="2" daAlignSelf="center">味：</da-col-item>
+      <da-col-item [daSpan]="20" [daXs]="20" daAlignSelf="center">
+        <input dTextInput placeholder="Please Enter" [size]="'sm'" [(ngModel)]="newTaste" />
+      </da-col-item>
+      <da-col-item [daSpan]="2" [daXs]="2" daAlignSelf="center">
+        <d-button (btnClick)="addTasteTag()">
+            <i class="icon icon-add-2"></i>
+        </d-button>
+      </da-col-item>
+      <da-col-item [daSpan]="24" [daXs]="24" daAlignSelf="center">
+        <d-tags
+          [tags]="tasteTags"
+          [displayProperty]="'name'"
+          [mode]="'default'"
+          [titleProperty]="'id'"
+          (tagDelete)="deleteTasteTag($event.index)"
+        >
+        </d-tags>
+      </da-col-item>
+      <da-col-item [daSpan]="16" [daXs]="16" daAlignSelf="center">
+      </da-col-item>
+    </da-layout-row>
+    <da-layout-row [daGutter]="[24, 24]">
+      <da-col-item [daSpan]="2" [daXs]="2" daAlignSelf="center">归经：</da-col-item>
+      <da-col-item [daSpan]="20" [daXs]="20" daAlignSelf="center">
+        <input dTextInput placeholder="Please Enter" [size]="'sm'" [(ngModel)]="newMeridianTropism" />
+      </da-col-item>
+      <da-col-item [daSpan]="2" [daXs]="2" daAlignSelf="center">
+        <d-button (btnClick)="addMeridianTropismTag()">
+            <i class="icon icon-add-2"></i>
+        </d-button>
+      </da-col-item>
+      <da-col-item [daSpan]="24" [daXs]="24" daAlignSelf="center">
+        <d-tags
+          [tags]="meridianTropismTags"
+          [displayProperty]="'name'"
+          [mode]="'default'"
+          [titleProperty]="'id'"
+          (tagDelete)="deleteMeridianTropismTag($event.index)"
+        >
+        </d-tags>
+      </da-col-item>
+      <da-col-item [daSpan]="16" [daXs]="16" daAlignSelf="center">
+      </da-col-item>
+    </da-layout-row>
+    <da-layout-row [daGutter]="[24, 24]">
+      <da-col-item [daSpan]="24" [daXs]="24" daAlignSelf="center">分类：</da-col-item>
+      <da-col-item [daSpan]="24" [daXs]="24" daAlignSelf="center">
+        <d-operable-tree
+          #operableTree
+          [tree]="data"
+          [addable]="true"
+          [editable]="true"
+          [deletable]="true"
+          [beforeDeleteNode]="beforeDeleteNode"
+          [postAddNode]="postAddNode"
+          (nodeDeleted)="onOperableNodeDeleted($event)"
+          (nodeSelected)="onOperableNodeSelected($event)"
+          (nodeToggled)="onOperableNodeToggled($event)"
+          (nodeChecked)="onOperableNodeChecked($event)"
+          (editValueChange)="editValueChange($event)"
+        >
+        </d-operable-tree>
+      </da-col-item>
+      <da-col-item [daSpan]="16" [daXs]="16" daAlignSelf="center">
+      </da-col-item>
+    </da-layout-row>
+  </div>
+</div>

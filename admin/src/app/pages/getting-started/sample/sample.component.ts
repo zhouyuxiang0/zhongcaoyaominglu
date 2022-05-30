@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DialogService } from 'ng-devui';
 import { ChineseMedicineService } from 'src/app/@core/mock/chinese-medicine.service';
 import { NatureService } from 'src/app/@core/services/nature.service';
+import { TasteService } from 'src/app/@core/services/taste.service';
 import { ModalCasesComponent } from './modal-cases/modal-cases.component';
 
 @Component({
@@ -13,16 +14,19 @@ export class SampleComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly dialogService: DialogService,
     private readonly chineseMedicineService: ChineseMedicineService,
-    private readonly natureService: NatureService
+    private readonly natureService: NatureService,
+    private readonly tasteService: TasteService
   ) {}
 
   ngOnInit(): void {
     this.natureService.getNatures().subscribe((val) => {
       this.natureTags = val;
     });
+    this.tasteService.getTastes().subscribe((val) => {
+      this.tasteTags = val;
+    });
     this.chineseMedicineService.getChineseMedicines().subscribe((val) => {
       this.chineseMedicines = val;
-      console.log(val);
     });
   }
 
@@ -117,14 +121,31 @@ export class SampleComponent implements OnInit, AfterViewInit {
   natureCheck(value) {
     return true;
   }
-  changeNatureTags($event) {
+  changeNatureTags() {
     const newNatureTag = this.natureTags.filter((v) => !v.id);
     newNatureTag.map((nature) => {
-      this.natureService.add(nature.name).subscribe();
+      this.natureService.add(nature.name).subscribe((data) => {
+        this.natureTags = this.natureTags.map((v) => {
+          if (!v.id) return data;
+          return v;
+        });
+        console.log(this.natureTags);
+      });
     });
   }
   tasteCheck(value) {
     return true;
+  }
+  changeTasteTags() {
+    const newTasteTag = this.tasteTags.filter((v) => !v.id);
+    newTasteTag.map((taste) => {
+      this.tasteService.add(taste.name).subscribe((data) => {
+        this.tasteTags = this.tasteTags.map((v) => {
+          if (!v.id) return data;
+          return v;
+        });
+      });
+    });
   }
   meridianTropismCheck(value) {
     return true;

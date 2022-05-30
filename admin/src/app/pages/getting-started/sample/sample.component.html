@@ -25,63 +25,6 @@
       <da-col-item [daSpan]="3" [daXs]="3">
         <d-button (click)="openstandardDialog('standard')">新增</d-button>
       </da-col-item>
-      <da-col-item [daSpan]="1" [daXs]="1" daAlignSelf="center">性状：</da-col-item>
-      <da-col-item [daSpan]="4" [daXs]="4">
-        <d-tags-input
-            style="width: 150px;"
-            name="nature"
-            [(ngModel)]="natureTags"
-            [displayProperty]="natureTagConfig.displayProperty"
-            [placeholder]="natureTagConfig.placeholder"
-            [minLength]="natureTagConfig.minLength"
-            [maxLength]="natureTagConfig.maxLength"
-            [maxTags]="natureTagConfig.maxTags"
-            [spellcheck]="natureTagConfig.spellcheck"
-            [caseSensitivity]="natureTagConfig.caseSensitivity"
-            [isAddBySpace]="natureTagConfig.isAddBySpace"
-            [checkBeforeAdd]="natureCheck"
-            (ngModelChange)="changeNatureTags($event)"
-          >
-          </d-tags-input>
-      </da-col-item>
-      <da-col-item [daSpan]="1" [daXs]="1" daAlignSelf="center">味：</da-col-item>
-      <da-col-item [daSpan]="4" [daXs]="4">
-        <d-tags-input
-            style="width: 150px;"
-            name="nature"
-            [(ngModel)]="tasteTags"
-            [displayProperty]="tasteTagConfig.displayProperty"
-            [placeholder]="tasteTagConfig.placeholder"
-            [minLength]="tasteTagConfig.minLength"
-            [maxLength]="tasteTagConfig.maxLength"
-            [maxTags]="tasteTagConfig.maxTags"
-            [spellcheck]="tasteTagConfig.spellcheck"
-            [caseSensitivity]="tasteTagConfig.caseSensitivity"
-            [isAddBySpace]="tasteTagConfig.isAddBySpace"
-            [checkBeforeAdd]="tasteCheck"
-          >
-          </d-tags-input>
-      </da-col-item>
-      <da-col-item [daSpan]="1" [daXs]="1" daAlignSelf="center">归经：</da-col-item>
-      <da-col-item [daSpan]="4" [daXs]="4">
-        <d-tags-input
-            style="width: 150px;"
-            name="nature"
-            [(ngModel)]="meridianTropismTags"
-            [displayProperty]="meridianTropismTagConfig.displayProperty"
-            [placeholder]="meridianTropismTagConfig.placeholder"
-            [minLength]="meridianTropismTagConfig.minLength"
-            [maxLength]="meridianTropismTagConfig.maxLength"
-            [maxTags]="meridianTropismTagConfig.maxTags"
-            [spellcheck]="meridianTropismTagConfig.spellcheck"
-            [caseSensitivity]="meridianTropismTagConfig.caseSensitivity"
-            [isAddBySpace]="meridianTropismTagConfig.isAddBySpace"
-            [checkBeforeAdd]="meridianTropismCheck"
-          >
-          </d-tags-input>
-      </da-col-item>
-      <da-col-item [daSpan]="24" [daXs]="24"></da-col-item>
-
       <da-col-item [daSpan]="24" [daXs]="24">
         <d-data-table [dataSource]="chineseMedicines" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
           <thead dTableHead>

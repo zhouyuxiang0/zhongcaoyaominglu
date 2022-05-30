@@ -1,7 +1,8 @@
-import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { SampleComponent } from './sample/sample.component';
+import { RouterModule, Routes } from '@angular/router';
+import { CategoryComponent } from './category/category.component';
 import { GettingStartedComponent } from './getting-started.component';
+import { SampleComponent } from './sample/sample.component';
 
 const routes: Routes = [
   {
@@ -9,6 +10,7 @@ const routes: Routes = [
     component: GettingStartedComponent,
     children: [
       { path: 'sample', component: SampleComponent },
+      { path: 'category', component: CategoryComponent },
       { path: '', redirectTo: 'sample', pathMatch: 'full' },
     ],
   },

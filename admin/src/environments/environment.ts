@@ -7,6 +7,8 @@ export const environment = {
   api: {
     adminLogin: 'api/admin/login',
     getNature: 'api/nature',
+    getTaste: 'api/taste',
+    getMeridianTropism: 'api/meridian-tropism',
   },
 };
 

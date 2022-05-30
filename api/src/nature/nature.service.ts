@@ -13,7 +13,7 @@ export class NatureService {
     nature.name = createNatureDto.name;
     await nature.save();
     return {
-      status: HttpStatus.OK,
+      statusCode: HttpStatus.OK,
       data: nature,
     };
   }

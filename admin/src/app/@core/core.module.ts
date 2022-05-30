@@ -9,8 +9,10 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
 import { AuthGuardService } from './services/auth-guard-service.guard';
 import { AuthService } from './services/auth.service';
 import { CustomThemeService } from './services/custom-theme.service';
+import { MeridianTropismService } from './services/meridian-tropism.service';
 import { NatureService } from './services/nature.service';
 import { PersonalizeService } from './services/personalize.service';
+import { TasteService } from './services/taste.service';
 
 const DATA_SERVICES = [{ provide: CourseData, useClass: CourseService }];
 
@@ -23,6 +25,8 @@ export const DEVUI_CORE_PROVIDERS = [
   AuthGuardService,
   CustomThemeService,
   NatureService,
+  TasteService,
+  MeridianTropismService,
 ];
 
 @NgModule({

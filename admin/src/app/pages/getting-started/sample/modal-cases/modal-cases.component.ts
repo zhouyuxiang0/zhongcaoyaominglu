@@ -1,15 +1,22 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormLayout } from 'ng-devui/form';
 import { CascaderItem } from 'ng-devui/cascader';
+import { FormLayout } from 'ng-devui/form';
 import { SelectComponent } from 'ng-devui/select';
-import { from, of, timer } from 'rxjs';
+import { from, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
+import { NatureService } from 'src/app/@core/services/nature.service';
+import { TasteService } from 'src/app/@core/services/taste.service';
 @Component({
   selector: 'd-modal-cases',
   templateUrl: './modal-cases.component.html',
 })
 export class ModalCasesComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private readonly natureService: NatureService,
+    private readonly tasteService: TasteService,
+    private readonly meridianTropismService: MeridianTropismService
+  ) {}
   ngOnInit(): void {
     this.options = [
       {
@@ -136,31 +143,13 @@ export class ModalCasesComponent implements OnInit {
     }
   }
   natureChangeSelect() {
-    timer(500).subscribe(() => {
+    this.natureService.getNatures().subscribe((data) => {
       this.natureDataLoaded = true;
       this.natureSelectComponent.loadFinish();
-      this.natureOptions = [
-        {
-          name: '温',
-          value: 1,
-        },
-        {
-          name: '凉',
-          value: 2,
-        },
-        {
-          name: '寒',
-          value: 3,
-        },
-        {
-          name: '微寒',
-          value: 4,
-        },
-        {
-          name: '平',
-          value: 5,
-        },
-      ];
+      this.natureOptions = data.map((v) => ({
+        name: v.name,
+        value: v.id,
+      }));
     });
   }
   /*************taste************* */
@@ -175,27 +164,10 @@ export class ModalCasesComponent implements OnInit {
     }
   }
   tasteChangeSelect() {
-    timer(500).subscribe(() => {
+    this.tasteService.getTastes().subscribe((data) => {
       this.tasteDataLoaded = true;
       this.tasteSelectComponent.loadFinish();
-      this.tasteOptions = [
-        {
-          name: '辛',
-          value: '1',
-        },
-        {
-          name: '甘',
-          value: '2',
-        },
-        {
-          name: '苦',
-          value: '3',
-        },
-        {
-          name: '咸',
-          value: '4',
-        },
-      ];
+      this.tasteOptions = data.map((v) => ({ name: v.name, value: v.id }));
     });
   }
   /********************meridianTropism********* */
@@ -210,43 +182,10 @@ export class ModalCasesComponent implements OnInit {
     }
   }
   meridianTropismChangeSelect() {
-    timer(500).subscribe(() => {
+    this.meridianTropismService.getMeridianTropism().subscribe((data) => {
       this.meridianTropismDataLoaded = true;
       this.meridianTropismSelectComponent.loadFinish();
-      this.meridianTropismOptions = [
-        {
-          name: '肺',
-          value: '1',
-        },
-        {
-          name: '膀胱',
-          value: '2',
-        },
-        {
-          name: '胃',
-          value: '3',
-        },
-        {
-          name: '肾',
-          value: '4',
-        },
-        {
-          name: '心',
-          value: '5',
-        },
-        {
-          name: '肝',
-          value: '6',
-        },
-        {
-          name: '胆',
-          value: '7',
-        },
-        {
-          name: '脾',
-          value: '8',
-        },
-      ];
+      this.meridianTropismOptions = data.map((v) => ({ name: v.name, value: v.id }));
     });
   }
 
