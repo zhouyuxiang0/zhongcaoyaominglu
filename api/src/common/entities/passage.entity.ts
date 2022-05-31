@@ -13,7 +13,10 @@ export class Passage extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ChineseMedicine)
+  @ManyToOne(
+    () => ChineseMedicine,
+    (chineseMedicine) => chineseMedicine.passage,
+  )
   chineseMedicine: ChineseMedicine;
 
   @Column()

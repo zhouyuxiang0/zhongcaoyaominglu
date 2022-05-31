@@ -9,6 +9,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
 import { AuthGuardService } from './services/auth-guard-service.guard';
 import { AuthService } from './services/auth.service';
 import { CategoryService } from './services/category.service';
+import { ChineseMedicineService } from './services/chinese-medicine.service';
 import { CustomThemeService } from './services/custom-theme.service';
 import { MeridianTropismService } from './services/meridian-tropism.service';
 import { NatureService } from './services/nature.service';
@@ -29,6 +30,7 @@ export const DEVUI_CORE_PROVIDERS = [
   TasteService,
   MeridianTropismService,
   CategoryService,
+  ChineseMedicineService,
 ];
 
 @NgModule({

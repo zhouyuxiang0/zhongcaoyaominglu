@@ -9,10 +9,12 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ChineseMedicineAlias } from './chinese-medicine-alias.entity';
@@ -25,16 +27,17 @@ export class ChineseMedicine extends BaseEntity {
   @Column()
   public name: string;
 
-  @OneToMany(() => Image, (val) => val.id)
+  @OneToMany(() => Image, (image) => image.chineseMedicine)
   public images: Image[];
 
   @OneToMany(() => ChineseMedicineAlias, (val) => val.chineseMedicine)
   public alias: ChineseMedicineAlias[];
 
-  @OneToMany(() => Passage, (val) => val.id)
+  @OneToMany(() => Passage, (val) => val.chineseMedicine)
   public passage: Passage[];
 
-  @ManyToOne(() => Category, (category) => category.id)
+  @OneToOne(() => Category)
+  @JoinColumn()
   public category: Category;
 
   @ManyToMany(() => Nature)

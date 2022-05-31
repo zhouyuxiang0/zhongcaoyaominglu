@@ -20,6 +20,30 @@ export class CategoryService {
     );
   }
 
+  getAllParent() {
+    return this.httpClient.get<ApiResponse<any[]>>(environment.api.getAllParentCategory).pipe(
+      map((val) => {
+        if (val.statusCode == 200) {
+          return val.data;
+        } else {
+          throwError(val.message);
+        }
+      })
+    );
+  }
+
+  getChildrenByParent(parentId: number) {
+    return this.httpClient.get<ApiResponse<any[]>>(environment.api.getChildrenByParent, { params: { parentId } }).pipe(
+      map((val) => {
+        if (val.statusCode == 200) {
+          return val.data;
+        } else {
+          throwError(val.message);
+        }
+      })
+    );
+  }
+
   add(name: string, parentId: number) {
     return this.httpClient.post<ApiResponse<any>>(environment.api.getCategory, { name, parentId }).pipe(
       map((val) => {

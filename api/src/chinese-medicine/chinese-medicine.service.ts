@@ -1,10 +1,12 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { Image } from 'src/common/entities/image.entity';
 import { Passage } from 'src/common/entities/passage.entity';
 import { MeridianTropism } from 'src/meridian-tropism/entities/meridian-tropism.entity';
 import { Nature } from 'src/nature/entities/nature.entity';
 import { Taste } from 'src/taste/entities/taste.entity';
+import { Repository } from 'typeorm';
 import { CreateChineseMedicineDto } from './dto/create-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 import { ChineseMedicineAlias } from './entities/chinese-medicine-alias.entity';
@@ -12,6 +14,8 @@ import { ChineseMedicine } from './entities/chinese-medicine.entity';
 
 @Injectable()
 export class ChineseMedicineService {
+  @InjectRepository(ChineseMedicine)
+  private readonly chineseMedicineRepo: Repository<ChineseMedicine>;
   async create(createChineseMedicineDto: CreateChineseMedicineDto) {
     const chineseMedicine = new ChineseMedicine();
     chineseMedicine.name = createChineseMedicineDto.name;
@@ -61,8 +65,22 @@ export class ChineseMedicineService {
     };
   }
 
-  findAll() {
-    return `This action returns all chineseMedicine`;
+  async findAll() {
+    const [data, count] = await this.chineseMedicineRepo.findAndCount({
+      relations: [
+        'images',
+        'alias',
+        'passage',
+        'category',
+        'nature',
+        'taste',
+        'meridianTropism',
+      ],
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      data,
+    };
   }
 
   findOne(id: number) {

@@ -10,7 +10,7 @@ export class Image {
   @Column()
   url: string;
 
-  @ManyToOne(() => ChineseMedicine, (val) => val.id)
+  @ManyToOne(() => ChineseMedicine, (image) => image.images)
   chineseMedicine: ChineseMedicine;
 
   @Column(() => DateColumn)

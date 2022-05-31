@@ -37,6 +37,27 @@ export class CategoryService {
     };
   }
 
+  async findAllParent() {
+    const categories = await this.categoryRepo.manager
+      .getTreeRepository(Category)
+      .findRoots();
+    return {
+      statusCode: HttpStatus.OK,
+      data: categories,
+    };
+  }
+
+  async findChildrenByParentId(parentId: number) {
+    const categoryTreeRepo =
+      this.categoryRepo.manager.getTreeRepository(Category);
+    const parent = await categoryTreeRepo.findOneBy({ id: parentId });
+    const [_, ...categories] = await categoryTreeRepo.findDescendants(parent);
+    return {
+      statusCode: HttpStatus.OK,
+      data: categories,
+    };
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} category`;
   }

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DialogService } from 'ng-devui';
-import { ChineseMedicineService } from 'src/app/@core/mock/chinese-medicine.service';
+import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.service';
 import { NatureService } from 'src/app/@core/services/nature.service';
 import { TasteService } from 'src/app/@core/services/taste.service';
 import { ModalCasesComponent } from './modal-cases/modal-cases.component';
@@ -25,8 +25,15 @@ export class SampleComponent implements OnInit, AfterViewInit {
     this.tasteService.getMany().subscribe((val) => {
       this.tasteTags = val;
     });
-    this.chineseMedicineService.getChineseMedicines().subscribe((val) => {
-      this.chineseMedicines = val;
+    this.chineseMedicineService.getMany().subscribe((val) => {
+      this.chineseMedicines = val.map((v) => ({
+        name: v.name,
+        category: v.category.name,
+        nature: v.nature.map((v) => v.name).join(','),
+        taste: v.taste.map((v) => v.name).join(','),
+        meridianTropism: v.meridianTropism.map((v) => v.name).join(','),
+        createTime: v.date.createTime,
+      }));
     });
   }
 
@@ -53,8 +60,24 @@ export class SampleComponent implements OnInit, AfterViewInit {
           disabled: true,
           handler: ($event: Event) => {
             console.log('tag created');
-            console.log(results.modalContentInstance);
-            results.modalInstance.hide();
+            const { name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents } =
+              results.modalContentInstance;
+            console.log(name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents);
+            this.chineseMedicineService
+              .add(
+                name,
+                aliasTags.map((v) => v.name),
+                imgList.map((v) => v.name),
+                categories[1],
+                natureSelects.map((v) => v.value),
+                tasteSelects.map((v) => v.value),
+                meridianTropismSelects.map((v) => v.value),
+                contents
+              )
+              .subscribe((data) => {
+                console.log(data);
+                results.modalInstance.hide();
+              });
           },
         },
         {
@@ -158,7 +181,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
         fieldType: 'text',
       },
       {
-        field: 'categories',
+        field: 'category',
         header: '分类',
         fieldType: 'text',
       },
@@ -195,7 +218,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
       width: '150px',
     },
     {
-      field: 'categories',
+      field: 'category',
       width: '150px',
     },
     {

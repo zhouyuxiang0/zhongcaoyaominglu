@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -32,6 +33,18 @@ export class CategoryController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);
+  }
+
+  @Get('all-parent')
+  @UseGuards(AuthGuard('jwt'))
+  findAllParent() {
+    return this.categoryService.findAllParent();
+  }
+
+  @Get('children')
+  @UseGuards(AuthGuard('jwt'))
+  findChildrenByParentId(@Query('parentId') parentId: number) {
+    return this.categoryService.findChildrenByParentId(parentId);
   }
 
   @Patch(':id')

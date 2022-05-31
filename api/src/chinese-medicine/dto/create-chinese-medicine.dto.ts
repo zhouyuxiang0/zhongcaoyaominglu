@@ -13,13 +13,13 @@ export class CreateChineseMedicineDto {
   @IsInt()
   categoryId: number;
 
-  @IsInt()
+  @IsInt({ each: true })
   natureIds: number[];
 
-  @IsInt()
+  @IsInt({ each: true })
   tasteIds: number[];
 
-  @IsInt()
+  @IsInt({ each: true })
   meridianTropismIds: number[];
 
   @ValidateNested({ each: true })
