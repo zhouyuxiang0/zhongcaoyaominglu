@@ -97,15 +97,19 @@
         <d-operable-tree
           #operableTree
           [tree]="data"
+          [treeNodeIdKey]="'index'"
+          [beforeAddNode]="beforeAddNode"
+          [treeNodeChildrenKey]="'children'"
+          [treeNodeTitleKey]="'name'"
+          [checkable]="false"
           [addable]="true"
           [editable]="true"
           [deletable]="true"
-          [beforeDeleteNode]="beforeDeleteNode"
           [postAddNode]="postAddNode"
           (nodeDeleted)="onOperableNodeDeleted($event)"
-          (nodeSelected)="onOperableNodeSelected($event)"
-          (nodeToggled)="onOperableNodeToggled($event)"
           (nodeChecked)="onOperableNodeChecked($event)"
+          (nodeSelected)="select($event)"
+          (nodeEdited)="onOperableNodeEdited($event)"
           (editValueChange)="editValueChange($event)"
         >
         </d-operable-tree>

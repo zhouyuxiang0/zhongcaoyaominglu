@@ -9,6 +9,7 @@ export const environment = {
     getNature: 'api/nature',
     getTaste: 'api/taste',
     getMeridianTropism: 'api/meridian-tropism',
+    getCategory: 'api/category',
   },
 };
 

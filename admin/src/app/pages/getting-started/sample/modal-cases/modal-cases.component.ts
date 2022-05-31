@@ -143,7 +143,7 @@ export class ModalCasesComponent implements OnInit {
     }
   }
   natureChangeSelect() {
-    this.natureService.getNatures().subscribe((data) => {
+    this.natureService.getMany().subscribe((data) => {
       this.natureDataLoaded = true;
       this.natureSelectComponent.loadFinish();
       this.natureOptions = data.map((v) => ({
@@ -164,7 +164,7 @@ export class ModalCasesComponent implements OnInit {
     }
   }
   tasteChangeSelect() {
-    this.tasteService.getTastes().subscribe((data) => {
+    this.tasteService.getMany().subscribe((data) => {
       this.tasteDataLoaded = true;
       this.tasteSelectComponent.loadFinish();
       this.tasteOptions = data.map((v) => ({ name: v.name, value: v.id }));
@@ -182,7 +182,7 @@ export class ModalCasesComponent implements OnInit {
     }
   }
   meridianTropismChangeSelect() {
-    this.meridianTropismService.getMeridianTropism().subscribe((data) => {
+    this.meridianTropismService.getMany().subscribe((data) => {
       this.meridianTropismDataLoaded = true;
       this.meridianTropismSelectComponent.loadFinish();
       this.meridianTropismOptions = data.map((v) => ({ name: v.name, value: v.id }));

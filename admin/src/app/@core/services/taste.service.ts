@@ -8,7 +8,7 @@ import { ApiResponse } from '../data/response';
 @Injectable()
 export class TasteService {
   constructor(private readonly httpClient: HttpClient) {}
-  getTastes() {
+  getMany() {
     return this.httpClient.get<ApiResponse<any[]>>(environment.api.getTaste).pipe(
       map((val) => {
         if (val.statusCode == 200) {

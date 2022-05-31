@@ -19,10 +19,10 @@ export class SampleComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.natureService.getNatures().subscribe((val) => {
+    this.natureService.getMany().subscribe((val) => {
       this.natureTags = val;
     });
-    this.tasteService.getTastes().subscribe((val) => {
+    this.tasteService.getMany().subscribe((val) => {
       this.tasteTags = val;
     });
     this.chineseMedicineService.getChineseMedicines().subscribe((val) => {

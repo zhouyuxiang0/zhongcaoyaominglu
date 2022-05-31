@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ITreeItem, OperableTreeComponent, TreeNode } from 'ng-devui';
+import { CategoryService } from 'src/app/@core/services/category.service';
 import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
 import { NatureService } from 'src/app/@core/services/nature.service';
 import { TasteService } from 'src/app/@core/services/taste.service';
-
+let parentId;
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
@@ -12,14 +12,14 @@ import { TasteService } from 'src/app/@core/services/taste.service';
 })
 export class CategoryComponent implements OnInit {
   constructor(
-    private readonly httpClient: HttpClient,
     private readonly natureService: NatureService,
     private readonly tasteService: TasteService,
-    private readonly meridianTropismService: MeridianTropismService
+    private readonly meridianTropismService: MeridianTropismService,
+    private readonly categoryService: CategoryService
   ) {}
 
   currentSelectedNode;
-  // @ViewChild('operableTree', { static: true }) operableTree: OperableTreeComponent;
+  @ViewChild('operableTree', { static: true }) operableTree: OperableTreeComponent;
 
   labelStyles = ['blue-w98', 'aqua-w98', 'olivine-w98', 'green-w98', 'yellow-w98', 'orange-w98', 'pink-w98', 'red-w98', 'purple-w98'];
 
@@ -29,16 +29,10 @@ export class CategoryComponent implements OnInit {
   newTaste = '';
   meridianTropismTags = [];
   newMeridianTropism = '';
-  natureObservable = this.natureService.getNatures();
-  tasteObservable = this.tasteService.getTastes();
-  meridianTropismObservable = this.meridianTropismService.getMeridianTropism();
-  data = [
-    {
-      title: '分类',
-      open: true,
-      items: [],
-    },
-  ];
+  natureObservable = this.natureService.getMany();
+  tasteObservable = this.tasteService.getMany();
+  meridianTropismObservable = this.meridianTropismService.getMany();
+  data = [];
 
   ngOnInit(): void {
     this.natureObservable.subscribe((data) => {
@@ -50,12 +44,27 @@ export class CategoryComponent implements OnInit {
     this.meridianTropismObservable.subscribe((data) => {
       this.meridianTropismTags = this.mapLabelStyles(data);
     });
+    this.loadCategory();
   }
 
   mapLabelStyles(arr: any[]) {
     return arr.map((v, i) => {
       v.labelStyle = this.labelStyles[i % this.labelStyles.length];
       return v;
+    });
+  }
+
+  loadCategory() {
+    this.categoryService.getMany().subscribe((data) => {
+      this.data = [
+        {
+          name: '分类',
+          open: true,
+          children: data.map((v) => ({ ...v, open: true })),
+          disableEdit: true,
+          disableDelete: true,
+        },
+      ];
     });
   }
 
@@ -99,41 +108,42 @@ export class CategoryComponent implements OnInit {
       });
     }
   }
-
-  beforeDeleteNode = (node) => {
-    console.log('beforeDeleteNode', node);
+  beforeAddNode(node) {
+    parentId = node.data.originItem.id;
     return new Promise((resolve, reject) => {
-      resolve(node);
-    }).catch((err) => console.error(err));
-  };
+      resolve({ title: '新增节点' });
+    });
+  }
   postAddNode = (node) => {
-    console.log('postAddNode', node);
+    this.categoryService.add(node.data.title, parentId ? parentId : null).subscribe((data) => {
+      parentId = null;
+      this.loadCategory();
+    });
     return new Promise((resolve, reject) => {
-      resolve(node);
+      return resolve(node);
     }).catch((err) => console.error(err));
   };
   onOperableNodeDeleted(treeNode: TreeNode) {
-    console.log('deleted: ', treeNode);
-  }
-
-  onOperableNodeSelected(treeNode: TreeNode) {
-    console.log('selected: ', treeNode);
-    this.currentSelectedNode = treeNode;
-  }
-
-  onOperableNodeToggled(treeNode: TreeNode) {
-    console.log('toggled: ', treeNode);
+    this.categoryService.del(treeNode.data.originItem.id).subscribe((data) => {});
   }
 
   onOperableNodeChecked(checkedNodes: Array<ITreeItem>) {
-    console.log('checked: ', checkedNodes);
+    // console.log('checked: ', checkedNodes);
+  }
+  onOperableNodeEdited(treeNode: TreeNode) {
+    this.categoryService
+      .update(treeNode.data.originItem.id, treeNode.data.title, treeNode.data.originItem.parent?.id)
+      .subscribe((data) => {});
+  }
+  select(e) {
+    console.log(e.data.originItem.id);
+    console.log(e.data.originItem.parent?.id);
   }
   editValueChange(event) {
-    console.log('editChanged', event);
     // 标记态校验节点，可通过传入errTips控制报错信息，errTipsPosition控制报错信息的弹出位置
     if (event.value === '') {
       event.callback({
-        errTips: 'The node name cannot be null!',
+        errTips: '节点名称不能为空！',
         errTipsPosition: 'right',
       });
     } else {

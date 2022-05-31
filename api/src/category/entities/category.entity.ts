@@ -3,22 +3,27 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
 } from 'typeorm';
 
 @Entity()
+@Tree('closure-table')
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id: number;
+
   @Column()
   public name: string;
-  @ManyToOne(() => Category, (category) => category.childCategory)
-  parentCategory: Category;
 
-  @OneToMany(() => Category, (category) => category.parentCategory)
-  childCategory: Category[];
+  @TreeChildren()
+  children: Category[];
+
+  @TreeParent()
+  parent: Category;
+
   @Column(() => DateColumn)
   date: DateColumn;
 }

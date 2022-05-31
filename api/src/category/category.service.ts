@@ -1,26 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  @InjectRepository(Category)
+  private readonly categoryRepo: Repository<Category>;
+  async create(createCategoryDto: CreateCategoryDto) {
+    const { id, name, parentId } = createCategoryDto;
+    const category = new Category();
+    category.id = id;
+    category.name = name;
+    if (parentId) {
+      const parent = await this.categoryRepo.findOneBy({ id: parentId });
+      category.parent = parent;
+    }
+    const data = await category.save();
+    return {
+      statusCode: HttpStatus.OK,
+      data,
+    };
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    const categories = await this.categoryRepo.manager
+      .getTreeRepository(Category)
+      .findTrees({
+        relations: ['parent'],
+      });
+    return {
+      statusCode: HttpStatus.OK,
+      data: categories,
+    };
   }
 
   findOne(id: number) {
     return `This action returns a #${id} category`;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.categoryRepo.findOneBy({ id });
+    if (!category) throw new NotFoundException();
+    category.name = updateCategoryDto.name;
+    const parent = new Category();
+    parent.id = updateCategoryDto.parentId;
+    category.parent = parent;
+    await category.save();
+    return {
+      statusCode: HttpStatus.OK,
+      data: category,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const category = await this.categoryRepo.findOneBy({ id });
+    await category.remove();
+    return {
+      statusCode: HttpStatus.OK,
+      data: category,
+    };
   }
 }
