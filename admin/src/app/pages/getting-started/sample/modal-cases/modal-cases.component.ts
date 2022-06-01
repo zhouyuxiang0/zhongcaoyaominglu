@@ -126,6 +126,7 @@ export class ModalCasesComponent implements OnInit {
   formChange() {
     if (
       this.name &&
+      this.imgList.length > 0 &&
       this.categories.length > 0 &&
       this.natureSelects.length > 0 &&
       this.tasteSelects.length > 0 &&

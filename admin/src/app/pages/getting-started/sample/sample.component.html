@@ -29,16 +29,51 @@
         <d-data-table [dataSource]="chineseMedicines" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
           <thead dTableHead>
             <tr dTableRow>
-              <th dHeadCell>#</th>
-              <th dHeadCell *ngFor="let colOption of dataTableOptions.columns">{{ colOption.header }}</th>
+              <th dHeadCell [sortable]="true">#</th>
+              <th dHeadCell *ngFor="let colOption of dataTableOptions.columns;index as i" [sortable]="colOption.sortable" [filterable]="colOption.filterable" [filterMultiple]="colOption.filterMultiple" [filterList]="filterArr[i]">{{ colOption.header }}</th>
             </tr>
           </thead>
           <tbody dTableBody>
             <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
               <tr dTableRow>
                 <td dTableCell>{{ rowIndex + 1 }}</td>
-                <td dTableCell *ngFor="let colOption of dataTableOptions.columns">
-                  {{ colOption.fieldType === 'date' ? (rowItem[colOption.field] | i18nDate: 'short':false) : rowItem[colOption.field] }}
+                <td dTableCell
+                *ngFor="let colOption of dataTableOptions.columns"
+                [editable]="colOption.editable"
+                [editableTip]="editableTip"
+                [(editing)]="rowItem[colOption.field + 'edit']"
+              >
+                <span *ngIf="!rowItem[colOption.field + 'edit']">{{ colOption.fieldType === 'date' ? (rowItem[colOption.field] | i18nDate: 'short':false) : rowItem[colOption.field] }}</span>
+                <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.editType == 'text'" class="edit-padding-fix">
+                  <input class="devui-form-control" name="lastname" [(ngModel)]="rowItem[colOption.field]" [attr.maxlength]="100" [attr.minlength]="3" />
+                </div>
+                <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.editType == 'select'" class="customized-editor edit-padding-fix">
+                    <d-select
+                      [options]="colOption.selectOption"
+                      [isSearch]="true"
+                      [filterKey]="'name'"
+                      [autoFocus]="true"
+                      [toggleOnFocus]="true"
+                      [appendToBody]="true"
+                      [(ngModel)]="rowItem[colOption.field]"
+                      (ngModelChange)="onEditSelect(rowItem)"
+                    >
+                      <ng-template let-option="option" let-filterKey="filterKey"> {{ option[filterKey] }} </ng-template>
+                    </d-select>
+                </div>
+                <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.editType == 'cascader'" class="customized-editor edit-padding-fix">
+                  <d-cascader
+                    [options]="options"
+                    [placeholder]="'请选择'"
+                    [(ngModel)]="rowItem[colOption.field]"
+                    [trigger]="'click'"
+                    (ngModelChange)="categoryChange(rowItem[colOption.field])"
+                    [showPath]="true"
+                    [allowClear]="true"
+                    [width]="100"
+                    [loadChildrenFn]="loadChildren"
+                  ></d-cascader>
+                </div>
                 </td>
               </tr>
             </ng-template>

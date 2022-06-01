@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { DialogService } from 'ng-devui';
+import { CascaderItem, DialogService, EditableTip } from 'ng-devui';
+import { CategoryService } from 'src/app/@core/services/category.service';
 import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.service';
+import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
 import { NatureService } from 'src/app/@core/services/nature.service';
 import { TasteService } from 'src/app/@core/services/taste.service';
 import { ModalCasesComponent } from './modal-cases/modal-cases.component';
@@ -14,17 +16,20 @@ export class SampleComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly dialogService: DialogService,
     private readonly chineseMedicineService: ChineseMedicineService,
+    private readonly categoryService: CategoryService,
     private readonly natureService: NatureService,
-    private readonly tasteService: TasteService
+    private readonly tasteService: TasteService,
+    private readonly meridianTropismService: MeridianTropismService
   ) {}
-
+  #chineseMedicine = [];
+  filterArr = [];
+  editableTip = EditableTip.btn;
+  options = [];
+  categories: Array<string | number> = [];
+  categoryChange(data) {
+    console.log(data);
+  }
   ngOnInit(): void {
-    this.natureService.getMany().subscribe((val) => {
-      this.natureTags = val;
-    });
-    this.tasteService.getMany().subscribe((val) => {
-      this.tasteTags = val;
-    });
     this.chineseMedicineService.getMany().subscribe((val) => {
       this.chineseMedicines = val.map((v) => ({
         name: v.name,
@@ -34,6 +39,15 @@ export class SampleComponent implements OnInit, AfterViewInit {
         meridianTropism: v.meridianTropism.map((v) => v.name).join(','),
         createTime: v.date.createTime,
       }));
+    });
+    this.categoryService.getAllParent().subscribe((data) => {
+      this.options = data.map((v) => ({ label: v.name, value: v.id }));
+    });
+    this.natureService.getMany().subscribe((data) => {
+      this.dataTableOptions.columns.map((v) => {
+        if (v.field == 'nature') v.selectOption = data;
+        return v;
+      });
     });
   }
 
@@ -96,114 +110,96 @@ export class SampleComponent implements OnInit, AfterViewInit {
       },
     });
   }
-  chineseMedicines = [];
+  set chineseMedicines(data: { name: string; category: string }[]) {
+    this.dataTableOptions.columns.forEach((v) => {
+      this.filterArr.push(
+        data.map((d) => ({
+          name: d[v.field],
+        }))
+      );
+    });
+    this.#chineseMedicine = data;
+  }
+  get chineseMedicines() {
+    return this.#chineseMedicine;
+  }
+
+  loadChildren: (val: CascaderItem) => Promise<CascaderItem[]> = (val: CascaderItem) => {
+    const { label, value } = val;
+    return new Promise((resolve, reject) => {
+      this.categoryService.getChildrenByParent(value as number).subscribe((data) => {
+        return resolve(data.map((v) => ({ label: v.name, value: v.id, isLeaf: true })));
+      });
+    });
+  };
   // basicDataSource = JSON.parse(JSON.stringify(originSource.slice(0, 6)));
-  taskTagConfig = {
-    displayProperty: 'name',
-    maxLength: 200,
-    minLength: 7,
-    maxTags: 10,
-    placeholder: '添加图片链接',
-    spellcheck: false,
-    caseSensitivity: false,
-    isAddBySpace: true,
-  };
-  natureTagConfig = {
-    displayProperty: 'name',
-    maxLength: 200,
-    minLength: 1,
-    maxTags: 100,
-    placeholder: '添加性状',
-    spellcheck: false,
-    caseSensitivity: false,
-    isAddBySpace: true,
-  };
-  tasteTagConfig = {
-    displayProperty: 'name',
-    maxLength: 200,
-    minLength: 1,
-    maxTags: 100,
-    placeholder: '添加味',
-    spellcheck: false,
-    caseSensitivity: false,
-    isAddBySpace: true,
-  };
-  meridianTropismTagConfig = {
-    displayProperty: 'name',
-    maxLength: 200,
-    minLength: 1,
-    maxTags: 100,
-    placeholder: '添加归经',
-    spellcheck: false,
-    caseSensitivity: false,
-    isAddBySpace: true,
-  };
-  natureTags = [];
-  tasteTags = [];
-  meridianTropismTags = [];
-  natureCheck(value) {
-    return true;
-  }
-  changeNatureTags() {
-    const newNatureTag = this.natureTags.filter((v) => !v.id);
-    newNatureTag.map((nature) => {
-      this.natureService.add(nature.name).subscribe((data) => {
-        this.natureTags = this.natureTags.map((v) => {
-          if (!v.id) return data;
-          return v;
-        });
-        console.log(this.natureTags);
-      });
-    });
-  }
-  tasteCheck(value) {
-    return true;
-  }
-  changeTasteTags() {
-    const newTasteTag = this.tasteTags.filter((v) => !v.id);
-    newTasteTag.map((taste) => {
-      this.tasteService.add(taste.name).subscribe((data) => {
-        this.tasteTags = this.tasteTags.map((v) => {
-          if (!v.id) return data;
-          return v;
-        });
-      });
-    });
-  }
-  meridianTropismCheck(value) {
-    return true;
-  }
   dataTableOptions = {
     columns: [
       {
         field: 'name',
         header: '名称',
         fieldType: 'text',
+        sortable: false,
+        filterable: true,
+        filterMultiple: true,
+        editable: true,
+        editType: 'text',
+        selectOption: [],
       },
       {
         field: 'category',
         header: '分类',
         fieldType: 'text',
+        sortable: true,
+        filterable: true,
+        filterMultiple: true,
+        editable: false,
+        editType: 'cascader',
+        selectOption: [],
       },
       {
         field: 'nature',
         header: '性状',
         fieldType: 'text',
+        sortable: true,
+        filterable: true,
+        filterMultiple: true,
+        editable: true,
+        editType: 'select',
+        selectOption: [],
       },
       {
         field: 'taste',
         header: '味',
         fieldType: 'text',
+        sortable: true,
+        filterable: true,
+        filterMultiple: true,
+        editable: true,
+        editType: 'select',
+        selectOption: [],
       },
       {
         field: 'meridianTropism',
         header: '归经',
         fieldType: 'text',
+        sortable: true,
+        filterable: true,
+        filterMultiple: true,
+        editable: true,
+        editType: 'select',
+        selectOption: [],
       },
       {
         field: 'createTime',
         header: '创建时间',
         fieldType: 'date',
+        sortable: true,
+        filterable: true,
+        filterMultiple: true,
+        editable: false,
+        editType: 'text',
+        selectOption: [],
       },
     ],
   };
@@ -245,6 +241,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
     pageSize: 10,
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
+  onEditSelect(item) {
+    console.log(item);
+  }
   pageIndexChange(pageIndex) {
     this.checkCount(pageIndex);
   }
