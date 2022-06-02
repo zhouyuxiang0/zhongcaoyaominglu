@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { Image } from 'src/common/entities/image.entity';
@@ -87,7 +87,21 @@ export class ChineseMedicineService {
     return `This action returns a #${id} chineseMedicine`;
   }
 
-  update(id: number, updateChineseMedicineDto: UpdateChineseMedicineDto) {
+  async update(id: number, updateChineseMedicineDto: UpdateChineseMedicineDto) {
+    const chineseMedicine = await this.chineseMedicineRepo.findOne({
+      where: { id },
+      relations: [
+        'images',
+        'alias',
+        'passage',
+        'category',
+        'nature',
+        'taste',
+        'meridianTropism',
+      ],
+    });
+    if (!chineseMedicine) throw new NotFoundException();
+    chineseMedicine;
     return `This action updates a #${id} chineseMedicine`;
   }
 

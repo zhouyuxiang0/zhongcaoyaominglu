@@ -47,4 +47,18 @@ export class ChineseMedicineService {
         })
       );
   }
+
+  update(
+    id: number,
+    name: string,
+    alias: string[],
+    images: string[],
+    categoryId: number,
+    natureIds: number[],
+    tasteIds: number[],
+    meridianTropismIds: number[],
+    passages: { title: string; content: string }[]
+  ) {
+    //
+  }
 }

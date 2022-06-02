@@ -51,12 +51,12 @@
                     <d-select
                       [options]="colOption.selectOption"
                       [isSearch]="true"
-                      [filterKey]="'name'"
+                      [filterKey]="'label'"
                       [autoFocus]="true"
                       [toggleOnFocus]="true"
                       [appendToBody]="true"
-                      [(ngModel)]="rowItem[colOption.field]"
-                      (ngModelChange)="onEditSelect(rowItem)"
+                      [(ngModel)]="selectModel"
+                      (ngModelChange)="onEditSelect(rowItem, colOption.field)"
                     >
                       <ng-template let-option="option" let-filterKey="filterKey"> {{ option[filterKey] }} </ng-template>
                     </d-select>

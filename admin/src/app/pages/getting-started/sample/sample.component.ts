@@ -26,12 +26,14 @@ export class SampleComponent implements OnInit, AfterViewInit {
   editableTip = EditableTip.btn;
   options = [];
   categories: Array<string | number> = [];
+  selectModel = { label: '', id: '' };
   categoryChange(data) {
     console.log(data);
   }
   ngOnInit(): void {
     this.chineseMedicineService.getMany().subscribe((val) => {
       this.chineseMedicines = val.map((v) => ({
+        id: v.id,
         name: v.name,
         category: v.category.name,
         nature: v.nature.map((v) => v.name).join(','),
@@ -41,11 +43,11 @@ export class SampleComponent implements OnInit, AfterViewInit {
       }));
     });
     this.categoryService.getAllParent().subscribe((data) => {
-      this.options = data.map((v) => ({ label: v.name, value: v.id }));
+      this.options = data.map((v) => ({ label: v.name, id: v.id }));
     });
     this.natureService.getMany().subscribe((data) => {
       this.dataTableOptions.columns.map((v) => {
-        if (v.field == 'nature') v.selectOption = data;
+        if (v.field == 'nature') v.selectOption = data.map((v) => ({ label: v.name, id: v.id }));
         return v;
       });
     });
@@ -167,6 +169,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
         editable: true,
         editType: 'select',
         selectOption: [],
+        updateColumn: (id: number) => {
+          this.chineseMedicineService;
+        },
       },
       {
         field: 'taste',
@@ -241,8 +246,12 @@ export class SampleComponent implements OnInit, AfterViewInit {
     pageSize: 10,
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
-  onEditSelect(item) {
-    console.log(item);
+  onEditSelect(item, field) {
+    const id = item.id;
+    console.log(JSON.stringify(item), field);
+    item[field + 'edit'] = false;
+    item[field] = this.selectModel.label;
+    const col = this.dataTableOptions.columns.find((v) => v.field === field);
   }
   pageIndexChange(pageIndex) {
     this.checkCount(pageIndex);
