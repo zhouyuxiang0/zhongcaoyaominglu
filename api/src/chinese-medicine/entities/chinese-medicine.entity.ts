@@ -27,16 +27,18 @@ export class ChineseMedicine extends BaseEntity {
   @Column()
   public name: string;
 
-  @OneToMany(() => Image, (image) => image.chineseMedicine)
+  @OneToMany(() => Image, (image) => image.chineseMedicine, { cascade: true })
   public images: Image[];
 
-  @OneToMany(() => ChineseMedicineAlias, (val) => val.chineseMedicine)
+  @OneToMany(() => ChineseMedicineAlias, (val) => val.chineseMedicine, {
+    cascade: true,
+  })
   public alias: ChineseMedicineAlias[];
 
-  @OneToMany(() => Passage, (val) => val.chineseMedicine)
+  @OneToMany(() => Passage, (val) => val.chineseMedicine, { cascade: true })
   public passage: Passage[];
 
-  @OneToOne(() => Category)
+  @ManyToOne(() => Category)
   @JoinColumn()
   public category: Category;
 

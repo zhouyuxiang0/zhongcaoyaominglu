@@ -22,32 +22,39 @@ export class SampleComponent implements OnInit, AfterViewInit {
     private readonly meridianTropismService: MeridianTropismService
   ) {}
   #chineseMedicine = [];
+  // 表格筛选
   filterArr = [];
   editableTip = EditableTip.btn;
   options = [];
   categories: Array<string | number> = [];
-  selectModel = { label: '', id: '' };
+  aliasTagConfig = {
+    displayProperty: 'name',
+    maxLength: 200,
+    minLength: 1,
+    maxTags: 100,
+    placeholder: '添加别名',
+    spellcheck: false,
+    caseSensitivity: false,
+    isAddBySpace: true,
+  };
   categoryChange(data) {
     console.log(data);
   }
+  tagsInputCheck = (newTag) => {
+    console.log(newTag);
+    return true;
+  };
+  tagsInputChange(item) {
+    console.log(item);
+  }
   ngOnInit(): void {
-    this.chineseMedicineService.getMany().subscribe((val) => {
-      this.chineseMedicines = val.map((v) => ({
-        id: v.id,
-        name: v.name,
-        category: v.category.name,
-        nature: v.nature.map((v) => v.name).join(','),
-        taste: v.taste.map((v) => v.name).join(','),
-        meridianTropism: v.meridianTropism.map((v) => v.name).join(','),
-        createTime: v.date.createTime,
-      }));
-    });
+    this.loadList();
     this.categoryService.getAllParent().subscribe((data) => {
       this.options = data.map((v) => ({ label: v.name, id: v.id }));
     });
     this.natureService.getMany().subscribe((data) => {
       this.dataTableOptions.columns.map((v) => {
-        if (v.field == 'nature') v.selectOption = data.map((v) => ({ label: v.name, id: v.id }));
+        if (v.field == 'nature') v.selectOption = data;
         return v;
       });
     });
@@ -57,6 +64,27 @@ export class SampleComponent implements OnInit, AfterViewInit {
     window.dispatchEvent(new Event('resize'));
   }
 
+  loadList() {
+    this.chineseMedicineService.getMany().subscribe((val) => {
+      this.chineseMedicines = val.map((v) => ({
+        id: v.id,
+        name: v.name,
+        category: v.category.name,
+        alias: v.alias,
+        nature: v.nature,
+        taste: v.taste,
+        meridianTropism: v.meridianTropism,
+        passage: v.passage,
+        createTime: v.date.createTime,
+      }));
+    });
+  }
+
+  deleteItem(rowItem) {
+    this.chineseMedicineService.delete(rowItem.id).subscribe((val) => {
+      if (val) this.loadList();
+    });
+  }
   openstandardDialog(dialogtype?: string) {
     const results = this.dialogService.open({
       id: 'dialog-service',
@@ -91,8 +119,8 @@ export class SampleComponent implements OnInit, AfterViewInit {
                 contents
               )
               .subscribe((data) => {
-                console.log(data);
                 results.modalInstance.hide();
+                this.loadList();
               });
           },
         },
@@ -134,6 +162,15 @@ export class SampleComponent implements OnInit, AfterViewInit {
       });
     });
   };
+  removeContent(item, index) {
+    item.passage = item.passage.filter((v, i) => i !== index);
+  }
+  updatePassage(rowItem) {
+    const { id, name } = rowItem;
+    console.log(rowItem);
+
+    // this.chineseMedicineService.update()
+  }
   // basicDataSource = JSON.parse(JSON.stringify(originSource.slice(0, 6)));
   dataTableOptions = {
     columns: [
@@ -145,8 +182,17 @@ export class SampleComponent implements OnInit, AfterViewInit {
         filterable: true,
         filterMultiple: true,
         editable: true,
-        editType: 'text',
+      },
+      {
+        field: 'alias',
+        header: '别名',
+        fieldType: 'tagsInput',
+        sortable: false,
+        filterable: true,
+        filterMultiple: true,
+        editable: true,
         selectOption: [],
+        selected: [],
       },
       {
         field: 'category',
@@ -156,44 +202,39 @@ export class SampleComponent implements OnInit, AfterViewInit {
         filterable: true,
         filterMultiple: true,
         editable: false,
-        editType: 'cascader',
-        selectOption: [],
       },
       {
         field: 'nature',
         header: '性状',
-        fieldType: 'text',
+        fieldType: 'tags',
         sortable: true,
         filterable: true,
         filterMultiple: true,
         editable: true,
-        editType: 'select',
         selectOption: [],
-        updateColumn: (id: number) => {
-          this.chineseMedicineService;
-        },
+        selected: [],
       },
       {
         field: 'taste',
         header: '味',
-        fieldType: 'text',
+        fieldType: 'tags',
         sortable: true,
         filterable: true,
         filterMultiple: true,
         editable: true,
-        editType: 'select',
         selectOption: [],
+        selected: [],
       },
       {
         field: 'meridianTropism',
         header: '归经',
-        fieldType: 'text',
+        fieldType: 'tags',
         sortable: true,
         filterable: true,
         filterMultiple: true,
         editable: true,
-        editType: 'select',
         selectOption: [],
+        selected: [],
       },
       {
         field: 'createTime',
@@ -203,7 +244,6 @@ export class SampleComponent implements OnInit, AfterViewInit {
         filterable: true,
         filterMultiple: true,
         editable: false,
-        editType: 'text',
         selectOption: [],
       },
     ],
@@ -246,12 +286,19 @@ export class SampleComponent implements OnInit, AfterViewInit {
     pageSize: 10,
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
+  toggleExpand(rowItem) {
+    rowItem.$expand = !rowItem.$expand;
+  }
   onEditSelect(item, field) {
-    const id = item.id;
-    console.log(JSON.stringify(item), field);
-    item[field + 'edit'] = false;
-    item[field] = this.selectModel.label;
-    const col = this.dataTableOptions.columns.find((v) => v.field === field);
+    const {} = item;
+    if (field == 'nature') {
+      //
+    }
+    // const id = item.id;
+    // console.log(JSON.stringify(item), field);
+    // item[field + 'edit'] = false;
+    // item[field] = this.selectModel.label;
+    // const col = this.dataTableOptions.columns.find((v) => v.field === field);
   }
   pageIndexChange(pageIndex) {
     this.checkCount(pageIndex);

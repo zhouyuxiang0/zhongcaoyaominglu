@@ -1,8 +1,10 @@
+import { ChineseMedicine } from 'src/chinese-medicine/entities/chinese-medicine.entity';
 import { DateColumn } from 'src/common/entities/date.entity';
 import {
   BaseEntity,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Tree,
   TreeChildren,
@@ -17,6 +19,12 @@ export class Category extends BaseEntity {
 
   @Column()
   public name: string;
+
+  @OneToMany(
+    () => ChineseMedicine,
+    (chineseMedicine) => chineseMedicine.category,
+  )
+  chineseMedicine: ChineseMedicine;
 
   @TreeChildren()
   children: Category[];

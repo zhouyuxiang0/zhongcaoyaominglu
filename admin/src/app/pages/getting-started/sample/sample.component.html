@@ -1,10 +1,10 @@
 <div class="da-content-banner">
   <d-breadcrumb>
-    <d-breadcrumb-item
-      ><a routerLink="/">
+    <d-breadcrumb-item>
+      <a routerLink="/">
         {{ 'startUsing.breadcrumb.home' | translate }}
-      </a></d-breadcrumb-item
-    >
+      </a>
+    </d-breadcrumb-item>
     <d-breadcrumb-item>
       {{ 'startUsing.breadcrumb.start' | translate }}
     </d-breadcrumb-item>
@@ -20,8 +20,8 @@
   </div>
 </div>
 <div class="da-content-wrapper">
-  <div class="da-content-card" style="height: 100%;">
-  <da-layout-row [daGutter]="[24, 24]">
+  <div class="da-content-card" style="height: 100%">
+    <da-layout-row [daGutter]="[24, 24]">
       <da-col-item [daSpan]="3" [daXs]="3">
         <d-button (click)="openstandardDialog('standard')">新增</d-button>
       </da-col-item>
@@ -29,51 +29,146 @@
         <d-data-table [dataSource]="chineseMedicines" [scrollable]="true" [tableWidthConfig]="tableWidthConfig">
           <thead dTableHead>
             <tr dTableRow>
+              <th dHeadCell></th>
               <th dHeadCell [sortable]="true">#</th>
-              <th dHeadCell *ngFor="let colOption of dataTableOptions.columns;index as i" [sortable]="colOption.sortable" [filterable]="colOption.filterable" [filterMultiple]="colOption.filterMultiple" [filterList]="filterArr[i]">{{ colOption.header }}</th>
+              <th
+                dHeadCell
+                *ngFor="let colOption of dataTableOptions.columns; index as i"
+                [sortable]="colOption.sortable"
+                [filterable]="colOption.filterable"
+                [filterMultiple]="colOption.filterMultiple"
+                [filterList]="filterArr[i]"
+              >
+                {{ colOption.header }}
+              </th>
+              <th dHeadCell [sortable]="true">操作</th>
             </tr>
           </thead>
           <tbody dTableBody>
             <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
               <tr dTableRow>
+                <td dTableCell class="cursor-pointer">
+                  <div (click)="toggleExpand(rowItem)">
+                    <span class="icon-chevron-up" *ngIf="rowItem.$expand"></span>
+                    <span class="icon-chevron-down" *ngIf="!rowItem.$expand"></span>
+                  </div>
+                </td>
                 <td dTableCell>{{ rowIndex + 1 }}</td>
-                <td dTableCell
-                *ngFor="let colOption of dataTableOptions.columns"
-                [editable]="colOption.editable"
-                [editableTip]="editableTip"
-                [(editing)]="rowItem[colOption.field + 'edit']"
-              >
-                <span *ngIf="!rowItem[colOption.field + 'edit']">{{ colOption.fieldType === 'date' ? (rowItem[colOption.field] | i18nDate: 'short':false) : rowItem[colOption.field] }}</span>
-                <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.editType == 'text'" class="edit-padding-fix">
-                  <input class="devui-form-control" name="lastname" [(ngModel)]="rowItem[colOption.field]" [attr.maxlength]="100" [attr.minlength]="3" />
-                </div>
-                <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.editType == 'select'" class="customized-editor edit-padding-fix">
+                <td
+                  dTableCell
+                  *ngFor="let colOption of dataTableOptions.columns"
+                  [editable]="colOption.editable"
+                  [editableTip]="editableTip"
+                  [(editing)]="rowItem[colOption.field + 'edit']"
+                >
+                  <span *ngIf="!rowItem[colOption.field + 'edit'] && colOption.fieldType === 'text'">{{ rowItem[colOption.field] }}</span>
+                  <span *ngIf="!rowItem[colOption.field + 'edit'] && colOption.fieldType === 'date'">{{
+                    rowItem[colOption.field] | i18nDate: 'short':false
+                  }}</span>
+                  <span *ngIf="!rowItem[colOption.field + 'edit'] && colOption.fieldType === 'tags'">
+                    <d-tag *ngFor="let tag of rowItem[colOption.field]" [tag]="tag.name"></d-tag>
+                  </span>
+                  <span *ngIf="!rowItem[colOption.field + 'edit'] && colOption.fieldType === 'tagsInput'">
+                    <d-tag *ngFor="let tag of rowItem[colOption.field]" [tag]="tag.name"></d-tag>
+                  </span>
+                  <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.fieldType == 'text'" class="edit-padding-fix">
+                    <input
+                      class="devui-form-control"
+                      name="lastname"
+                      [(ngModel)]="rowItem[colOption.field]"
+                      [attr.maxlength]="100"
+                      [attr.minlength]="3"
+                    />
+                  </div>
+                  <div
+                    *ngIf="rowItem[colOption.field + 'edit'] && colOption.fieldType == 'tags'"
+                    class="customized-editor edit-padding-fix"
+                  >
                     <d-select
                       [options]="colOption.selectOption"
                       [isSearch]="true"
-                      [filterKey]="'label'"
+                      [filterKey]="'name'"
                       [autoFocus]="true"
+                      [multiple]="true"
+                      [isSelectAll]="true"
+                      [extraConfig]="{ labelization: { enable: true, overflow: 'scroll-y' } }"
                       [toggleOnFocus]="true"
                       [appendToBody]="true"
-                      [(ngModel)]="selectModel"
+                      [(ngModel)]="rowItem[colOption.field]"
                       (ngModelChange)="onEditSelect(rowItem, colOption.field)"
                     >
                       <ng-template let-option="option" let-filterKey="filterKey"> {{ option[filterKey] }} </ng-template>
                     </d-select>
-                </div>
-                <div *ngIf="rowItem[colOption.field + 'edit'] && colOption.editType == 'cascader'" class="customized-editor edit-padding-fix">
-                  <d-cascader
-                    [options]="options"
-                    [placeholder]="'请选择'"
-                    [(ngModel)]="rowItem[colOption.field]"
-                    [trigger]="'click'"
-                    (ngModelChange)="categoryChange(rowItem[colOption.field])"
-                    [showPath]="true"
-                    [allowClear]="true"
-                    [width]="100"
-                    [loadChildrenFn]="loadChildren"
-                  ></d-cascader>
-                </div>
+                  </div>
+                  <div
+                    *ngIf="rowItem[colOption.field + 'edit'] && colOption.fieldType == 'tagsInput'"
+                    class="customized-editor edit-padding-fix"
+                  >
+                    <d-tags-input
+                      style="width: 150px;"
+                      [tags]="rowItem[colOption.field]"
+                      (valueChange)="tagsInputChange(rowItem[colOption.field])"
+                      [displayProperty]="aliasTagConfig.displayProperty"
+                      [placeholder]="aliasTagConfig.placeholder"
+                      [minLength]="aliasTagConfig.minLength"
+                      [maxLength]="aliasTagConfig.maxLength"
+                      [maxTags]="aliasTagConfig.maxTags"
+                      [spellcheck]="aliasTagConfig.spellcheck"
+                      [caseSensitivity]="aliasTagConfig.caseSensitivity"
+                      [isAddBySpace]="aliasTagConfig.isAddBySpace"
+                      [checkBeforeAdd]="tagsInputCheck"
+                    >
+                    </d-tags-input>
+                    <!-- <d-select
+                      [options]="colOption.selectOption"
+                      [isSearch]="true"
+                      [filterKey]="'name'"
+                      [autoFocus]="true"
+                      [multiple]="true"
+                      [isSelectAll]="true"
+                      [extraConfig]="{ labelization: { enable: true, overflow: 'scroll-y' } }"
+                      [toggleOnFocus]="true"
+                      [appendToBody]="true"
+                      [(ngModel)]="rowItem[colOption.field]"
+                      (ngModelChange)="onEditSelect(rowItem, colOption.field)"
+                    >
+                      <ng-template let-option="option" let-filterKey="filterKey"> {{ option[filterKey] }} </ng-template>
+                    </d-select> -->
+                  </div>
+                </td>
+                <td>
+                  <d-button dTooltip bsStyle="danger" (click)="deleteItem(rowItem)" [content]="'点击直接删除！'">删除</d-button>
+                </td>
+              </tr>
+              <tr dTableRow class="expand-row" *ngIf="rowItem.$expand">
+                <td dTableCell [attr.colspan]="tableWidthConfig.length">
+                  <d-form-control *ngFor="let passage of rowItem.passage; index as i; first as isFirst" [extraInfo]="'您最多还可以输入 ' + (2000 - passage.content.length) + ' 个字符'">
+                    <d-card style="width: 350px">
+                      <d-card-header>
+                        <d-card-title>
+                          内容{{i + 1}}标题：<input
+                            dTextInput
+                            autocomplete="off"
+                            name="title{{i}}"
+                            placeholder="请输入小标题"
+                            [(ngModel)]="passage.title"
+                          />
+                        </d-card-title>
+                      </d-card-header>
+                      <d-card-actions [align]="'spaceBetween'">
+                        <textarea
+                          dTextarea
+                          name="content{{i}}"
+                          maxlength="2000"
+                          style="height: 100px; resize: none"
+                          placeholder="请输入内容"
+                          [(ngModel)]="passage.content"
+                        ></textarea>
+                      </d-card-actions>
+                      <d-button style="padding-top: 8px;" (btnClick)="removeContent(rowItem, i)" *ngIf="!isFirst">删除</d-button>
+                    </d-card>
+                  </d-form-control>
+                  <d-button style="padding-top: 8px;" (btnClick)="updatePassage(rowItem)">确认修改</d-button>
                 </td>
               </tr>
             </ng-template>
@@ -85,20 +180,19 @@
       <da-col-item [daSpan]="6" [daXs]="6"></da-col-item>
       <da-col-item [daSpan]="12" [daXs]="12">
         <d-pagination
-            [size]="'sm'"
-            [total]="pager.total"
-            [(pageSize)]="pager.pageSize"
-            [(pageIndex)]="pager.pageIndex"
-            [maxItems]="10"
-            [canViewTotal]="true"
-            [canJumpPage]="true"
-            [canChangePageSize]="true"
-            (pageIndexChange)="pageIndexChange($event)"
-            (pageSizeChange)="pageSizeChange($event)"
-          >
-          </d-pagination>
+          [size]="'sm'"
+          [total]="pager.total"
+          [(pageSize)]="pager.pageSize"
+          [(pageIndex)]="pager.pageIndex"
+          [maxItems]="10"
+          [canViewTotal]="true"
+          [canJumpPage]="true"
+          [canChangePageSize]="true"
+          (pageIndexChange)="pageIndexChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+        >
+        </d-pagination>
       </da-col-item>
     </da-layout-row>
   </div>
-
 </div>

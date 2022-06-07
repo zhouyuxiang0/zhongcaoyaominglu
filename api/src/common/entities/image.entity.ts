@@ -1,5 +1,11 @@
 import { ChineseMedicine } from 'src/chinese-medicine/entities/chinese-medicine.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { DateColumn } from './date.entity';
 
 @Entity('image')
@@ -8,6 +14,7 @@ export class Image {
   id: number;
 
   @Column()
+  @Index({ unique: true })
   url: string;
 
   @ManyToOne(() => ChineseMedicine, (image) => image.images)

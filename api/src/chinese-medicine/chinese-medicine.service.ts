@@ -1,5 +1,11 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CategoryService } from 'src/category/category.service';
 import { Category } from 'src/category/entities/category.entity';
 import { Image } from 'src/common/entities/image.entity';
 import { Passage } from 'src/common/entities/passage.entity';
@@ -16,6 +22,7 @@ import { ChineseMedicine } from './entities/chinese-medicine.entity';
 export class ChineseMedicineService {
   @InjectRepository(ChineseMedicine)
   private readonly chineseMedicineRepo: Repository<ChineseMedicine>;
+  @Inject() private readonly categoryService: CategoryService;
   async create(createChineseMedicineDto: CreateChineseMedicineDto) {
     const chineseMedicine = new ChineseMedicine();
     chineseMedicine.name = createChineseMedicineDto.name;
@@ -101,11 +108,72 @@ export class ChineseMedicineService {
       ],
     });
     if (!chineseMedicine) throw new NotFoundException();
-    chineseMedicine;
+    if (updateChineseMedicineDto.alias) {
+      chineseMedicine.alias = updateChineseMedicineDto.alias.map((v) => {
+        const alias = new ChineseMedicineAlias();
+        alias.name = v;
+        return alias;
+      });
+    }
+    if (updateChineseMedicineDto.categoryId) {
+      const category = new Category();
+      category.id = updateChineseMedicineDto.categoryId;
+      chineseMedicine.category = category;
+    }
+    if (updateChineseMedicineDto.images) {
+      chineseMedicine.images = updateChineseMedicineDto.images.map((v) => {
+        const img = new Image();
+        img.url = v;
+        return img;
+      });
+    }
+    if (updateChineseMedicineDto.meridianTropismIds) {
+      chineseMedicine.meridianTropism =
+        updateChineseMedicineDto.meridianTropismIds.map((v) => {
+          const meridianTropism = new MeridianTropism();
+          meridianTropism.id = v;
+          return meridianTropism;
+        });
+    }
+    if (updateChineseMedicineDto.name) {
+      chineseMedicine.name = updateChineseMedicineDto.name;
+    }
+    if (updateChineseMedicineDto.natureIds) {
+      chineseMedicine.nature = updateChineseMedicineDto.natureIds.map((v) => {
+        const nature = new Nature();
+        nature.id = v;
+        return nature;
+      });
+    }
+    if (updateChineseMedicineDto.passages) {
+      chineseMedicine.passage = updateChineseMedicineDto.passages.map((v) => {
+        const passage = new Passage();
+        passage.title = v.title;
+        passage.content = v.content;
+        return passage;
+      });
+    }
+    if (updateChineseMedicineDto.tasteIds) {
+      chineseMedicine.taste = updateChineseMedicineDto.tasteIds.map((v) => {
+        const taste = new Taste();
+        taste.id = v;
+        return taste;
+      });
+      const savedChineseMedicine = await chineseMedicine.save();
+      return {
+        statusCode: HttpStatus.OK,
+        data: savedChineseMedicine,
+      };
+    }
     return `This action updates a #${id} chineseMedicine`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} chineseMedicine`;
+  async remove(id: number) {
+    const chineseMedicine = await this.chineseMedicineRepo.findOneBy({ id });
+    const removed = await chineseMedicine.remove();
+    return {
+      statusCode: HttpStatus.OK,
+      data: removed,
+    };
   }
 }

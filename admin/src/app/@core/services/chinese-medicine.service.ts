@@ -56,9 +56,18 @@ export class ChineseMedicineService {
     categoryId: number,
     natureIds: number[],
     tasteIds: number[],
-    meridianTropismIds: number[],
-    passages: { title: string; content: string }[]
+    meridianTropismIds: number[]
+    // passages: { title: string; content: string }[]
   ) {
     //
+  }
+
+  delete(id: number) {
+    return this.httpClient.delete<ApiResponse<any>>(`${environment.api.getChineseMedicine}/${id}`).pipe(
+      map((val) => {
+        if (val.statusCode == 200) return val.data;
+        throwError(val.message);
+      })
+    );
   }
 }

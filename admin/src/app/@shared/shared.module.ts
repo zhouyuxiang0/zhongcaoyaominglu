@@ -69,6 +69,7 @@ const DEVUI_MODULES = [
   PaginationModule,
   TagsModule,
   TreeModule,
+  TooltipModule,
 ];
 const COMPONENTS = [HeaderComponent, FooterComponent, NavbarComponent, PersonalizeComponent];
 @NgModule({
