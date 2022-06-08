@@ -20,6 +20,7 @@ import {
   FormModule,
   LayoutModule,
   ModalModule,
+  MultiAutoCompleteModule,
   PaginationModule,
   RadioModule,
   SearchModule,
@@ -44,6 +45,8 @@ import { PersonalizeComponent } from './components/personalize/personalize.compo
 import { RegisterComponent } from './components/register/register.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { DaGridModule } from './layouts/da-grid';
+import { JoinPipe } from './pipe/join.pipe';
+import { MapPipe } from './pipe/map.pipe';
 
 const DEVUI_MODULES = [
   LayoutModule,
@@ -70,10 +73,20 @@ const DEVUI_MODULES = [
   TagsModule,
   TreeModule,
   TooltipModule,
+  MultiAutoCompleteModule,
 ];
 const COMPONENTS = [HeaderComponent, FooterComponent, NavbarComponent, PersonalizeComponent];
+const PROVIDERS = [MapPipe, JoinPipe];
 @NgModule({
-  declarations: [LoginComponent, HeaderOperationComponent, HeaderLogoComponent, SideMenuComponent, RegisterComponent, ...COMPONENTS],
+  declarations: [
+    LoginComponent,
+    HeaderOperationComponent,
+    HeaderLogoComponent,
+    SideMenuComponent,
+    RegisterComponent,
+    ...COMPONENTS,
+    ...PROVIDERS,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -99,6 +112,7 @@ const COMPONENTS = [HeaderComponent, FooterComponent, NavbarComponent, Personali
     SideMenuComponent,
     ...DEVUI_MODULES,
     ...COMPONENTS,
+    ...PROVIDERS,
   ],
 })
 export class SharedModule {

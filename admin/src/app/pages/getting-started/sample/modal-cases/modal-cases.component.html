@@ -1,4 +1,5 @@
 <div class="modal-cases-component">
+  {{data.rowItem | json}}
   <form dForm [layout]="layoutDirection" ngForm>
     <d-form-item>
       <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'请输入未录入中药名'">名称</d-form-label>
@@ -9,7 +10,7 @@
             autocomplete="off"
             name="name"
             placeholder="请输入未录入中药名"
-            [(ngModel)]="name"
+            [(ngModel)]="data.name"
             (ngModelChange)="formChange()"
           />
         </div>
@@ -21,7 +22,7 @@
         <d-tags-input
             style="width: 150px;"
             name="alias"
-            [(ngModel)]="aliasTags"
+            [(ngModel)]="data.aliasTags"
             [displayProperty]="aliasTagConfig.displayProperty"
             [placeholder]="aliasTagConfig.placeholder"
             [minLength]="aliasTagConfig.minLength"
@@ -40,7 +41,7 @@
       <d-form-control>
         <d-tags-input
           name="imgList"
-          [(ngModel)]="imgList"
+          [(ngModel)]="data.imgList"
           [displayProperty]="taskTagConfig.displayProperty"
           [placeholder]="taskTagConfig.placeholder"
           [minLength]="taskTagConfig.minLength"
@@ -61,7 +62,7 @@
           [options]="options"
           [placeholder]="'请选择'"
           name="categories"
-          [(ngModel)]="categories"
+          [(ngModel)]="data.categories"
           [trigger]="'click'"
           (ngModelChange)="formChange()"
           [showPath]="true"
@@ -83,7 +84,7 @@
               [isSearch]="true"
               [readonly]="true"
               [multiple]="true"
-              [(ngModel)]="natureSelects"
+              [(ngModel)]="data.natureSelects"
               (ngModelChange)="formChange()"
               [filterKey]="'name'"
               [extraConfig]="{
@@ -108,7 +109,7 @@
               [isSearch]="true"
               [readonly]="true"
               [multiple]="true"
-              [(ngModel)]="tasteSelects"
+              [(ngModel)]="data.tasteSelects"
               [filterKey]="'name'"
               (ngModelChange)="formChange()"
               [extraConfig]="{
@@ -133,7 +134,7 @@
               [isSearch]="true"
               [readonly]="true"
               [multiple]="true"
-              [(ngModel)]="meridianTropismSelects"
+              [(ngModel)]="data.meridianTropismSelects"
               (ngModelChange)="formChange()"
               [filterKey]="'name'"
               [extraConfig]="{
@@ -149,7 +150,7 @@
     <d-form-item>
       <d-form-label [required]="true">内容</d-form-label>
       <d-button (btnClick)="addContent()">添加内容</d-button>
-      <d-form-control *ngFor="let content of contents; index as i; first as isFirst" [extraInfo]="'您最多还可以输入 ' + (2000 - content.content.length) + ' 个字符'">
+      <d-form-control *ngFor="let content of data.contents; index as i; first as isFirst" [extraInfo]="'您最多还可以输入 ' + (2000 - content.content.length) + ' 个字符'">
         <d-card style="width: 350px">
           <d-card-header>
             <d-card-title>

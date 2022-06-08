@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CascaderItem } from 'ng-devui/cascader';
 import { FormLayout } from 'ng-devui/form';
 import { SelectComponent } from 'ng-devui/select';
-import { from, timer } from 'rxjs';
+import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CategoryService } from 'src/app/@core/services/category.service';
 import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
@@ -26,8 +26,6 @@ export class ModalCasesComponent implements OnInit {
   }
   @Input() data: any;
   // 名称
-  name = '';
-  aliasTags = [];
   aliasTagConfig = {
     displayProperty: 'name',
     maxLength: 200,
@@ -43,13 +41,10 @@ export class ModalCasesComponent implements OnInit {
   }
   layoutDirection: FormLayout = FormLayout.Vertical;
 
-  categories: Array<string | number> = [];
-
   options = [];
   children1 = [];
-  imgList = [];
   taskTagConfig = {
-    displayProperty: 'name',
+    displayProperty: 'url',
     maxLength: 200,
     minLength: 7,
     maxTags: 10,
@@ -62,7 +57,6 @@ export class ModalCasesComponent implements OnInit {
   @ViewChild('natureOptionsSelect', { static: true }) natureSelectComponent: SelectComponent;
   natureDataLoaded = false;
   natureOptions = [];
-  natureSelects = [];
   natureToggleChange($event) {
     if ($event && !this.natureDataLoaded) {
       this.natureSelectComponent.loadStart();
@@ -82,7 +76,6 @@ export class ModalCasesComponent implements OnInit {
   /*************taste************* */
   @ViewChild('tasteOptionsSelect', { static: true }) tasteSelectComponent: SelectComponent;
   tasteOptions = [];
-  tasteSelects = [];
   tasteDataLoaded = false;
   tasteToggleChange($event) {
     if ($event && !this.tasteDataLoaded) {
@@ -99,7 +92,6 @@ export class ModalCasesComponent implements OnInit {
   }
   /********************meridianTropism********* */
   meridianTropismOptions = [];
-  meridianTropismSelects = [];
   @ViewChild('meridianTropismOptionsSelect', { static: true }) meridianTropismSelectComponent: SelectComponent;
   meridianTropismDataLoaded = false;
   meridianTropismToggleChange($event) {
@@ -116,22 +108,15 @@ export class ModalCasesComponent implements OnInit {
     });
   }
 
-  contents = [
-    {
-      title: '',
-      content: '',
-    },
-  ];
-
   formChange() {
     if (
-      this.name &&
-      this.imgList.length > 0 &&
-      this.categories.length > 0 &&
-      this.natureSelects.length > 0 &&
-      this.tasteSelects.length > 0 &&
-      this.meridianTropismSelects.length > 0 &&
-      this.contents.filter((v) => !v.content || !v.title).length <= 0
+      this.data.name &&
+      this.data.imgList.length > 0 &&
+      this.data.categories.length > 0 &&
+      this.data.natureSelects.length > 0 &&
+      this.data.tasteSelects.length > 0 &&
+      this.data.meridianTropismSelects.length > 0 &&
+      this.data.contents.filter((v) => !v.content || !v.title).length <= 0
     ) {
       this.data.canConfirm(true);
     } else {
@@ -150,14 +135,14 @@ export class ModalCasesComponent implements OnInit {
 
   addContent() {
     this.formChange();
-    this.contents.push({
+    this.data.contents.push({
       title: '',
       content: '',
     });
   }
 
   removeContent(index) {
-    this.contents = this.contents.filter((_, i) => i !== index);
+    this.data.contents = this.data.contents.filter((_, i) => i !== index);
   }
   imgCheck(value) {
     return from(fetch(value)).pipe(

@@ -5,11 +5,14 @@ import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.
 import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
 import { NatureService } from 'src/app/@core/services/nature.service';
 import { TasteService } from 'src/app/@core/services/taste.service';
+import { JoinPipe } from 'src/app/@shared/pipe/join.pipe';
+import { MapPipe } from 'src/app/@shared/pipe/map.pipe';
 import { ModalCasesComponent } from './modal-cases/modal-cases.component';
 
 @Component({
   selector: 'app-sample',
   templateUrl: './sample.component.html',
+  providers: [MapPipe, JoinPipe],
   styleUrls: ['./sample.component.scss'],
 })
 export class SampleComponent implements OnInit, AfterViewInit {
@@ -21,43 +24,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
     private readonly tasteService: TasteService,
     private readonly meridianTropismService: MeridianTropismService
   ) {}
-  #chineseMedicine = [];
-  // 表格筛选
-  filterArr = [];
-  editableTip = EditableTip.btn;
-  options = [];
-  categories: Array<string | number> = [];
-  aliasTagConfig = {
-    displayProperty: 'name',
-    maxLength: 200,
-    minLength: 1,
-    maxTags: 100,
-    placeholder: '添加别名',
-    spellcheck: false,
-    caseSensitivity: false,
-    isAddBySpace: true,
-  };
-  categoryChange(data) {
-    console.log(data);
-  }
-  tagsInputCheck = (newTag) => {
-    console.log(newTag);
-    return true;
-  };
-  tagsInputChange(item) {
-    console.log(item);
-  }
+  chineseMedicines = [];
   ngOnInit(): void {
     this.loadList();
-    this.categoryService.getAllParent().subscribe((data) => {
-      this.options = data.map((v) => ({ label: v.name, id: v.id }));
-    });
-    this.natureService.getMany().subscribe((data) => {
-      this.dataTableOptions.columns.map((v) => {
-        if (v.field == 'nature') v.selectOption = data;
-        return v;
-      });
-    });
   }
 
   ngAfterViewInit(): void {
@@ -69,13 +38,14 @@ export class SampleComponent implements OnInit, AfterViewInit {
       this.chineseMedicines = val.map((v) => ({
         id: v.id,
         name: v.name,
-        category: v.category.name,
+        category: v.category,
         alias: v.alias,
         nature: v.nature,
         taste: v.taste,
         meridianTropism: v.meridianTropism,
         passage: v.passage,
         createTime: v.date.createTime,
+        images: v.images,
       }));
     });
   }
@@ -103,15 +73,13 @@ export class SampleComponent implements OnInit, AfterViewInit {
           text: '确定',
           disabled: true,
           handler: ($event: Event) => {
-            console.log('tag created');
             const { name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents } =
               results.modalContentInstance;
-            console.log(name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents);
             this.chineseMedicineService
               .add(
                 name,
                 aliasTags.map((v) => v.name),
-                imgList.map((v) => v.name),
+                imgList.map((v) => v.url),
                 categories[1],
                 natureSelects.map((v) => v.value),
                 tasteSelects.map((v) => v.value),
@@ -134,42 +102,87 @@ export class SampleComponent implements OnInit, AfterViewInit {
         },
       ],
       data: {
+        name: '',
+        aliasTags: [],
+        imgList: [],
+        categories: [],
+        natureSelects: [],
+        tasteSelects: [],
+        meridianTropismSelects: [],
+        contents: [
+          {
+            title: '',
+            content: '',
+          },
+        ],
         canConfirm: (value: boolean) => {
           results.modalInstance.updateButtonOptions([{ disabled: !value }]);
         },
       },
     });
   }
-  set chineseMedicines(data: { name: string; category: string }[]) {
-    this.dataTableOptions.columns.forEach((v) => {
-      this.filterArr.push(
-        data.map((d) => ({
-          name: d[v.field],
-        }))
-      );
+  openEditDialog(rowItem) {
+    const results = this.dialogService.open({
+      id: 'dialog-service',
+      width: '600px',
+      maxHeight: '600px',
+      title: '新建',
+      content: ModalCasesComponent,
+      backdropCloseable: true,
+      dialogtype: 'standard',
+      onClose: () => {
+        console.log('on dialog closed');
+      },
+      buttons: [
+        {
+          cssClass: 'primary',
+          text: '修改',
+          disabled: true,
+          handler: ($event: Event) => {
+            const { name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents } =
+              results.modalContentInstance;
+            console.log(name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents);
+            // TODO: update
+            // this.chineseMedicineService
+            //   .add(
+            //     name,
+            //     aliasTags.map((v) => v.name),
+            //     imgList.map((v) => v.name),
+            //     categories[1],
+            //     natureSelects.map((v) => v.value),
+            //     tasteSelects.map((v) => v.value),
+            //     meridianTropismSelects.map((v) => v.value),
+            //     contents
+            //   )
+            //   .subscribe((data) => {
+            //     results.modalInstance.hide();
+            //     this.loadList();
+            //   });
+          },
+        },
+        {
+          id: 'btn-cancel',
+          cssClass: 'common',
+          text: '取消',
+          handler: ($event: Event) => {
+            results.modalInstance.hide();
+          },
+        },
+      ],
+      data: {
+        name: rowItem.name,
+        aliasTags: rowItem.alias,
+        imgList: rowItem.images,
+        categories: rowItem.category,
+        natureSelects: rowItem.nature,
+        tasteSelects: rowItem.taste,
+        meridianTropismSelects: rowItem.meridianTropism,
+        contents: rowItem.passage,
+        canConfirm: (value: boolean) => {
+          results.modalInstance.updateButtonOptions([{ disabled: !value }]);
+        },
+      },
     });
-    this.#chineseMedicine = data;
-  }
-  get chineseMedicines() {
-    return this.#chineseMedicine;
-  }
-
-  loadChildren: (val: CascaderItem) => Promise<CascaderItem[]> = (val: CascaderItem) => {
-    const { label, value } = val;
-    return new Promise((resolve, reject) => {
-      this.categoryService.getChildrenByParent(value as number).subscribe((data) => {
-        return resolve(data.map((v) => ({ label: v.name, value: v.id, isLeaf: true })));
-      });
-    });
-  };
-  removeContent(item, index) {
-    item.passage = item.passage.filter((v, i) => i !== index);
-  }
-  updatePassage(rowItem) {
-    const { id, name } = rowItem;
-    console.log(rowItem);
-
-    // this.chineseMedicineService.update()
   }
   // basicDataSource = JSON.parse(JSON.stringify(originSource.slice(0, 6)));
   dataTableOptions = {
@@ -178,73 +191,44 @@ export class SampleComponent implements OnInit, AfterViewInit {
         field: 'name',
         header: '名称',
         fieldType: 'text',
-        sortable: false,
-        filterable: true,
-        filterMultiple: true,
-        editable: true,
       },
       {
         field: 'alias',
         header: '别名',
         fieldType: 'tagsInput',
-        sortable: false,
-        filterable: true,
-        filterMultiple: true,
-        editable: true,
-        selectOption: [],
+
         selected: [],
       },
       {
         field: 'category',
         header: '分类',
         fieldType: 'text',
-        sortable: true,
-        filterable: true,
-        filterMultiple: true,
-        editable: false,
       },
       {
         field: 'nature',
         header: '性状',
         fieldType: 'tags',
-        sortable: true,
-        filterable: true,
-        filterMultiple: true,
-        editable: true,
-        selectOption: [],
+
         selected: [],
       },
       {
         field: 'taste',
         header: '味',
         fieldType: 'tags',
-        sortable: true,
-        filterable: true,
-        filterMultiple: true,
-        editable: true,
-        selectOption: [],
+
         selected: [],
       },
       {
         field: 'meridianTropism',
         header: '归经',
         fieldType: 'tags',
-        sortable: true,
-        filterable: true,
-        filterMultiple: true,
-        editable: true,
-        selectOption: [],
+
         selected: [],
       },
       {
         field: 'createTime',
         header: '创建时间',
         fieldType: 'date',
-        sortable: true,
-        filterable: true,
-        filterMultiple: true,
-        editable: false,
-        selectOption: [],
       },
     ],
   };
@@ -256,23 +240,27 @@ export class SampleComponent implements OnInit, AfterViewInit {
     },
     {
       field: 'name',
+      width: '100px',
+    },
+    {
+      field: 'alias',
       width: '150px',
     },
     {
       field: 'category',
-      width: '150px',
+      width: '100px',
     },
     {
       field: 'nature',
-      width: '150px',
+      width: '140px',
     },
     {
       field: 'taste',
-      width: '150px',
+      width: '140px',
     },
     {
       field: 'meridianTropism',
-      width: '150px',
+      width: '140px',
     },
     {
       field: 'createTime',
@@ -286,20 +274,6 @@ export class SampleComponent implements OnInit, AfterViewInit {
     pageSize: 10,
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
-  toggleExpand(rowItem) {
-    rowItem.$expand = !rowItem.$expand;
-  }
-  onEditSelect(item, field) {
-    const {} = item;
-    if (field == 'nature') {
-      //
-    }
-    // const id = item.id;
-    // console.log(JSON.stringify(item), field);
-    // item[field + 'edit'] = false;
-    // item[field] = this.selectModel.label;
-    // const col = this.dataTableOptions.columns.find((v) => v.field === field);
-  }
   pageIndexChange(pageIndex) {
     this.checkCount(pageIndex);
   }
