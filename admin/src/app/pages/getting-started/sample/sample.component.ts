@@ -126,7 +126,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
       id: 'dialog-service',
       width: '600px',
       maxHeight: '600px',
-      title: '新建',
+      title: '修改',
       content: ModalCasesComponent,
       backdropCloseable: true,
       dialogtype: 'standard',
@@ -140,24 +140,26 @@ export class SampleComponent implements OnInit, AfterViewInit {
           disabled: true,
           handler: ($event: Event) => {
             const { name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents } =
-              results.modalContentInstance;
+              results.modalContentInstance.data;
             console.log(name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents);
+
             // TODO: update
-            // this.chineseMedicineService
-            //   .add(
-            //     name,
-            //     aliasTags.map((v) => v.name),
-            //     imgList.map((v) => v.name),
-            //     categories[1],
-            //     natureSelects.map((v) => v.value),
-            //     tasteSelects.map((v) => v.value),
-            //     meridianTropismSelects.map((v) => v.value),
-            //     contents
-            //   )
-            //   .subscribe((data) => {
-            //     results.modalInstance.hide();
-            //     this.loadList();
-            //   });
+            this.chineseMedicineService
+              .update(
+                rowItem.id,
+                name,
+                aliasTags.map((v) => (v.id ? { id: v.id, name: v.name } : { name: v.name })),
+                imgList.map((v) => v.url),
+                categories[1],
+                natureSelects.map((v) => v.id),
+                tasteSelects.map((v) => v.id),
+                meridianTropismSelects.map((v) => v.id),
+                contents.map((v) => (v.id ? { id: v.id, title: v.title, content: v.content } : v))
+              )
+              .subscribe((data) => {
+                results.modalInstance.hide();
+                this.loadList();
+              });
           },
         },
         {
@@ -173,7 +175,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
         name: rowItem.name,
         aliasTags: rowItem.alias,
         imgList: rowItem.images,
-        categories: rowItem.category,
+        categories: [`${rowItem.category.parent.name} / ${rowItem.category.name}`, rowItem.category.parent.id, rowItem.category.id],
         natureSelects: rowItem.nature,
         tasteSelects: rowItem.taste,
         meridianTropismSelects: rowItem.meridianTropism,

@@ -31,6 +31,6 @@ import { Passage } from './entities/passage.entity';
     TypeOrmModule.forFeature([Image, Passage]),
   ],
   providers: [CommonService],
-  exports: [JwtModule],
+  exports: [JwtModule, TypeOrmModule],
 })
 export class CommonModule {}

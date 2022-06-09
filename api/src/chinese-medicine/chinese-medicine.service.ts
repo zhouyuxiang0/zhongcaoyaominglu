@@ -12,7 +12,7 @@ import { Passage } from 'src/common/entities/passage.entity';
 import { MeridianTropism } from 'src/meridian-tropism/entities/meridian-tropism.entity';
 import { Nature } from 'src/nature/entities/nature.entity';
 import { Taste } from 'src/taste/entities/taste.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateChineseMedicineDto } from './dto/create-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 import { ChineseMedicineAlias } from './entities/chinese-medicine-alias.entity';
@@ -22,6 +22,9 @@ import { ChineseMedicine } from './entities/chinese-medicine.entity';
 export class ChineseMedicineService {
   @InjectRepository(ChineseMedicine)
   private readonly chineseMedicineRepo: Repository<ChineseMedicine>;
+  @InjectRepository(ChineseMedicineAlias)
+  private readonly chineseMedicineAliasRepo: Repository<ChineseMedicineAlias>;
+  @InjectRepository(Image) private readonly imageRepo: Repository<Image>;
   @Inject() private readonly categoryService: CategoryService;
   async create(createChineseMedicineDto: CreateChineseMedicineDto) {
     const chineseMedicine = new ChineseMedicine();
@@ -79,6 +82,7 @@ export class ChineseMedicineService {
         'alias',
         'passage',
         'category',
+        'category.parent',
         'nature',
         'taste',
         'meridianTropism',
@@ -108,10 +112,11 @@ export class ChineseMedicineService {
       ],
     });
     if (!chineseMedicine) throw new NotFoundException();
-    if (updateChineseMedicineDto.alias) {
+    if (updateChineseMedicineDto.alias.length > 0) {
       chineseMedicine.alias = updateChineseMedicineDto.alias.map((v) => {
         const alias = new ChineseMedicineAlias();
-        alias.name = v;
+        if (v.id) alias.id = v.id;
+        alias.name = v.name;
         return alias;
       });
     }
@@ -121,11 +126,19 @@ export class ChineseMedicineService {
       chineseMedicine.category = category;
     }
     if (updateChineseMedicineDto.images) {
-      chineseMedicine.images = updateChineseMedicineDto.images.map((v) => {
-        const img = new Image();
-        img.url = v;
-        return img;
+      const imgs = await this.imageRepo.find({
+        where: {
+          url: In(updateChineseMedicineDto.images),
+        },
       });
+      chineseMedicine.images = updateChineseMedicineDto.images
+        .filter((v) => !imgs.find((i) => i.url == v))
+        .map((v) => {
+          const img = new Image();
+          img.url = v;
+          return img;
+        })
+        .concat(imgs);
     }
     if (updateChineseMedicineDto.meridianTropismIds) {
       chineseMedicine.meridianTropism =
@@ -148,6 +161,7 @@ export class ChineseMedicineService {
     if (updateChineseMedicineDto.passages) {
       chineseMedicine.passage = updateChineseMedicineDto.passages.map((v) => {
         const passage = new Passage();
+        if (v.id) passage.id = v.id;
         passage.title = v.title;
         passage.content = v.content;
         return passage;

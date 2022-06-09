@@ -51,15 +51,31 @@ export class ChineseMedicineService {
   update(
     id: number,
     name: string,
-    alias: string[],
+    alias: { id?: number; name: string }[],
     images: string[],
     categoryId: number,
     natureIds: number[],
     tasteIds: number[],
-    meridianTropismIds: number[]
-    // passages: { title: string; content: string }[]
+    meridianTropismIds: number[],
+    passages: { id?: number; title: string; content: string }[]
   ) {
-    //
+    return this.httpClient
+      .patch<ApiResponse<any>>(`${environment.api.getChineseMedicine}/${id}`, {
+        name,
+        alias,
+        images,
+        categoryId,
+        natureIds,
+        tasteIds,
+        meridianTropismIds,
+        passages,
+      })
+      .pipe(
+        map((val) => {
+          if (val.statusCode == 200) return val.data;
+          throwError(val.message);
+        })
+      );
   }
 
   delete(id: number) {

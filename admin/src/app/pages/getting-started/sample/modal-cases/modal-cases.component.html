@@ -1,5 +1,4 @@
 <div class="modal-cases-component">
-  {{data.rowItem | json}}
   <form dForm [layout]="layoutDirection" ngForm>
     <d-form-item>
       <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'请输入未录入中药名'">名称</d-form-label>
@@ -20,20 +19,20 @@
       <d-form-label [required]="true">别名</d-form-label>
       <d-form-control>
         <d-tags-input
-            style="width: 150px;"
-            name="alias"
-            [(ngModel)]="data.aliasTags"
-            [displayProperty]="aliasTagConfig.displayProperty"
-            [placeholder]="aliasTagConfig.placeholder"
-            [minLength]="aliasTagConfig.minLength"
-            [maxLength]="aliasTagConfig.maxLength"
-            [maxTags]="aliasTagConfig.maxTags"
-            [spellcheck]="aliasTagConfig.spellcheck"
-            [caseSensitivity]="aliasTagConfig.caseSensitivity"
-            [isAddBySpace]="aliasTagConfig.isAddBySpace"
-            [checkBeforeAdd]="aliasCheck"
-          >
-          </d-tags-input>
+          style="width: 150px"
+          name="alias"
+          [(ngModel)]="data.aliasTags"
+          [displayProperty]="aliasTagConfig.displayProperty"
+          [placeholder]="aliasTagConfig.placeholder"
+          [minLength]="aliasTagConfig.minLength"
+          [maxLength]="aliasTagConfig.maxLength"
+          [maxTags]="aliasTagConfig.maxTags"
+          [spellcheck]="aliasTagConfig.spellcheck"
+          [caseSensitivity]="aliasTagConfig.caseSensitivity"
+          [isAddBySpace]="aliasTagConfig.isAddBySpace"
+          [checkBeforeAdd]="aliasCheck"
+        >
+        </d-tags-input>
       </d-form-control>
     </d-form-item>
     <d-form-item>
@@ -150,14 +149,17 @@
     <d-form-item>
       <d-form-label [required]="true">内容</d-form-label>
       <d-button (btnClick)="addContent()">添加内容</d-button>
-      <d-form-control *ngFor="let content of data.contents; index as i; first as isFirst" [extraInfo]="'您最多还可以输入 ' + (2000 - content.content.length) + ' 个字符'">
+      <d-form-control
+        *ngFor="let content of data.contents; index as i; first as isFirst"
+        [extraInfo]="'您最多还可以输入 ' + (2000 - content.content.length) + ' 个字符'"
+      >
         <d-card style="width: 350px">
           <d-card-header>
             <d-card-title>
-              内容{{i + 1}}标题：<input
+              内容{{ i + 1 }}标题：<input
                 dTextInput
                 autocomplete="off"
-                name="title{{i}}"
+                name="title{{ i }}"
                 placeholder="请输入小标题"
                 [(ngModel)]="content.title"
                 (ngModelChange)="formChange()"
@@ -167,7 +169,7 @@
           <d-card-actions [align]="'spaceBetween'">
             <textarea
               dTextarea
-              name="content{{i}}"
+              name="content{{ i }}"
               maxlength="2000"
               style="height: 100px; resize: none"
               placeholder="请输入内容"
@@ -175,7 +177,7 @@
               (ngModelChange)="formChange()"
             ></textarea>
           </d-card-actions>
-          <d-button (btnClick)="removeContent(i)" style="padding-top: 8px;" *ngIf="!isFirst">删除</d-button>
+          <d-button (btnClick)="removeContent(i)" style="padding-top: 8px" *ngIf="!isFirst">删除</d-button>
         </d-card>
       </d-form-control>
     </d-form-item>

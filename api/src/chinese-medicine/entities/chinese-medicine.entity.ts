@@ -14,7 +14,6 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ChineseMedicineAlias } from './chinese-medicine-alias.entity';
@@ -27,15 +26,17 @@ export class ChineseMedicine extends BaseEntity {
   @Column()
   public name: string;
 
-  @OneToMany(() => Image, (image) => image.chineseMedicine, { cascade: true })
+  @OneToMany(() => Image, (image) => image.chineseMedicine, {
+    cascade: ['insert'],
+  })
   public images: Image[];
 
   @OneToMany(() => ChineseMedicineAlias, (val) => val.chineseMedicine, {
-    cascade: true,
+    cascade: ['insert', 'remove', 'update', 'recover'],
   })
   public alias: ChineseMedicineAlias[];
 
-  @OneToMany(() => Passage, (val) => val.chineseMedicine, { cascade: true })
+  @OneToMany(() => Passage, (val) => val.chineseMedicine)
   public passage: Passage[];
 
   @ManyToOne(() => Category)

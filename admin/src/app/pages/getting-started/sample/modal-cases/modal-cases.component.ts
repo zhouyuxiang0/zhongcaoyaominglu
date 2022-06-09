@@ -18,12 +18,26 @@ export class ModalCasesComponent implements OnInit {
     private readonly tasteService: TasteService,
     private readonly meridianTropismService: MeridianTropismService,
     private readonly categoryService: CategoryService
-  ) {}
-  ngOnInit(): void {
+  ) {
     this.categoryService.getAllParent().subscribe((data) => {
-      this.options = data.map((v) => ({ label: v.name, value: v.id }));
+      const options = data.map((v) => ({ label: v.name, value: v.id }));
+      if (this.data.categories.length > 0) {
+        const [tmp, parentCategoryId, childrenCategoryId] = this.data.categories;
+        this.loadChildren({ value: parentCategoryId, label: '' }).then((v) => {
+          for (let i = 0; i < options.length; i++) {
+            const element = options[i];
+            if (element.value == this.data.categories[1]) {
+              options[i]['children'] = v;
+              break;
+            }
+          }
+          this.options = options;
+          this.data.categories = [parentCategoryId, childrenCategoryId];
+        });
+      }
     });
   }
+  ngOnInit(): void {}
   @Input() data: any;
   // 名称
   aliasTagConfig = {
