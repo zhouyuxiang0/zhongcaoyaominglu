@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.json",
-    "build": "ng build --prod",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && ng serve --proxy-config proxy.config.json",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "prettier": "prettier --config ./.prettierrc --write \"src/app/pages/**/**/*.html\"",
