@@ -13,7 +13,10 @@ export class AdminService {
   login(authAdmin: LogedAdmin) {
     return {
       statusCode: HttpStatus.OK,
-      data: { token: this.jwtService.sign(authAdmin) },
+      data: {
+        token: this.jwtService.sign(authAdmin),
+        username: authAdmin.username,
+      },
     };
   }
   @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>;
