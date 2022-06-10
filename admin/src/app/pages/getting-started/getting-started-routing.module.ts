@@ -9,9 +9,9 @@ const routes: Routes = [
     path: '',
     component: GettingStartedComponent,
     children: [
-      { path: 'sample', component: SampleComponent },
+      { path: 'chinese-medicine-list', component: SampleComponent },
       { path: 'category', component: CategoryComponent },
-      { path: '', redirectTo: 'sample', pathMatch: 'full' },
+      { path: '', redirectTo: 'chinese-medicine-list', pathMatch: 'full' },
     ],
   },
 ];

@@ -41,6 +41,7 @@
         <d-tags-input
           name="imgList"
           [(ngModel)]="data.imgList"
+          (ngModelChange)="formChange()"
           [displayProperty]="taskTagConfig.displayProperty"
           [placeholder]="taskTagConfig.placeholder"
           [minLength]="taskTagConfig.minLength"

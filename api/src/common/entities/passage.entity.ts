@@ -16,6 +16,7 @@ export class Passage extends BaseEntity {
   @ManyToOne(
     () => ChineseMedicine,
     (chineseMedicine) => chineseMedicine.passage,
+    { createForeignKeyConstraints: false },
   )
   chineseMedicine: ChineseMedicine;
 

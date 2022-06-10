@@ -74,7 +74,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
           disabled: true,
           handler: ($event: Event) => {
             const { name, aliasTags, imgList, categories, natureSelects, tasteSelects, meridianTropismSelects, contents } =
-              results.modalContentInstance;
+              results.modalContentInstance.data;
             this.chineseMedicineService
               .add(
                 name,

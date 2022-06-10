@@ -126,19 +126,11 @@ export class ChineseMedicineService {
       chineseMedicine.category = category;
     }
     if (updateChineseMedicineDto.images) {
-      const imgs = await this.imageRepo.find({
-        where: {
-          url: In(updateChineseMedicineDto.images),
-        },
+      chineseMedicine.images = updateChineseMedicineDto.images.map((v) => {
+        const img = new Image();
+        img.url = v;
+        return img;
       });
-      chineseMedicine.images = updateChineseMedicineDto.images
-        .filter((v) => !imgs.find((i) => i.url == v))
-        .map((v) => {
-          const img = new Image();
-          img.url = v;
-          return img;
-        })
-        .concat(imgs);
     }
     if (updateChineseMedicineDto.meridianTropismIds) {
       chineseMedicine.meridianTropism =

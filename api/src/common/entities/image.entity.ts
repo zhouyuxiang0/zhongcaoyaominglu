@@ -3,7 +3,7 @@ import {
   Column,
   Entity,
   Index,
-  ManyToOne,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DateColumn } from './date.entity';
@@ -14,10 +14,9 @@ export class Image {
   id: number;
 
   @Column()
-  @Index({ unique: true })
   url: string;
 
-  @ManyToOne(() => ChineseMedicine, (image) => image.images)
+  @ManyToMany(() => ChineseMedicine, (image) => image.images)
   chineseMedicine: ChineseMedicine;
 
   @Column(() => DateColumn)

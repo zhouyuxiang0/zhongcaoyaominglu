@@ -2,7 +2,7 @@ export default {
   page: {
     gettingStarted: {
       title: '开始使用',
-      sample: '示例页',
+      'chinese-medicine-list': '列表',
       category: '分类',
     },
   },

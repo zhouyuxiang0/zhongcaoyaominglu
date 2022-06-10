@@ -17,7 +17,13 @@ export class ChineseMedicineAlias extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => ChineseMedicine, (chineseMedicine) => chineseMedicine.alias)
+  @ManyToOne(
+    () => ChineseMedicine,
+    (chineseMedicine) => chineseMedicine.alias,
+    {
+      createForeignKeyConstraints: false,
+    },
+  )
   chineseMedicine: ChineseMedicine;
 
   @Column(() => DateColumn)

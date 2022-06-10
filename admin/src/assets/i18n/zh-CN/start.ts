@@ -13,7 +13,7 @@ export default {
     breadcrumb: {
       home: '首页',
       start: '开始使用',
-      example: '示例页',
+      example: '列表',
       category: '分类',
     },
     docLink: 'DevUI Admin 官方文档',

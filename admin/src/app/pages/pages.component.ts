@@ -95,8 +95,8 @@ export class PagesComponent implements OnInit {
         open: true,
         children: [
           {
-            title: values['gettingStarted']['sample'],
-            link: '/pages/getting-started/sample',
+            title: values['gettingStarted']['chinese-medicine-list'],
+            link: '/pages/getting-started/chinese-medicine-list',
           },
           {
             title: values['gettingStarted']['category'],

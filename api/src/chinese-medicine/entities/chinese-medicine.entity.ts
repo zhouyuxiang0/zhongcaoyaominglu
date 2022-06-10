@@ -26,32 +26,36 @@ export class ChineseMedicine extends BaseEntity {
   @Column()
   public name: string;
 
-  @OneToMany(() => Image, (image) => image.chineseMedicine, {
-    cascade: ['insert'],
+  @ManyToMany(() => Image, (image) => image.chineseMedicine, {
+    cascade: true,
   })
+  @JoinTable()
   public images: Image[];
 
   @OneToMany(() => ChineseMedicineAlias, (val) => val.chineseMedicine, {
-    cascade: ['insert', 'remove', 'update', 'recover'],
+    cascade: true,
+    eager: true,
   })
   public alias: ChineseMedicineAlias[];
 
-  @OneToMany(() => Passage, (val) => val.chineseMedicine)
+  @OneToMany(() => Passage, (val) => val.chineseMedicine, {
+    cascade: true,
+  })
   public passage: Passage[];
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, { eager: true })
   @JoinColumn()
   public category: Category;
 
-  @ManyToMany(() => Nature)
+  @ManyToMany(() => Nature, { eager: true })
   @JoinTable()
   public nature: Nature[];
 
-  @ManyToMany(() => Taste)
+  @ManyToMany(() => Taste, { eager: true })
   @JoinTable()
   public taste: Taste[];
 
-  @ManyToMany(() => MeridianTropism)
+  @ManyToMany(() => MeridianTropism, { eager: true })
   @JoinTable()
   public meridianTropism: MeridianTropism[];
 

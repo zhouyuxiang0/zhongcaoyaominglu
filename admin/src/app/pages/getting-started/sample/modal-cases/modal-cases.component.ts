@@ -34,6 +34,8 @@ export class ModalCasesComponent implements OnInit {
           this.options = options;
           this.data.categories = [parentCategoryId, childrenCategoryId];
         });
+      } else {
+        this.options = options;
       }
     });
   }
