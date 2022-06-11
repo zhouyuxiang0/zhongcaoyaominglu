@@ -1,19 +1,24 @@
 import { CacheModule, Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { CommonService } from './common.service';
 import { Image } from './entities/image.entity';
 import { Passage } from './entities/passage.entity';
 @Global()
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
       port: 3306,
       username: process.env.NODE_ENV == 'production' ? '' : 'root',
-      password: process.env.NODE_ENV == 'production' ? '' :'root',
+      password: process.env.NODE_ENV == 'production' ? '' : 'root',
       database: 'zhongcaoyaominglu',
       autoLoadEntities: true,
       synchronize: true,
