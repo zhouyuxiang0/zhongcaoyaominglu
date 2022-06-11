@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { CascaderItem, DialogService, EditableTip } from 'ng-devui';
+import { DialogService } from 'ng-devui';
 import { CategoryService } from 'src/app/@core/services/category.service';
 import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.service';
 import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
