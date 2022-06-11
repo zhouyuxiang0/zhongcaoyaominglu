@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
   i18nValues: any;
 
   formData = {
-    userAccount: '18395433055',
-    userAccountPassword: '929957640',
+    userAccount: '',
+    userAccountPassword: '',
     userEmail: 'admin@devui.com',
     userEmailPassword: 'devuiadmin',
   };
