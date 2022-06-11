@@ -14,7 +14,7 @@ import { Passage } from './entities/passage.entity';
       rootPath: join(__dirname, '..', 'public'),
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'mariadb',
       host: 'localhost',
       port: 3306,
       username: process.env.NODE_ENV == 'production' ? '' : 'root',
