@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { DialogService } from 'ng-devui';
+import { DialogService, ToastService } from 'ng-devui';
 import { CategoryService } from 'src/app/@core/services/category.service';
 import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.service';
 import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
@@ -19,10 +19,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly dialogService: DialogService,
     private readonly chineseMedicineService: ChineseMedicineService,
-    private readonly categoryService: CategoryService,
-    private readonly natureService: NatureService,
-    private readonly tasteService: TasteService,
-    private readonly meridianTropismService: MeridianTropismService
+    private toastService: ToastService
   ) {}
   chineseMedicines = [];
   ngOnInit(): void {
@@ -151,13 +148,23 @@ export class SampleComponent implements OnInit, AfterViewInit {
                 aliasTags.map((v) => (v.id ? { id: v.id, name: v.name } : { name: v.name })),
                 imgList.map((v) => v.url),
                 categories[1],
-                natureSelects.map((v) => v.id),
-                tasteSelects.map((v) => v.id),
-                meridianTropismSelects.map((v) => v.id),
+                natureSelects.map((v) => v.value),
+                tasteSelects.map((v) => v.value),
+                meridianTropismSelects.map((v) => v.value),
                 contents.map((v) => (v.id ? { id: v.id, title: v.title, content: v.content } : v))
               )
               .subscribe((data) => {
                 results.modalInstance.hide();
+                this.toastService.open({
+                  value: [
+                    {
+                      severity: 'info',
+                      summary: '提示',
+                      content: '修改成功！',
+                    },
+                  ],
+                  life: 2000,
+                });
                 this.loadList();
               });
           },
@@ -176,9 +183,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
         aliasTags: rowItem.alias,
         imgList: rowItem.images,
         categories: [`${rowItem.category.parent.name} / ${rowItem.category.name}`, rowItem.category.parent.id, rowItem.category.id],
-        natureSelects: rowItem.nature,
-        tasteSelects: rowItem.taste,
-        meridianTropismSelects: rowItem.meridianTropism,
+        natureSelects: rowItem.nature.map((v) => ({ name: v.name, value: v.id })),
+        tasteSelects: rowItem.taste.map((v) => ({ name: v.name, value: v.id })),
+        meridianTropismSelects: rowItem.meridianTropism.map((v) => ({ name: v.name, value: v.id })),
         contents: rowItem.passage,
         canConfirm: (value: boolean) => {
           results.modalInstance.updateButtonOptions([{ disabled: !value }]);
