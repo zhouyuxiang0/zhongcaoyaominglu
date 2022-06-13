@@ -13,7 +13,9 @@ export class Image {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    type: 'text',
+  })
   url: string;
 
   @ManyToMany(() => ChineseMedicine, (image) => image.images)
