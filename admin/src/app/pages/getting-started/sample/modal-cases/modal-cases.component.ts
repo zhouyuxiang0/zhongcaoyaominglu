@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CascaderItem } from 'ng-devui/cascader';
 import { FormLayout } from 'ng-devui/form';
 import { SelectComponent } from 'ng-devui/select';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CategoryService } from 'src/app/@core/services/category.service';
 import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
@@ -160,13 +160,16 @@ export class ModalCasesComponent implements OnInit {
   removeContent(index) {
     this.data.contents = this.data.contents.filter((_, i) => i !== index);
   }
-  imgCheck(value) {
-    return from(fetch(value)).pipe(
-      map((value) => {
-        console.log(value.status == 200);
-
-        return value.status == 200;
-      })
-    );
+  imgCheck(value): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = value;
+      img.onload = (res) => {
+        return resolve(true);
+      };
+      img.onerror = (res) => {
+        return reject(false);
+      };
+    });
   }
 }
