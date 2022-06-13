@@ -61,7 +61,7 @@ export class ModalCasesComponent implements OnInit {
   children1 = [];
   taskTagConfig = {
     displayProperty: 'url',
-    maxLength: 200,
+    maxLength: 2000,
     minLength: 7,
     maxTags: 10,
     placeholder: '添加图片链接',
@@ -163,6 +163,8 @@ export class ModalCasesComponent implements OnInit {
   imgCheck(value) {
     return from(fetch(value)).pipe(
       map((value) => {
+        console.log(value.status == 200);
+
         return value.status == 200;
       })
     );
