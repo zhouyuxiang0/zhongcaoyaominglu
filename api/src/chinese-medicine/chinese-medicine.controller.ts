@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ChineseMedicineService } from './chinese-medicine.service';
 import { CreateChineseMedicineDto } from './dto/create-chinese-medicine.dto';
+import { SearchChineseMedicineDto } from './dto/search-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 
 @Controller('chinese-medicine')
@@ -26,8 +28,8 @@ export class ChineseMedicineController {
   }
 
   @Get()
-  findAll() {
-    return this.chineseMedicineService.findAll();
+  findAll(@Query() searchChineseMedicineDto: SearchChineseMedicineDto) {
+    return this.chineseMedicineService.findAll(searchChineseMedicineDto);
   }
 
   @Get(':id')

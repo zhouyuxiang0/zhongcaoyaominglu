@@ -1,10 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DialogService, ToastService } from 'ng-devui';
-import { CategoryService } from 'src/app/@core/services/category.service';
 import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.service';
-import { MeridianTropismService } from 'src/app/@core/services/meridian-tropism.service';
-import { NatureService } from 'src/app/@core/services/nature.service';
-import { TasteService } from 'src/app/@core/services/taste.service';
 import { JoinPipe } from 'src/app/@shared/pipe/join.pipe';
 import { MapPipe } from 'src/app/@shared/pipe/map.pipe';
 import { ModalCasesComponent } from './modal-cases/modal-cases.component';
@@ -30,9 +26,12 @@ export class SampleComponent implements OnInit, AfterViewInit {
     window.dispatchEvent(new Event('resize'));
   }
 
-  loadList() {
-    this.chineseMedicineService.getMany().subscribe((val) => {
-      this.chineseMedicines = val.map((v) => ({
+  loadList(page = 1, size = 10) {
+    this.chineseMedicineService.getMany(page, size).subscribe((val) => {
+      this.pager.total = val.total;
+      this.pager.pageIndex = page;
+      this.pager.pageSize = size;
+      this.chineseMedicines = val.list.map((v) => ({
         id: v.id,
         name: v.name,
         category: v.category,
@@ -245,7 +244,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
   tableWidthConfig = [
     {
       field: '#',
-      width: '50px',
+      width: '75px',
     },
     {
       field: 'name',
@@ -284,13 +283,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
   pageIndexChange(pageIndex) {
-    this.checkCount(pageIndex);
+    this.loadList(pageIndex, this.pager.pageSize);
   }
   pageSizeChange(pageSize) {
-    this.pager.pageIndex = 1;
-    this.checkCount(this.pager.pageIndex);
-  }
-  checkCount(pageIndex) {
-    console.log('check number of the function calls and show current pageIndex', pageIndex);
+    this.loadList(this.pager.pageIndex, pageSize);
   }
 }

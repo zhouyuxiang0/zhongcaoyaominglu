@@ -30,10 +30,7 @@
           <thead dTableHead>
             <tr dTableRow>
               <th dHeadCell [sortable]="true">#</th>
-              <th
-                dHeadCell
-                *ngFor="let colOption of dataTableOptions.columns; index as i"
-              >
+              <th dHeadCell *ngFor="let colOption of dataTableOptions.columns; index as i">
                 {{ colOption.header }}
               </th>
               <th dHeadCell [sortable]="true">操作</th>
@@ -43,14 +40,13 @@
             <ng-template let-rowItem="rowItem" let-rowIndex="rowIndex">
               <tr dTableRow>
                 <td dTableCell>{{ rowIndex + 1 }}</td>
-                <td
-                  dTableCell
-                  *ngFor="let colOption of dataTableOptions.columns"
-                >
-                <span *ngIf="colOption.field=== 'name'">{{ rowItem[colOption.field] }}</span>
-                <span *ngIf="['category'].includes(colOption.field)">{{ rowItem[colOption.field].name }}</span>
-                <span *ngIf="['alias', 'nature', 'taste', 'meridianTropism'].includes(colOption.field)">{{ rowItem[colOption.field] | map:'name' | join:'，' }}</span>
-                <span *ngIf="colOption.field=== 'createTime'">{{ rowItem[colOption.field] | date:'YYYY/MM/dd' }}</span>
+                <td dTableCell *ngFor="let colOption of dataTableOptions.columns">
+                  <span *ngIf="colOption.field === 'name'">{{ rowItem[colOption.field] }}</span>
+                  <span *ngIf="['category'].includes(colOption.field)">{{ rowItem[colOption.field].name }}</span>
+                  <span *ngIf="['alias', 'nature', 'taste', 'meridianTropism'].includes(colOption.field)">{{
+                    rowItem[colOption.field] | map: 'name' | join: '，'
+                  }}</span>
+                  <span *ngIf="colOption.field === 'createTime'">{{ rowItem[colOption.field] | date: 'YYYY/MM/dd' }}</span>
                 </td>
                 <td>
                   <d-button dTooltip (click)="openEditDialog(rowItem)">修改</d-button>

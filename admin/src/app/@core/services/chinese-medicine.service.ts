@@ -7,16 +7,23 @@ import { ApiResponse } from '../data/response';
 
 @Injectable()
 export class ChineseMedicineService {
-  getMany() {
-    return this.httpClient.get<ApiResponse<any[]>>(environment.api.getChineseMedicine).pipe(
-      map((val) => {
-        if (val.statusCode == 200) {
-          return val.data;
-        } else {
-          throwError(val.message);
-        }
+  getMany(page: number, size: number) {
+    return this.httpClient
+      .get<ApiResponse<{ list: any[]; total: number }>>(environment.api.getChineseMedicine, {
+        params: {
+          page,
+          size,
+        },
       })
-    );
+      .pipe(
+        map((val) => {
+          if (val.statusCode == 200) {
+            return val.data;
+          } else {
+            throwError(val.message);
+          }
+        })
+      );
   }
   constructor(private readonly httpClient: HttpClient) {}
   add(

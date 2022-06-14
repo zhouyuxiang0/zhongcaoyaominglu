@@ -12,8 +12,9 @@ import { Passage } from 'src/common/entities/passage.entity';
 import { MeridianTropism } from 'src/meridian-tropism/entities/meridian-tropism.entity';
 import { Nature } from 'src/nature/entities/nature.entity';
 import { Taste } from 'src/taste/entities/taste.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateChineseMedicineDto } from './dto/create-chinese-medicine.dto';
+import { SearchChineseMedicineDto } from './dto/search-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 import { ChineseMedicineAlias } from './entities/chinese-medicine-alias.entity';
 import { ChineseMedicine } from './entities/chinese-medicine.entity';
@@ -75,8 +76,9 @@ export class ChineseMedicineService {
     };
   }
 
-  async findAll() {
-    const [data, count] = await this.chineseMedicineRepo.findAndCount({
+  async findAll(searchChineseMedicineDto: SearchChineseMedicineDto) {
+    const { page = 1, size = 10 } = searchChineseMedicineDto;
+    const [list, total] = await this.chineseMedicineRepo.findAndCount({
       relations: [
         'images',
         'alias',
@@ -87,10 +89,18 @@ export class ChineseMedicineService {
         'taste',
         'meridianTropism',
       ],
+      skip: (page - 1) * size,
+      take: size,
+      order: {
+        id: 'desc',
+      },
     });
     return {
       statusCode: HttpStatus.OK,
-      data,
+      data: {
+        list,
+        total,
+      },
     };
   }
 
