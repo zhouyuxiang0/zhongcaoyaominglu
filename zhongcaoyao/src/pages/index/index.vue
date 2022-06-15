@@ -1,5 +1,10 @@
 <template>
   <view class="index">
+    <view class="title-container">
+      <view class="title">
+        <text>中草药名录</text>
+      </view>
+    </view>
     <text>{{ msg }}</text>
   </view>
 </template>

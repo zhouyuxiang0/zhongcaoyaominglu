@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '中草药名录'
+  navigationBarTitleText: '中草药名录',
 })
