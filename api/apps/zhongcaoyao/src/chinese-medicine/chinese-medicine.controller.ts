@@ -33,11 +33,13 @@ export class ChineseMedicineController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   findOne(@Param('id') id: string) {
     return this.chineseMedicineService.findOne(+id);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(
     @Param('id') id: string,
     @Body() updateChineseMedicineDto: UpdateChineseMedicineDto,
@@ -46,6 +48,7 @@ export class ChineseMedicineController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(@Param('id') id: string) {
     return this.chineseMedicineService.remove(+id);
   }
