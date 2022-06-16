@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { TtsService } from './tts.service';
 
@@ -6,8 +6,8 @@ import { TtsService } from './tts.service';
 export class TtsController {
   constructor(private readonly ttsService: TtsService) {}
 
-  @Post()
+  @Get()
   getHello(@Body() body, @Res() res: Response) {
-    return this.ttsService.getHello(body, res);
+    return this.ttsService.getHello(res);
   }
 }
