@@ -7,7 +7,7 @@ const App = {
     Taro.loadFontFace({
       family: 'fzkt',
       global: true,
-      source: 'url("https://raw.githubusercontent.com/zhouyuxiang0/zhongcaoyaominglu/master/api/public/FZKTJW.ttf")',
+      source: 'url("https://git.weixin.qq.com/zhouyuxiang/mini/raw/master/FZKTJW.ttf")',
       success: console.log,
     })
   },
