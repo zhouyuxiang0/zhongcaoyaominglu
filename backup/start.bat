@@ -1,1 +1,0 @@
-cargo watch -x fmt -x run
