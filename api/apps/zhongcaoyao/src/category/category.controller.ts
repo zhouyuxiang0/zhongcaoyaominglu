@@ -36,13 +36,13 @@ export class CategoryController {
   }
 
   @Get('all-parent')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   findAllParent() {
     return this.categoryService.findAllParent();
   }
 
   @Get('children')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   findChildrenByParentId(@Query('parentId') parentId: number) {
     return this.categoryService.findChildrenByParentId(parentId);
   }

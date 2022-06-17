@@ -6,31 +6,132 @@
           <text>中草药名录</text>
         </view>
         <view class="calendar">
-          <text>{{today}}</text>
+          <text>{{ today }}</text>
         </view>
         <view class="cover">
           <text class="cover-title">今日药材小知识</text>
         </view>
       </view>
     </view>
+    <view class="list">
+      <view v-for="item in list" v-bind:key="item.id" :style="item.style">
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
-import './index.css'
-import solarLunar from 'solarlunar'
+import "./index.css";
+import solarLunar from "solarlunar";
+import consts from "../../consts";
 
 export default {
-  data () {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth()
-    const day = now.getDate()
-    const {gzYear, gzMonth, gzDay} = solarLunar.solar2lunar(year, month, day)
-
+  data() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const day = now.getDate();
+    const { gzYear, gzMonth, gzDay } = solarLunar.solar2lunar(year, month, day);
+    // console.log(consts.bgImgs);
+    const list = [
+      {
+        id: 1,
+        name: "解表",
+      },
+      {
+        id: 2,
+        name: "清热",
+      },
+      {
+        id: 3,
+        name: "泻下",
+      },
+      {
+        id: 4,
+        name: "祛风湿",
+      },
+      {
+        id: 5,
+        name: "芳香化湿",
+      },
+      // {
+      //   id: 6,
+      //   name: "利水渗湿",
+      // },
+      {
+        id: 7,
+        name: "温里",
+      },
+      {
+        id: 8,
+        name: "理气",
+      },
+      {
+        id: 9,
+        name: "消食导滞",
+      },
+      {
+        id: 10,
+        name: "驱虫",
+      },
+      {
+        id: 11,
+        name: "止血",
+      },
+      {
+        id: 12,
+        name: "活血",
+      },
+      {
+        id: 13,
+        name: "化痰止咳平喘",
+      },
+      {
+        id: 14,
+        name: "安神",
+      },
+      {
+        id: 15,
+        name: "平肝熄风",
+      },
+      {
+        id: 16,
+        name: "开窍",
+      },
+      {
+        id: 17,
+        name: "补益",
+      },
+      {
+        id: 18,
+        name: "固涩",
+      },
+      {
+        id: 19,
+        name: "外用",
+      },
+    ];
     return {
       today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
-    }
-  }
-}
+      list: list.map((v) => {
+        const url = consts.bgImgs.get(v.name)
+        if (!url) throw Error(v.name)
+        const style = {
+          'padding-bottom': '35%',
+          'background-image': `url(${url})`,
+          "background-size": '100%',
+          "background-repeat": "no-repeat",
+          position: 'relative',
+          margin: '0 auto'
+        };
+        return {
+          ...v,
+          style,
+        };
+      }),
+    };
+  },
+  method() {},
+};
 </script>
+
