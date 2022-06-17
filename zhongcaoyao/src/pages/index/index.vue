@@ -14,7 +14,15 @@
       </view>
     </view>
     <view class="list">
-      <view v-for="item in list" v-bind:key="item.id" :style="item.style">
+      <view v-for="(item, index) in list" v-bind:key="item.id" :style="item.style" :class="'item' + index">
+        <view class="item-container">
+          <view class="item-container-pinyin">
+            {{item.pinyin}}
+          </view>
+          <view class="item-container-text">
+            {{item.name}}
+          </view>
+        </view>
       </view>
     </view>
   </view>
@@ -24,6 +32,7 @@
 import "./index.css";
 import solarLunar from "solarlunar";
 import consts from "../../consts";
+import { pinyin } from 'pinyin-pro'
 
 export default {
   data() {
@@ -117,15 +126,16 @@ export default {
         const url = consts.bgImgs.get(v.name)
         if (!url) throw Error(v.name)
         const style = {
-          'padding-bottom': '35%',
-          'background-image': `url(${url})`,
-          "background-size": '100%',
-          "background-repeat": "no-repeat",
-          position: 'relative',
-          margin: '0 auto'
+          // 'padding-bottom': '35%',
+          // 'background-image': `url(${url})`,
+          // "background-size": '100%',
+          // "background-repeat": "no-repeat",
+          // position: 'relative',
+          // margin: '0 auto'
         };
         return {
           ...v,
+          pinyin: pinyin(v.name, {toneType: 'none'}),
           style,
         };
       }),
