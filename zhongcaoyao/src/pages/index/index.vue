@@ -14,15 +14,40 @@
       </view>
     </view>
     <view class="list">
-      <view v-for="(item, index) in list" v-bind:key="item.id" :style="item.style" :class="'item' + index">
+      <view
+        v-for="(item, index) in list"
+        v-bind:key="item.id"
+        :style="item.style"
+        :class="'item' + index"
+      >
         <view class="item-container">
           <view class="item-container-pinyin">
-            {{item.pinyin}}
+            {{ item.pinyin }}
           </view>
           <view class="item-container-text">
-            {{item.name}}
+            {{ item.name }}
           </view>
         </view>
+      </view>
+    </view>
+    <view class="list-bottom">
+      <view style="height: 78%"></view>
+      <input type="text" class="search" :placeholder="placeholder" />
+    </view>
+    <view class="foot">
+      <text>意见反馈邮箱: zhouyuxiang@foxmail.com</text>
+      <text>参考文献:《本草纲目》</text>
+      <text>商务洽谈 WeChat: Tsuripink | 攻城狮: ZHOU | 视觉: 板井泉水</text>
+      <!-- <P>特别感谢: 王杉杉 周宇翔</P> -->
+      <view class="sup">
+        <navigator
+          target="miniProgram"
+          open-type="navigate"
+          app-id="wx08593a48d086987c"
+          path="plugin-private://wx34345ae5855f892d/pages/productDetail/productDetail?productId=70199546"
+          version="release"
+          >赞助小程序</navigator
+        >
       </view>
     </view>
   </view>
@@ -32,7 +57,7 @@
 import "./index.css";
 import solarLunar from "solarlunar";
 import consts from "../../consts";
-import { pinyin } from 'pinyin-pro'
+import { pinyin } from "pinyin-pro";
 
 export default {
   data() {
@@ -121,10 +146,11 @@ export default {
       },
     ];
     return {
+      placeholder: "苍耳子丶|性平丶|味辛丶|......",
       today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
       list: list.map((v) => {
-        const url = consts.bgImgs.get(v.name)
-        if (!url) throw Error(v.name)
+        const url = consts.bgImgs.get(v.name);
+        if (!url) throw Error(v.name);
         const style = {
           // 'padding-bottom': '35%',
           // 'background-image': `url(${url})`,
@@ -135,7 +161,7 @@ export default {
         };
         return {
           ...v,
-          pinyin: pinyin(v.name, {toneType: 'none'}),
+          pinyin: pinyin(v.name, { toneType: "none" }),
           style,
         };
       }),
