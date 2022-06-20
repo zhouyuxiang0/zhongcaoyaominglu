@@ -35,7 +35,7 @@
       <input type="text" class="search" :placeholder="placeholder" />
     </view>
     <view class="foot">
-      <text>意见反馈邮箱: zhouyuxiang@foxmail.com</text>
+      <text>意见反馈邮箱: zhouyuxiang0@foxmail.com</text>
       <text>参考文献:《本草纲目》</text>
       <text>商务洽谈 WeChat: Tsuripink | 攻城狮: ZHOU | 视觉: 板井泉水</text>
       <!-- <P>特别感谢: 王杉杉 周宇翔</P> -->
