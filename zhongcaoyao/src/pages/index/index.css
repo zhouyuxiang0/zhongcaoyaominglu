@@ -46,9 +46,8 @@
 }
 
 .list {
-  margin-bottom: 38%;
   width: 100%;
-  height: 480px;
+  height: 735px;
   display: grid;
   grid-template-columns: repeat(80, 1.25%);
   margin-top: 16%;
@@ -313,6 +312,7 @@
 }
 
 .list-bottom {
+  margin-top: 30px;
   height: 500px;
   background-image: url("https://brand-guide.shuyun.com/IAM/8daed5bf2e87.png");
   background-repeat: no-repeat;
