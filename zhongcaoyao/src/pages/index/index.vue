@@ -34,6 +34,7 @@
       <view style="height: 78%"></view>
       <input type="text" class="search" :placeholder="placeholder" />
     </view>
+    <button @tap="jumpDetail" id="麻黄">跳转</button>
     <view class="foot">
       <text>意见反馈邮箱: zhouyuxiang0@foxmail.com</text>
       <text>参考文献:《本草纲目》</text>
@@ -55,6 +56,7 @@
 
 <script>
 import "./index.css";
+import Taro from '@tarojs/taro'
 import solarLunar from "solarlunar";
 import consts from "../../consts";
 import { pinyin } from "pinyin-pro";
@@ -167,7 +169,13 @@ export default {
       }),
     };
   },
-  method() {},
+  methods: {
+    jumpDetail(e) {
+      Taro.navigateTo({
+        url: `../detail/detail?name=${e.currentTarget.id}`
+      })
+    }
+  },
 };
 </script>
 
