@@ -7,3 +7,16 @@
   font-weight: 800;
   font-size: 50px;
 }
+page {
+  background-image: url('https://brand-guide.shuyun.com/IAM/4b21d6a7d9ec.jpg');
+  background-repeat: repeat;
+  background-position: center center;
+  background-size: contain;
+}
+.title-bottom-img {
+  background-image: url('https://brand-guide.shuyun.com/IAM/d813822ca2f0.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 10px;
+}

@@ -1,7 +1,8 @@
 <template>
-  <view>
+  <view class="detail">
     <view class="title">
       <text>中草药名录</text>
+      <view class="title-bottom-img"></view>
     </view>
   </view>
 </template>
