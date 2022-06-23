@@ -14,9 +14,10 @@ page {
   background-size: contain;
 }
 .title-bottom-img {
-  background-image: url('https://brand-guide.shuyun.com/IAM/d813822ca2f0.jpg');
+  background-image: url('https://brand-guide.shuyun.com/IAM/4cbfbc921078.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  height: 10px;
+  height: 14px;
+  margin-top: 10px;
 }
