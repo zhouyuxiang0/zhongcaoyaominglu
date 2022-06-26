@@ -41,6 +41,7 @@
       </view>
     </view>
     <view class="bottom-img">
+      <view class="text-margin"></view>
       <input type="text" class="search" :placeholder="placeholder" />
     </view>
     <button @tap="jumpDetail" id="麻黄">跳转</button>

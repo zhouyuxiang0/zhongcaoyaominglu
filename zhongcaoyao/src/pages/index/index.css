@@ -315,7 +315,6 @@
   margin-top: 30px;
 }
 .bottom-img {
-  margin-top: 30px;
   height: 680px;
   background-image: url("https://brand-guide.shuyun.com/IAM/8daed5bf2e87.png");
   background-repeat: no-repeat;
@@ -399,5 +398,7 @@
   width: 92%;
   margin: auto;
 }
-
+.text-margin {
+  height: 90%;
+}
 
