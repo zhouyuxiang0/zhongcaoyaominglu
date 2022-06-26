@@ -313,6 +313,9 @@
 
 .list-bottom {
   margin-top: 30px;
+}
+.bottom-img {
+  margin-top: 30px;
   height: 680px;
   background-image: url("https://brand-guide.shuyun.com/IAM/8daed5bf2e87.png");
   background-repeat: no-repeat;
@@ -353,5 +356,48 @@
   color: #466846;
 }
 
+.touched {
+  background-color: #346634;
+  color: #ffffff;
+}
+
+.child-category {
+  height: 80px;
+  width: 92%;
+  margin: auto;
+  background: #f1f1f1;
+  color: #999999;
+  line-height:  80px;
+  margin-bottom: 30px;
+}
+.child-category > text {
+  padding: 30px;
+}
+
+.childTouched {
+  color: #656634;
+}
+
+.selected {
+  background-color: #6f703e;
+  color: #fdffcd;
+}
+
+.name {
+  background-color: #323302;
+  color: #fdffcd;
+  height: 75px;
+  line-height: 75px;
+  margin: 10px;
+  padding: 15px 30px;
+  border-radius: 0px 40px 40px 40px;
+}
+
+.name-list {
+  font-family: 'kaiti';
+  font-weight: 500;
+  width: 92%;
+  margin: auto;
+}
 
 

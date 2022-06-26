@@ -15,13 +15,13 @@
     </view>
     <view class="list">
       <view
-        v-for="(item, index) in list"
+        v-for="(item, index) in category"
         v-bind:key="item.id"
         :style="item.style"
-        :class="'item' + index"
+        :class="['item' + index]"
       >
-        <view class="item-container">
-          <view class="item-container-pinyin">
+        <view class="item-container" :class="{'touched': item.id == touchedIndex}">
+          <view class="item-container-pinyin" :class="{'touched': item.id == touchedIndex}">
             {{ item.pinyin }}
           </view>
           <view class="item-container-text">
@@ -31,7 +31,16 @@
       </view>
     </view>
     <view class="list-bottom">
-      <view style="height: 78%"></view>
+      <view style="height: 78%">
+        <view class="child-category">
+          <text v-for="(item) in childCategory" v-bind:key="item.id" :class="{'childTouched': item.id == childTouchedIndex}">{{item.name}}</text>
+        </view>
+        <view class="name-list">
+          <text v-for="(item) in list" v-bind:key="item.id" :class="{'selected': item.id == selectedIndex}" class="name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="bottom-img">
       <input type="text" class="search" :placeholder="placeholder" />
     </view>
     <button @tap="jumpDetail" id="麻黄">跳转</button>
@@ -148,9 +157,14 @@ export default {
       },
     ];
     return {
+      selectedIndex: '3',
+      touchedIndex: '16',
+      childTouchedIndex: '1',
       placeholder: "苍耳子丶|性平丶|味辛丶|......",
       today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
-      list: list.map((v) => {
+      list: [{id: 1, name :'麝香'},{id: 2, name :'苏百合'},{id: 3, name :'安息香'},{id: 4, name :'石菖蒲'}],
+      childCategory: [{id: 1, name: '温宣开窍'}, {id: 2, name: '凉宣开窍'}],
+      category: list.map((v) => {
         const url = consts.bgImgs.get(v.name);
         if (!url) throw Error(v.name);
         const style = {
