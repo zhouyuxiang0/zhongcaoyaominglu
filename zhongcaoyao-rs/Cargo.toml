@@ -1,0 +1,13 @@
+[package]
+edition = "2021"
+name = "zhongcaoyao-rs"
+version = "0.1.0"
+[dependencies]
+actix-web = "4"
+env_logger = "0.8.2"
+log = "0.4.11"
+serde = "*"
+
+[dependencies.sea-orm]
+features = ["debug-print", "runtime-actix-native-tls", "sqlx-mysql"]
+version = "^0.8.0"
