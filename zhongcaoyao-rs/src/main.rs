@@ -1,9 +1,10 @@
-use actix_web::{get, web, App, Error, HttpRequest, HttpServer, Responder, Result};
-use sea_orm::{ColumnTrait, DatabaseConnection, DbErr, EntityTrait, QueryFilter};
+use actix_web::{web, App, HttpServer};
+use sea_orm::DatabaseConnection;
+mod category;
 mod entity;
 
 #[derive(Debug, Clone)]
-struct AppState {
+pub struct AppState {
     conn: DatabaseConnection,
 }
 
@@ -19,25 +20,11 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(state.clone()))
-            .service(hello)
-            .service(echo)
+            .service(category::get_all_parent)
+            .service(category::create)
+            .service(category::update)
     })
     .bind(("127.0.0.1", 3000))?
     .run()
     .await
-}
-
-#[get("/")]
-async fn hello(data: web::Data<AppState>) -> Result<impl Responder, Error> {
-    let category = entity::category::Entity::find()
-        .filter(entity::category::Column::ParentId.is_null())
-        .all(&data.conn)
-        .await
-        .expect("msg");
-    Ok(web::Json(category))
-}
-
-#[get("/echo")]
-async fn echo() -> impl Responder {
-    "echo"
 }
