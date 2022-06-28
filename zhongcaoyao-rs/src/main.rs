@@ -1,11 +1,25 @@
-use actix_web::{web, App, HttpServer};
+use crate::claims::Claims;
+use actix_web::{dev::ServiceRequest, post, web, App, Error, HttpServer};
+use actix_web_grants::permissions::AttachPermissions;
+use actix_web_httpauth::extractors::bearer::BearerAuth;
+use actix_web_httpauth::middleware::HttpAuthentication;
 use sea_orm::DatabaseConnection;
+use serde::Deserialize;
 mod category;
+mod claims;
+mod common;
 mod entity;
 
 #[derive(Debug, Clone)]
 pub struct AppState {
     conn: DatabaseConnection,
+}
+
+async fn validator(req: ServiceRequest, credentials: BearerAuth) -> Result<ServiceRequest, Error> {
+    // We just get permissions from JWT
+    let claims = claims::decode_jwt(credentials.token())?;
+    req.attach(claims.permissions);
+    Ok(req)
 }
 
 #[actix_web::main]
@@ -16,15 +30,38 @@ async fn main() -> std::io::Result<()> {
         .await
         .unwrap();
     let state = AppState { conn };
+    let auth = HttpAuthentication::bearer(validator);
     log::info!("server listening on http://127.0.0.1:{}", 3000);
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(state.clone()))
-            .service(category::get_all_parent)
-            .service(category::create)
-            .service(category::update)
+            .service(create_token)
+            .service(
+                web::scope("api")
+                    .wrap(auth.clone())
+                    .service(category::get_all_parent)
+                    .service(category::create)
+                    .service(category::update),
+            )
     })
     .bind(("127.0.0.1", 3000))?
     .run()
     .await
+}
+
+#[post("/token")]
+pub async fn create_token(info: web::Json<UserPermissions>) -> Result<String, Error> {
+    let user_info = info.into_inner();
+    // Create a JWT
+    let claims = Claims::new(user_info.username, user_info.permissions);
+    let jwt = claims::create_jwt(claims)?;
+
+    // Return token for work with example handlers
+    Ok(jwt)
+}
+
+#[derive(Deserialize)]
+pub struct UserPermissions {
+    pub username: String,
+    pub permissions: Vec<String>,
 }

@@ -4,9 +4,13 @@ name = "zhongcaoyao-rs"
 version = "0.1.0"
 [dependencies]
 actix-web = "4"
+jsonwebtoken = "7.2.0"
+actix-web-grants = "3"
+actix-web-httpauth = "0.6.0"
 env_logger = "0.8.2"
 log = "0.4.11"
-serde = "*"
+serde = "1.0.117"
+chrono = "0.4.19"
 
 [dependencies.sea-orm]
 features = ["debug-print", "runtime-actix-native-tls", "sqlx-mysql"]
