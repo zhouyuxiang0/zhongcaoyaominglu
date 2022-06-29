@@ -36,15 +36,34 @@
             v-bind:key="image.id"
             class="step-item"
             :class="{ select: image.id == imageId }"
-            :style="{width: 60 / images.length + '%' }"
+            :style="{ width: 60 / images.length + '%' }"
           ></view>
         </view>
       </view>
     </view>
     <view class="content-container">
-      <text class="nature">性温</text>
-      <text class="taste">味酸</text>
-      <view class="content"></view>
+      <view class="tag-list">
+        <text class="nature">性温</text>
+        <text class="taste">味酸</text>
+      </view>
+      <view class="desc">
+        <text>{{ desc }}</text>
+      </view>
+      <view class="guijing">
+        <view class="guijing-tag"></view>
+        <text>归经：{{ guijing || "无" }}</text>
+      </view>
+      <view
+        class="content-item"
+        v-for="content in contents"
+        v-bind:key="content.id"
+      >
+        <view class="content-title">
+          <view class="content-title-tag"><text>{{ content.title }}</text></view>
+          <text>{{content.title.length !== maxTitleLen ? '&emsp;'.repeat((maxTitleLen - content.title.length)) : ''}}{{content.title }}</text>
+        </view>
+        <view class="content">{{ content.content }}</view>
+      </view>
     </view>
   </view>
 </template>
@@ -71,12 +90,24 @@ export default {
       {
         id: 3,
         url: "https://img1.baidu.com/it/u=2134124050,2944533276&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=500",
-      }
+      },
     ];
+    this.contents = [
+      { id: 1, title: "入药部位", content: "植物的干燥近成熟果实" },
+      {
+        id: 2,
+        title: "功能",
+        content: "平肝和胃，祛湿舒筋。治吐泻转筋，湿痹，脚气，水肿，痢疾。",
+      },
+    ];
+    this.maxTitleLen = [...this.contents].sort((a, b) => a.title.length - b.title.length)[this.contents.length - 1].title.length
     this.index = 0;
     this.imageId = this.images[0].id;
     this.name = "木瓜";
     this.category = "祛风湿散寒";
+    this.guijing = "肝，脾经";
+    this.desc =
+      "又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠";
     setInterval(() => {
       this.index = this.index + 1;
       const target = this.images[this.index];
@@ -92,6 +123,9 @@ export default {
       images: this.images,
       msg: this.name,
       category: this.category,
+      desc: this.desc,
+      guijing: this.guijing,
+      contents: this.contents,
     };
   },
   method() {},
