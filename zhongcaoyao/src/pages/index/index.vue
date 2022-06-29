@@ -31,25 +31,22 @@
       </view>
     </view>
     <view class="list-bottom">
-      <view style="height: 78%">
         <view class="child-category">
           <text v-for="(item) in childCategory" v-bind:key="item.id" :class="{'childTouched': item.id == childTouchedIndex}">{{item.name}}</text>
         </view>
         <view class="name-list">
           <text v-for="(item) in list" v-bind:key="item.id" :class="{'selected': item.id == selectedIndex}" class="name">{{item.name}}</text>
         </view>
-      </view>
     </view>
-    <view class="bottom-img">
+    <!-- <view class="bottom-img">
       <view class="text-margin"></view>
       <input type="text" class="search" :placeholder="placeholder" />
-    </view>
+    </view> -->
     <button @tap="jumpDetail" id="麻黄">跳转</button>
-    <view class="foot">
+    <!-- <view class="foot">
       <text>意见反馈邮箱: zhouyuxiang0@foxmail.com</text>
       <text>参考文献:《本草纲目》</text>
       <text>商务洽谈 WeChat: Tsuripink | 攻城狮: ZHOU | 视觉: 板井泉水</text>
-      <!-- <P>特别感谢: 王杉杉 周宇翔</P> -->
       <view class="sup">
         <navigator
           target="miniProgram"
@@ -60,7 +57,7 @@
           >赞助小程序</navigator
         >
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 

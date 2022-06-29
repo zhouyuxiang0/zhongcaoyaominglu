@@ -8,6 +8,7 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  margin-bottom: 16%;
 }
 .title {
   color: #000000;
@@ -50,10 +51,10 @@
   height: 735px;
   display: grid;
   grid-template-columns: repeat(80, 1.25%);
-  margin-top: 16%;
   font-family: 'kaiti';
   font-weight: 800;
   font-size: 50px;
+  margin-bottom: 30px;
 }
 .item-container-pinyin {
   color: #40880a;
@@ -312,7 +313,20 @@
 }
 
 .list-bottom {
-  margin-top: 30px;
+  height: 78%;
+}
+
+.child-category {
+  height: 5vh;
+  width: 92%;
+  margin: auto;
+  background: #f1f1f1;
+  color: #999999;
+  line-height:  5vh;
+  margin-bottom: 30px;
+}
+.child-category > text {
+  padding: 30px;
 }
 .bottom-img {
   height: 680px;
@@ -360,18 +374,7 @@
   color: #ffffff;
 }
 
-.child-category {
-  height: 80px;
-  width: 92%;
-  margin: auto;
-  background: #f1f1f1;
-  color: #999999;
-  line-height:  80px;
-  margin-bottom: 30px;
-}
-.child-category > text {
-  padding: 30px;
-}
+
 
 .childTouched {
   color: #656634;
