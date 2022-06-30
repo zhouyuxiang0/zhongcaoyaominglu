@@ -6,15 +6,15 @@
     </view>
     <view class="card-container">
       <view class="card-tag">
-        <text>祛风湿散寒</text>
+        <text>{{childCategory}}</text>
       </view>
       <view class="card">
         <view class="child-card">
           <view class="pinyin">
-            <text>mu gua</text>
+            <text>{{pinyin}}</text>
           </view>
           <view class="hanzi">
-            <text>木 瓜</text>
+            <text>{{name}}</text>
           </view>
           <view class="img-container">
             <image v-for="image in images" v-bind:key="image.id" :src="image.url" alt="" v-show="image.id == imageId">
@@ -22,8 +22,8 @@
           </view>
         </view>
         <view class="category">
-          <view class="category-pinyin"><text>qu feng shi</text></view>
-          <view class="category-hanzi"><text>祛风湿</text></view>
+          <view class="category-pinyin"><text>{{parentCategoryPinyin}}</text></view>
+          <view class="category-hanzi"><text>{{parentCategory}}</text></view>
         </view>
         <view class="img-step">
           <view v-for="image in images" v-bind:key="image.id" class="step-item" :class="{ select: image.id == imageId }"
@@ -62,14 +62,20 @@
 
 <script>
 import "./detail.css";
-import { getCurrentInstance } from "@tarojs/taro";
+import { Current } from "@tarojs/taro";
+import { pinyin } from "pinyin-pro";
+
 export default {
-  created() {
-    const current = getCurrentInstance();
-    const params = current.router.params;
-    this.msg = params.name;
-  },
   data() {
+    const {name, parentCategory, childCategory} = Current.router.params
+    this.data = {
+      name,
+      parentCategory,
+      childCategory,
+      pinyin: pinyin(Current.router.params.name, {toneType:'none'}),
+      parentCategoryPinyin: pinyin(parentCategory, {toneType: 'none'})
+    }
+    console.log(Current.router.params,this.name, this.pinyin);
     this.images = [
       {
         id: 1,
@@ -95,7 +101,6 @@ export default {
     this.maxTitleLen = [...this.contents].sort((a, b) => a.title.length - b.title.length)[this.contents.length - 1].title.length
     this.index = 0;
     this.imageId = this.images[0].id;
-    this.name = "木瓜";
     this.category = "祛风湿散寒";
     this.guijing = "肝，脾经";
     this.desc =
@@ -113,11 +118,15 @@ export default {
     return {
       imageId: this.imageId,
       images: this.images,
-      msg: this.name,
       category: this.category,
       desc: this.desc,
       guijing: this.guijing,
       contents: this.contents,
+      name: this.data.name,
+      pinyin: this.data.pinyin,
+      parentCategory: this.data.parentCategory,
+      parentCategoryPinyin: this.data.parentCategoryPinyin,
+      childCategory: this.data.childCategory
     };
   },
   method() { },
