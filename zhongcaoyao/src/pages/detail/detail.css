@@ -210,11 +210,38 @@ page {
   margin-left: 1.5%;
   height: 100%;
   background-color: #dcd68f;
+  margin-bottom: 2px;
 }
 .content-title-tag > text {
   line-height: 1px;
-  color: #dcd68f;
+  color: #ffffff00;
 }
 .content-title > text {
   white-space: nowrap;
+}
+.content {
+  margin-top: 6px;
+}
+.footer {
+  background-color: #e5edd8;
+  padding: 8% 20% 10% 20%;
+  color: #9fc367;
+  position: relative;
+}
+.footer > text {
+  font-weight: 600;
+  font-size: 28px;
+}
+.help {
+  float: right;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  top: -8%;
+  right: 10%;
+  border-radius: 50%;
+  background-color: #b7a164;
+  color: #ddd48d;
+  text-align: center;
 }

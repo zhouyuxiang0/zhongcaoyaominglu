@@ -51,6 +51,7 @@
           v-bind:key="item.id"
           :class="{ selected: item.id == selectedIndex }"
           class="name"
+          @tap="jumpDetail"
           >{{ item.name }}</text
         >
       </view>
@@ -59,7 +60,6 @@
       <view class="text-margin"></view>
       <input type="text" class="search" :placeholder="placeholder" />
     </view>
-    <button @tap="jumpDetail" id="麻黄">跳转</button>
     <view class="foot">
       <text>意见反馈邮箱: zhouyuxiang0@foxmail.com</text>
       <text>参考文献:《本草纲目》</text>
@@ -82,16 +82,20 @@
 import "./index.css";
 import Taro from "@tarojs/taro";
 import solarLunar from "solarlunar";
-import consts from "../../consts";
 import { pinyin } from "pinyin-pro";
 
 export default {
-  data() {
+  mounted () {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
     const { gzYear, gzMonth, gzDay } = solarLunar.solar2lunar(year, month, day);
+    this.today = `${gzYear}年 ${gzMonth}月 ${gzDay}日`
+    // this.category =
+  },
+  data() {
+
     // console.log(consts.bgImgs);
     const list = [
       {
@@ -176,7 +180,7 @@ export default {
       touchedIndex: "16",
       childTouchedIndex: "1",
       placeholder: "苍耳子丶|性平丶|味辛丶|......",
-      today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
+      today: this.today,
       list: [
         { id: 1, name: "麝香" },
         { id: 2, name: "苏百合" },
@@ -188,20 +192,10 @@ export default {
         { id: 2, name: "凉宣开窍" },
       ],
       category: list.map((v) => {
-        const url = consts.bgImgs.get(v.name);
         if (!url) throw Error(v.name);
-        const style = {
-          // 'padding-bottom': '35%',
-          // 'background-image': `url(${url})`,
-          // "background-size": '100%',
-          // "background-repeat": "no-repeat",
-          // position: 'relative',
-          // margin: '0 auto'
-        };
         return {
           ...v,
           pinyin: pinyin(v.name, { toneType: "none" }),
-          style,
         };
       }),
     };

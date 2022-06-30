@@ -5,7 +5,7 @@
 .title-container {
   width: 100%;
   height: 769px;
-  background-image: url('https://brand-guide.shuyun.com/IAM/b3d80feec285.png');
+  background-image: url("https://brand-guide.shuyun.com/IAM/b3d80feec285.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -17,7 +17,7 @@
   padding-top: 70px;
   width: 100%;
   text-align: center;
-  font-family: 'kaiti';
+  font-family: "kaiti";
   font-weight: 800;
   font-size: 50px;
 }
@@ -35,7 +35,7 @@
   right: 0;
   margin: 40px auto auto auto;
   width: 50%;
-  background-image: url('https://brand-guide.shuyun.com/IAM/5d337e3d7ea7.png');
+  background-image: url("https://brand-guide.shuyun.com/IAM/5d337e3d7ea7.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
@@ -54,7 +54,7 @@
   height: 100%;
   display: grid;
   grid-template-columns: repeat(80, 1.25%);
-  font-family: 'kaiti';
+  font-family: "kaiti";
   font-weight: 800;
   font-size: 50px;
   margin-bottom: 30px;
@@ -76,28 +76,27 @@
   grid-column-end: 77;
 }
 
-.item0>.item-container {
+.item0 > .item-container {
   margin-bottom: 33px;
 }
 
-.item0>.item-container>.item-container-pinyin {
+.item0 > .item-container > .item-container-pinyin {
   font-size: 30px;
   margin-top: 18px;
 }
 
-.item1>.item-container>.item-container-pinyin {
+.item1 > .item-container > .item-container-pinyin {
   font-size: 30px;
   margin-top: 18px;
 }
 
-.item0>.item-container>.item-container-text {
+.item0 > .item-container > .item-container-text {
   margin-bottom: 18px;
 }
 
-.item1>.item-container>.item-container-text {
+.item1 > .item-container > .item-container-text {
   margin-bottom: 18px;
 }
-
 
 .item2 {
   grid-column-start: 4;
@@ -105,15 +104,15 @@
   font-size: 30px;
 }
 
-.item2>.item-container {
+.item2 > .item-container {
   margin-bottom: 25px;
 }
 
-.item2>.item-container>.item-container-text {
+.item2 > .item-container > .item-container-text {
   margin-bottom: 17px;
 }
 
-.item2>.item-container>.item-container-pinyin {
+.item2 > .item-container > .item-container-pinyin {
   font-size: 25px;
   margin-top: 10px;
 }
@@ -124,11 +123,11 @@
   font-size: 30px;
 }
 
-.item3>.item-container>.item-container-text {
+.item3 > .item-container > .item-container-text {
   margin-bottom: 17px;
 }
 
-.item3>.item-container>.item-container-pinyin {
+.item3 > .item-container > .item-container-pinyin {
   margin-top: 10px;
   font-size: 25px;
 }
@@ -139,11 +138,11 @@
   font-size: 30px;
 }
 
-.item4>.item-container>.item-container-text {
+.item4 > .item-container > .item-container-text {
   margin-bottom: 17px;
 }
 
-.item4>.item-container>.item-container-pinyin {
+.item4 > .item-container > .item-container-pinyin {
   font-size: 21px;
   margin-top: 15px;
 }
@@ -158,28 +157,27 @@
   grid-column-end: 77;
 }
 
-.item5>.item-container {
+.item5 > .item-container {
   margin-bottom: 28px;
 }
 
-.item5>.item-container>.item-container-pinyin {
+.item5 > .item-container > .item-container-pinyin {
   font-size: 30px;
   margin-top: 18px;
 }
 
-.item6>.item-container>.item-container-pinyin {
+.item6 > .item-container > .item-container-pinyin {
   font-size: 30px;
   margin-top: 18px;
 }
 
-.item5>.item-container>.item-container-text {
+.item5 > .item-container > .item-container-text {
   margin-bottom: 18px;
 }
 
-.item6>.item-container>.item-container-text {
+.item6 > .item-container > .item-container-text {
   margin-bottom: 18px;
 }
-
 
 .item7 {
   grid-column-start: 4;
@@ -187,16 +185,16 @@
   font-size: 30px;
 }
 
-.item7>.item-container {
+.item7 > .item-container {
   margin-bottom: 21px;
 }
 
-.item7>.item-container>.item-container-pinyin {
+.item7 > .item-container > .item-container-pinyin {
   margin-top: 13px;
   font-size: 22px;
 }
 
-.item7>.item-container>.item-container-text {
+.item7 > .item-container > .item-container-text {
   margin-bottom: 13px;
   font-size: 28px;
 }
@@ -207,12 +205,12 @@
   font-size: 30px;
 }
 
-.item8>.item-container>.item-container-pinyin {
+.item8 > .item-container > .item-container-pinyin {
   margin-top: 13px;
   font-size: 22px;
 }
 
-.item8>.item-container>.item-container-text {
+.item8 > .item-container > .item-container-text {
   margin-bottom: 13px;
   font-size: 28px;
 }
@@ -223,12 +221,12 @@
   font-size: 30px;
 }
 
-.item9>.item-container>.item-container-pinyin {
+.item9 > .item-container > .item-container-pinyin {
   margin-top: 13px;
   font-size: 22px;
 }
 
-.item9>.item-container>.item-container-text {
+.item9 > .item-container > .item-container-text {
   margin-bottom: 13px;
   font-size: 28px;
 }
@@ -239,12 +237,12 @@
   font-size: 30px;
 }
 
-.item10>.item-container>.item-container-pinyin {
+.item10 > .item-container > .item-container-pinyin {
   margin-top: 13px;
   font-size: 22px;
 }
 
-.item10>.item-container>.item-container-text {
+.item10 > .item-container > .item-container-text {
   margin-bottom: 13px;
   font-size: 28px;
 }
@@ -255,16 +253,16 @@
   font-size: 30px;
 }
 
-.item11>.item-container {
+.item11 > .item-container {
   margin-bottom: 25px;
 }
 
-.item11>.item-container>.item-container-pinyin {
+.item11 > .item-container > .item-container-pinyin {
   font-size: 19px;
   margin-top: 13px;
 }
 
-.item11>.item-container>.item-container-text {
+.item11 > .item-container > .item-container-text {
   margin-top: 3px;
   margin-bottom: 10px;
 }
@@ -275,12 +273,12 @@
   font-size: 30px;
 }
 
-.item12>.item-container>.item-container-pinyin {
+.item12 > .item-container > .item-container-pinyin {
   font-size: 25px;
   margin-top: 10px;
 }
 
-.item12>.item-container>.item-container-text {
+.item12 > .item-container > .item-container-text {
   margin-bottom: 7px;
 }
 
@@ -290,12 +288,12 @@
   font-size: 30px;
 }
 
-.item13>.item-container>.item-container-pinyin {
+.item13 > .item-container > .item-container-pinyin {
   font-size: 20px;
   margin-top: 10px;
 }
 
-.item13>.item-container>.item-container-text {
+.item13 > .item-container > .item-container-text {
   margin-top: 2px;
   margin-bottom: 10px;
 }
@@ -306,12 +304,12 @@
   font-size: 30px;
 }
 
-.item14>.item-container>.item-container-pinyin {
+.item14 > .item-container > .item-container-pinyin {
   font-size: 20px;
   margin-top: 10px;
 }
 
-.item14>.item-container>.item-container-text {
+.item14 > .item-container > .item-container-text {
   margin-top: 2px;
   margin-bottom: 10px;
 }
@@ -322,12 +320,12 @@
   font-size: 30px;
 }
 
-.item15>.item-container>.item-container-pinyin {
+.item15 > .item-container > .item-container-pinyin {
   font-size: 20px;
   margin-top: 10px;
 }
 
-.item15>.item-container>.item-container-text {
+.item15 > .item-container > .item-container-text {
   margin-top: 2px;
   margin-bottom: 10px;
 }
@@ -338,12 +336,12 @@
   font-size: 30px;
 }
 
-.item16>.item-container>.item-container-pinyin {
+.item16 > .item-container > .item-container-pinyin {
   font-size: 20px;
   margin-top: 10px;
 }
 
-.item16>.item-container>.item-container-text {
+.item16 > .item-container > .item-container-text {
   margin-top: 2px;
   margin-bottom: 10px;
 }
@@ -354,12 +352,12 @@
   font-size: 30px;
 }
 
-.item17>.item-container>.item-container-pinyin {
+.item17 > .item-container > .item-container-pinyin {
   font-size: 20px;
   margin-top: 10px;
 }
 
-.item17>.item-container>.item-container-text {
+.item17 > .item-container > .item-container-text {
   margin-top: 2px;
   margin-bottom: 10px;
 }
@@ -386,7 +384,7 @@
   margin-bottom: 30px;
 }
 
-.child-category>text {
+.child-category > text {
   padding: 30px;
 }
 
@@ -420,12 +418,12 @@
   padding-bottom: 40px;
 }
 
-.foot>text {
+.foot > text {
   font-size: 18px;
   color: #b3b0b0;
 }
 
-.foot>.sup {
+.foot > .sup {
   margin-top: 10px;
   font-size: 25px;
   color: #466846;
@@ -435,8 +433,6 @@
   background-color: #346634;
   color: #ffffff;
 }
-
-
 
 .childTouched {
   color: #656634;
@@ -458,7 +454,7 @@
 }
 
 .name-list {
-  font-family: 'kaiti';
+  font-family: "kaiti";
   font-weight: 500;
   width: 92%;
   margin: auto;
