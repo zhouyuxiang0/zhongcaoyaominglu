@@ -105,6 +105,12 @@ import solarLunar from "solarlunar";
 import { pinyin, customPinyin } from "pinyin-pro";
 import { PageFlip } from "page-flip";
 customPinyin({ 咳: "ke" });
+// const pageFlip = new PageFlip(document.getElementsByClassName("cover"), {
+//   maxShadowOpacity: 0.5, // Half shadow intensity
+//   showCover: false,
+//   mobileScrollSupport: false, // disable content scrolling on mobile devices
+// });
+// pageFlip.loadFromHTML(document.querySelectorAll(".page"));
 export default {
   async created() {
     try {
@@ -126,13 +132,6 @@ export default {
     const month = now.getMonth();
     const day = now.getDate();
     const { gzYear, gzMonth, gzDay } = solarLunar.solar2lunar(year, month, day);
-    this.data = {
-      selectedIndex: "",
-      touchedIndex: "",
-      childTouchedIndex: "",
-      placeholder: "苍耳子丶|性平丶|味辛丶|......",
-      today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
-    };
     return {
       listStylesWithRow: [
         {
@@ -295,11 +294,11 @@ export default {
           marginBottom: "0rpx",
         },
       ],
-      selectedIndex: this.data.selectedIndex,
-      touchedIndex: this.data.touchedIndex,
-      childTouchedIndex: this.data.childTouchedIndex,
-      placeholder: this.data.placeholder,
-      today: this.data.today,
+      selectedIndex: "",
+      touchedIndex: "",
+      childTouchedIndex: "",
+      placeholder: "苍耳子丶|性平丶|味辛丶|......",
+      today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
       list: [],
       childCategory: [],
       category: [],

@@ -7,6 +7,10 @@
   font-weight: 800;
   font-size: 50px;
 }
+.back {
+  float: left;
+  margin-left: 20px;
+}
 page {
   background-image: url('https://brand-guide.shuyun.com/IAM/4b21d6a7d9ec.jpg');
   background-repeat: repeat;

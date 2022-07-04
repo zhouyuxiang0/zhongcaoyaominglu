@@ -5,29 +5,23 @@ import Taro from '@tarojs/taro'
 
 const App = {
   onLaunch() {
-    Taro.cloud.init({
-      env: 'zhongcaoyao'
-    })
-    Taro.cloud.getTempFileURL({
-      fileList: ['cloud://zhongcaoyao-6g02avio86251601.7a68-zhongcaoyao-6g02avio86251601-1309599613/FZKTJW.ttf'],
+    Taro.loadFontFace({
+      family: 'kaiti',
+      global: true,
+      source: `url("https://admin.zhongcaoyaominglu.com/FZKTJW.ttf?1622620995")`,
+      desc: {
+        style: 'normal',
+        weight: 'normal',
+        variant: 'normal',
+      },
       success: (res) => {
-        const url = res[0].tempFileUrl
-        Taro.loadFontFace({
-          family: 'kaiti',
-          global: true,
-          source: `url("${url}")`,
-          desc: {
-            style: 'normal',
-            weight: 'normal',
-            variant: 'normal',
-          },
-          success: (res) => {
-            console.log('-------', res);
-          },
-          fail: (res) => {
-            console.log('-----', res)
-          }
-        })
+        console.log('-------', res);
+      },
+      fail: (res) => {
+        console.log('-----', res)
+      },
+      complete: (res) => {
+        console.log('----', res);
       }
     })
   },
