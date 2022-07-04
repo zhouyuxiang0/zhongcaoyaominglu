@@ -7,4 +7,7 @@ export class SearchChineseMedicineDto {
   @IsInt()
   @IsOptional()
   size: number;
+  @IsInt()
+  @IsOptional()
+  categoryId: number;
 }

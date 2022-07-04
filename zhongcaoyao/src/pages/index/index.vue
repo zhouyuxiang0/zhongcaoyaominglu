@@ -20,18 +20,34 @@
         :class="['item' + index]"
         @tap="selectParentCategory"
         :id="item.id"
+        :style="{
+          gridColumnStart: listStylesWithRow[index].grid[0],
+          gridColumnEnd: listStylesWithRow[index].grid[1],
+        }"
       >
         <view
           class="item-container"
           :class="{ touched: item.id == touchedIndex }"
+          :style="{ marginBottom: listStylesWithRow[index].marginBottom }"
         >
           <view
             class="item-container-pinyin"
             :class="{ touched: item.id == touchedIndex }"
+            :style="{
+              marginTop: listStylesWithRow[index].pinyinMarginTop,
+              fontSize: listStylesWithRow[index].pinyinFontSize,
+            }"
           >
             {{ item.pinyin }}
           </view>
-          <view class="item-container-text">
+          <view
+            class="item-container-text"
+            :style="{
+              marginBottom: listStylesWithRow[index].textMarginBottom,
+              marginTop: listStylesWithRow[index].textMarginTop,
+              fontSize: listStylesWithRow[index].textFontSize,
+            }"
+          >
             {{ item.name }}
           </view>
         </view>
@@ -86,126 +102,206 @@
 import "./index.css";
 import Taro from "@tarojs/taro";
 import solarLunar from "solarlunar";
-import { pinyin } from "pinyin-pro";
-
+import { pinyin, customPinyin } from "pinyin-pro";
+customPinyin({ 咳: "ke" });
 export default {
+  async created() {
+    try {
+      this.category = (
+        await Taro.request({
+          url: "https://api.zhongcaoyaominglu.com/api/category/all-parent",
+        })
+      ).data.data.map((v) => ({
+        ...v,
+        pinyin: pinyin(v.name, { toneType: "none" }),
+      }));
+    } catch (e) {
+      console.log(e);
+    }
+  },
   data() {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
     const { gzYear, gzMonth, gzDay } = solarLunar.solar2lunar(year, month, day);
-
-    this.placeholder = "苍耳子丶|性平丶|味辛丶|......";
     this.data = {
       selectedIndex: "",
       touchedIndex: "",
       childTouchedIndex: "",
       placeholder: "苍耳子丶|性平丶|味辛丶|......",
-      childCategory: [
-        { id: 1, name: "温宣开窍" },
-        { id: 2, name: "凉宣开窍" },
-      ],
-      list: [
-        { id: 1, name: "麝香" },
-        { id: 2, name: "苏百合" },
-        { id: 3, name: "安息香" },
-        { id: 4, name: "石菖蒲" },
-      ],
-      category: [
-        {
-          id: 1,
-          name: "解表",
-        },
-        {
-          id: 2,
-          name: "清热",
-        },
-        {
-          id: 3,
-          name: "泻下",
-        },
-        {
-          id: 4,
-          name: "祛风湿",
-        },
-        {
-          id: 5,
-          name: "芳香化湿",
-        },
-        // {
-        //   id: 6,
-        //   name: "利水渗湿",
-        // },
-        {
-          id: 7,
-          name: "温里",
-        },
-        {
-          id: 8,
-          name: "理气",
-        },
-        {
-          id: 9,
-          name: "消食导滞",
-        },
-        {
-          id: 10,
-          name: "驱虫",
-        },
-        {
-          id: 11,
-          name: "止血",
-        },
-        {
-          id: 12,
-          name: "活血",
-        },
-        {
-          id: 13,
-          name: "化痰止咳平喘",
-        },
-        {
-          id: 14,
-          name: "安神",
-        },
-        {
-          id: 15,
-          name: "平肝熄风",
-        },
-        {
-          id: 16,
-          name: "开窍",
-        },
-        {
-          id: 17,
-          name: "补益",
-        },
-        {
-          id: 18,
-          name: "固涩",
-        },
-        {
-          id: 19,
-          name: "外用",
-        },
-      ].map((v) => {
-        return {
-          ...v,
-          pinyin: pinyin(v.name, { toneType: "none" }),
-        };
-      }),
       today: `${gzYear}年 ${gzMonth}月 ${gzDay}日`,
     };
     return {
+      listStylesWithRow: [
+        {
+          grid: [4, 40],
+          textFontSize: "50rpx",
+          textMarginBottom: "18rpx",
+          pinyinFontSize: "30rpx",
+          pinyinMarginTop: "18rpx",
+          marginBottom: "33rpx",
+        },
+        {
+          grid: [43, 77],
+          textFontSize: "50rpx",
+          textMarginBottom: "18rpx",
+          pinyinFontSize: "30rpx",
+          pinyinMarginTop: "18rpx",
+          marginBottom: "33rpx",
+        },
+        {
+          grid: [4, 24],
+          textFontSize: "30rpx",
+          textMarginBottom: "17rpx",
+          pinyinFontSize: "25rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [26, 48],
+          textFontSize: "30rpx",
+          textMarginBottom: "17rpx",
+          pinyinFontSize: "25rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [50, 77],
+          textFontSize: "30rpx",
+          textMarginBottom: "17rpx",
+          pinyinFontSize: "21rpx",
+          pinyinMarginTop: "15rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [4, 32],
+          textFontSize: "30rpx",
+          textMarginBottom: "17rpx",
+          pinyinFontSize: "25rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [34, 54],
+          textFontSize: "30rpx",
+          textMarginBottom: "17rpx",
+          pinyinFontSize: "25rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [56, 77],
+          textFontSize: "30rpx",
+          textMarginBottom: "17rpx",
+          pinyinFontSize: "21rpx",
+          pinyinMarginTop: "15rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [4, 24],
+          textFontSize: "28rpx",
+          textMarginBottom: "13rpx",
+          pinyinFontSize: "22rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "21rpx",
+        },
+        {
+          grid: [26, 40],
+          textFontSize: "28rpx",
+          textMarginBottom: "13rpx",
+          pinyinFontSize: "22rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "21rpx",
+        },
+        {
+          grid: [42, 56],
+          textFontSize: "28rpx",
+          textMarginBottom: "13rpx",
+          pinyinFontSize: "22rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "21rpx",
+        },
+        {
+          grid: [58, 77],
+          textFontSize: "28rpx",
+          textMarginBottom: "13rpx",
+          pinyinFontSize: "22rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "21rpx",
+        },
+        {
+          grid: [4, 32],
+          textFontSize: "28rpx",
+          textMarginTop: "3rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "19rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [34, 51],
+          textFontSize: "28rpx",
+          textMarginTop: "3rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "19rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [53, 77],
+          textFontSize: "28rpx",
+          textMarginTop: "3rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "19rpx",
+          pinyinMarginTop: "13rpx",
+          marginBottom: "25rpx",
+        },
+        {
+          grid: [4, 21],
+          textFontSize: "30rpx",
+          textMarginTop: "2rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "20rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "0rpx",
+        },
+        {
+          grid: [23, 39],
+          textFontSize: "30rpx",
+          textMarginTop: "2rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "20rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "0rpx",
+        },
+        {
+          grid: [41, 54],
+          textFontSize: "30rpx",
+          textMarginTop: "2rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "20rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "0rpx",
+        },
+        {
+          grid: [56, 77],
+          textFontSize: "30rpx",
+          textMarginTop: "2rpx",
+          textMarginBottom: "10rpx",
+          pinyinFontSize: "20rpx",
+          pinyinMarginTop: "10rpx",
+          marginBottom: "0rpx",
+        },
+      ],
       selectedIndex: this.data.selectedIndex,
       touchedIndex: this.data.touchedIndex,
       childTouchedIndex: this.data.childTouchedIndex,
       placeholder: this.data.placeholder,
       today: this.data.today,
-      list: this.data.list,
-      childCategory: this.data.childCategory,
-      category: this.data.category,
+      list: [],
+      childCategory: [],
+      category: [],
     };
   },
   methods: {
@@ -222,17 +318,22 @@ export default {
         url: `../detail/detail?name=${name}&parentCategory=${parentCategory}&childCategory=${childCategory}`,
       });
     },
-    selectParentCategory(e) {
+    async selectParentCategory(e) {
       this.touchedIndex = e.currentTarget.id;
-      // 查询childCategory
-      // TODO:
-      Taro.request({
-        url: 'https://api.zhongcaoyaominglu.com'
-      })
-      // this.childCategory = []
+      const {data} = await Taro.request({
+        url: "https://api.zhongcaoyaominglu.com/api/category/children",
+        data: {
+          parentId: this.touchedIndex
+        }
+      });
+      this.childCategory = data.data
     },
-    selectChildCategory(e) {
+    async selectChildCategory(e) {
       this.childTouchedIndex = e.currentTarget.id;
+      console.log(this.childTouchedIndex);
+      // const {data} = await Taro.request({
+      //   url: 'https://api.zhongcaoyaominglu.com/api/'
+      // })
     },
   },
 };

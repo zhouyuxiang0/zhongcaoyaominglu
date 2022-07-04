@@ -24,17 +24,6 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
-  @Get()
-  @UseGuards(AuthGuard('jwt'))
-  findAll() {
-    return this.categoryService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
-  }
-
   @Get('all-parent')
   // @UseGuards(AuthGuard('jwt'))
   findAllParent() {
@@ -45,6 +34,17 @@ export class CategoryController {
   // @UseGuards(AuthGuard('jwt'))
   findChildrenByParentId(@Query('parentId') parentId: number) {
     return this.categoryService.findChildrenByParentId(parentId);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  findAll() {
+    return this.categoryService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.categoryService.findOne(+id);
   }
 
   @Patch(':id')

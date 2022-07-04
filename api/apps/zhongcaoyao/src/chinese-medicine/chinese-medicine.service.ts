@@ -89,6 +89,11 @@ export class ChineseMedicineService {
         'taste',
         'meridianTropism',
       ],
+      where: {
+        category: searchChineseMedicineDto.categoryId
+          ? { id: searchChineseMedicineDto.categoryId }
+          : void 0,
+      },
       skip: (page - 1) * size,
       take: size,
       order: {
