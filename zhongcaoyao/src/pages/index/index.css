@@ -150,8 +150,6 @@
 .name {
   background-color: #323302;
   color: #fdffcd;
-  height: 75px;
-  line-height: 75px;
   margin: 10px;
   padding: 15px 30px;
   border-radius: 0px 40px 40px 40px;
@@ -162,6 +160,9 @@
   font-weight: 500;
   width: 92%;
   margin: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
 }
 
 .text-margin {

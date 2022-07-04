@@ -103,6 +103,7 @@ import "./index.css";
 import Taro from "@tarojs/taro";
 import solarLunar from "solarlunar";
 import { pinyin, customPinyin } from "pinyin-pro";
+import { PageFlip } from "page-flip";
 customPinyin({ 咳: "ke" });
 export default {
   async created() {
@@ -320,22 +321,26 @@ export default {
     },
     async selectParentCategory(e) {
       this.touchedIndex = e.currentTarget.id;
-      const {data} = await Taro.request({
+      const { data } = await Taro.request({
         url: "https://api.zhongcaoyaominglu.com/api/category/children",
         data: {
-          parentId: this.touchedIndex
-        }
+          parentId: this.touchedIndex,
+        },
       });
-      this.childCategory = data.data
+      this.childCategory = data.data;
     },
     async selectChildCategory(e) {
       this.childTouchedIndex = e.currentTarget.id;
-      console.log(this.childTouchedIndex);
-      // const {data} = await Taro.request({
-      //   url: 'https://api.zhongcaoyaominglu.com/api/'
-      // })
+      const { data } = await Taro.request({
+        url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine",
+        data: {
+          page: 1,
+          size: 99999,
+          categoryId: this.childTouchedIndex,
+        },
+      });
+      this.list = data.data.list;
     },
   },
 };
 </script>
-
