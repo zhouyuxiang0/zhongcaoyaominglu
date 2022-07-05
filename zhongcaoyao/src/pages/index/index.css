@@ -41,6 +41,22 @@
   background-size: contain;
 }
 
+.page {
+  margin: 40px auto auto auto;
+  height: 565px;
+  width: 50%;
+  background-image: url("https://brand-guide.shuyun.com/IAM/ea304f3c39ee.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+.nest-page {
+  background-image: url("https://brand-guide.shuyun.com/IAM/0c013f7c2d88.png");
+}
+.eye {
+  background-image: url("https://brand-guide.shuyun.com/IAM/44e57334bb0f.png");
+}
+
 .cover-title {
   height: 565px;
   writing-mode: vertical-lr;

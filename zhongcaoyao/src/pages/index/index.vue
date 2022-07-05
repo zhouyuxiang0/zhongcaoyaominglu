@@ -8,8 +8,16 @@
         <view class="calendar">
           <text>{{ today }}</text>
         </view>
-        <view class="cover">
+        <view class="cover" @touchstart="coverTouch" :animation="coverAnimation">
           <text class="cover-title">今日药材小知识</text>
+        </view>
+        <view class="page" :animation="pageAnimation" style="background-color: #40880a;">
+          <view class="pinyin">
+            <text>mu gua</text>
+          </view>
+          <view class="hanzi">
+            <text>木瓜</text>
+          </view>
         </view>
       </view>
     </view>
@@ -105,12 +113,6 @@ import solarLunar from "solarlunar";
 import { pinyin, customPinyin } from "pinyin-pro";
 import { PageFlip } from "page-flip";
 customPinyin({ 咳: "ke" });
-// const pageFlip = new PageFlip(document.getElementsByClassName("cover"), {
-//   maxShadowOpacity: 0.5, // Half shadow intensity
-//   showCover: false,
-//   mobileScrollSupport: false, // disable content scrolling on mobile devices
-// });
-// pageFlip.loadFromHTML(document.querySelectorAll(".page"));
 export default {
   async created() {
     try {
@@ -132,6 +134,10 @@ export default {
     const month = now.getMonth();
     const day = now.getDate();
     const { gzYear, gzMonth, gzDay } = solarLunar.solar2lunar(year, month, day);
+    const initAnimation = Taro.createAnimation({
+    })
+    initAnimation.rotate3d(0, 1, 0, 90);
+    initAnimation.step()
     return {
       listStylesWithRow: [
         {
@@ -302,6 +308,8 @@ export default {
       list: [],
       childCategory: [],
       category: [],
+      coverAnimation: '',
+      pageAnimation: initAnimation.export()
     };
   },
   methods: {
@@ -339,6 +347,21 @@ export default {
         },
       });
       this.list = data.data.list;
+    },
+    async coverTouch(e) {
+      const coverAnimation = Taro.createAnimation({
+        duration: 500
+      })
+      coverAnimation.rotate3d(0, 1, 0, 90);
+      coverAnimation.step()
+      this.coverAnimation = coverAnimation.export()
+      const pageAnimation = Taro.createAnimation({
+        duration: 500,
+        delay: 500
+      })
+      pageAnimation.rotate3d(0,1,0,0)
+      pageAnimation.step()
+      this.pageAnimation = pageAnimation.export()
     },
   },
 };
