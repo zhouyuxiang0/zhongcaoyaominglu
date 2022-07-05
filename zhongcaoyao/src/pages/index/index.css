@@ -40,21 +40,46 @@
   background-position: center center;
   background-size: contain;
 }
-
+.pinyin-title > text {
+  height: 30px;
+  line-height: 30px;
+  font-size : 36px;
+}
+.hanzi-title > text {
+  font-size: 38px;
+  line-height: 30px;
+  height: 30px;
+}
 .page {
   margin: 40px auto auto auto;
-  height: 565px;
+  height: 555px;
   width: 50%;
   background-image: url("https://brand-guide.shuyun.com/IAM/ea304f3c39ee.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+  padding-top: 10px;
 }
 .nest-page {
-  background-image: url("https://brand-guide.shuyun.com/IAM/0c013f7c2d88.png");
+  width: 90%;
+  height: 420px;
+  background-color: #fff;
+  margin: 10px auto auto auto;
+  padding-top: 30px;
+  /* background-image: url("https://brand-guide.shuyun.com/IAM/0c013f7c2d88.png"); */
+}
+.hanzi-title {
+  margin-bottom: 10px;
+}
+.img {
+  width: 90%;
+  height: 290px;
 }
 .eye {
-  background-image: url("https://brand-guide.shuyun.com/IAM/44e57334bb0f.png");
+  width: 20%;
+  height: 90px;
+  margin: -15px 20px 10px 60%;
+  /* background-image: url("https://brand-guide.shuyun.com/IAM/44e57334bb0f.png"); */
 }
 
 .cover-title {

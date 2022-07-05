@@ -11,13 +11,18 @@
         <view class="cover" @touchstart="coverTouch" :animation="coverAnimation">
           <text class="cover-title">今日药材小知识</text>
         </view>
-        <view class="page" :animation="pageAnimation" style="background-color: #40880a;">
-          <view class="pinyin">
-            <text>mu gua</text>
+        <view class="page" @touchstart="pageTouch" :animation="pageAnimation" style="background-color: #40880a;">
+          <view class="nest-page">
+            <view class="pinyin-title">
+              <text>mu gua</text>
+            </view>
+            <view class="hanzi-title">
+              <text>木瓜</text>
+            </view>
+            <image :src="imgUrl" alt="" class="img">
+            </image>
           </view>
-          <view class="hanzi">
-            <text>木瓜</text>
-          </view>
+          <image src="https://brand-guide.shuyun.com/IAM/44e57334bb0f.png" class="eye"></image>
         </view>
       </view>
     </view>
@@ -111,7 +116,6 @@ import "./index.css";
 import Taro from "@tarojs/taro";
 import solarLunar from "solarlunar";
 import { pinyin, customPinyin } from "pinyin-pro";
-import { PageFlip } from "page-flip";
 customPinyin({ 咳: "ke" });
 export default {
   async created() {
@@ -309,7 +313,8 @@ export default {
       childCategory: [],
       category: [],
       coverAnimation: '',
-      pageAnimation: initAnimation.export()
+      pageAnimation: initAnimation.export(),
+      imgUrl: "https://img1.baidu.com/it/u=2134124050,2944533276&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=500"
     };
   },
   methods: {
@@ -363,6 +368,21 @@ export default {
       pageAnimation.step()
       this.pageAnimation = pageAnimation.export()
     },
+    async pageTouch(e) {
+      const coverAnimation = Taro.createAnimation({
+        duration: 500,
+        delay: 500
+      })
+      coverAnimation.rotate3d(0, 1, 0, 0);
+      coverAnimation.step()
+      this.coverAnimation = coverAnimation.export()
+      const pageAnimation = Taro.createAnimation({
+        duration: 500,
+      })
+      pageAnimation.rotate3d(0,1,0,90)
+      pageAnimation.step()
+      this.pageAnimation = pageAnimation.export()
+    }
   },
 };
 </script>
