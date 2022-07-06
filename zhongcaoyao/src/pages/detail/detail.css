@@ -3,13 +3,18 @@
   padding-top: 70px;
   width: 100%;
   text-align: center;
+}
+.title-text {
   font-family: 'kaiti';
   font-weight: 800;
   font-size: 50px;
 }
 .back {
   float: left;
-  margin-left: 20px;
+  margin-left: -30%;
+  font-size: 28px;
+  margin-top: -1%;
+  position: absolute;
 }
 page {
   background-image: url('https://brand-guide.shuyun.com/IAM/4b21d6a7d9ec.jpg');

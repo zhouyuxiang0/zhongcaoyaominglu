@@ -326,7 +326,7 @@ export default {
     jumpDetail(e) {
       this.selectedIndex = e.currentTarget.id;
       Taro.navigateTo({
-        url: `../detail/detail?id=${this.selectIndex}`,
+        url: `../detail/detail?id=${this.selectedIndex}`,
       });
     },
     async selectParentCategory(e) {
