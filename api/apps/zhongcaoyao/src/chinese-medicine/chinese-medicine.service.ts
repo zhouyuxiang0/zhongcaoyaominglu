@@ -128,7 +128,7 @@ export class ChineseMedicineService {
   }
 
   async findOne(id: number) {
-    return await this.chineseMedicineRepo.findOne({
+    const data = await this.chineseMedicineRepo.findOne({
       where: { id },
       relations: [
         'images',
@@ -140,6 +140,10 @@ export class ChineseMedicineService {
         'meridianTropism',
       ],
     });
+    return {
+      statusCode: HttpStatus.OK,
+      data,
+    };
   }
 
   async update(id: number, updateChineseMedicineDto: UpdateChineseMedicineDto) {
