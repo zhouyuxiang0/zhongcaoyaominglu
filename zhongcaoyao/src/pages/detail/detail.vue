@@ -1,7 +1,7 @@
 <template>
   <view class="detail">
     <view class="title">
-      <text class="back"><返回</text>
+      <text class="back" @tap="back"><返回</text>
       <text class="title-text">中草药名录</text>
       <view class="title-bottom-img"></view>
     </view>
@@ -115,7 +115,6 @@ export default {
         toneType: "none",
       });
       this.childCategory = category.name;
-      console.log(passage);
       this.contents = passage;
       setInterval(() => {
         this.index = this.index + 1;
@@ -149,6 +148,10 @@ export default {
       taste: ''
     };
   },
-  method() {},
+  methods: {
+    back() {
+      Taro.navigateBack()
+    }
+  },
 };
 </script>

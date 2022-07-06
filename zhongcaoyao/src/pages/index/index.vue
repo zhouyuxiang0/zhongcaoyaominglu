@@ -15,7 +15,7 @@
         >
           <text class="cover-title">今日药材小知识</text>
         </view>
-        <view class="page" @tap="pageTouch" @longpress="jumpDetail" :animation="pageAnimation">
+        <view class="page" @tap="pageTouch" @longpress="jumpDetail" :id="recommend ? recommend.id : ''" :animation="pageAnimation">
           <view class="nest-page">
             <view class="pinyin-title">
               <text>{{ recommend ? recommend.pinyin : "" }}</text>
@@ -37,7 +37,6 @@
         v-for="(item, index) in category"
         v-bind:key="item.id"
         :class="['item' + index]"
-        @tap="selectParentCategory"
         :id="item.id"
         :style="{
           gridColumnStart: listStylesWithRow[index].grid[0],
@@ -46,11 +45,14 @@
       >
         <view
           class="item-container"
+          @tap="selectParentCategory"
+          :id="item.id"
           :class="{ touched: item.id == touchedIndex }"
           :style="{ marginBottom: listStylesWithRow[index].marginBottom }"
         >
           <view
             class="item-container-pinyin"
+            :id="item.id"
             :class="{ touched: item.id == touchedIndex }"
             :style="{
               marginTop: listStylesWithRow[index].pinyinMarginTop,
@@ -61,6 +63,7 @@
           </view>
           <view
             class="item-container-text"
+            :id="item.id"
             :style="{
               marginBottom: listStylesWithRow[index].textMarginBottom,
               marginTop: listStylesWithRow[index].textMarginTop,
@@ -330,6 +333,7 @@ export default {
       });
     },
     async selectParentCategory(e) {
+      e.stopPropagation()
       this.touchedIndex = e.currentTarget.id;
       const { data } = await Taro.request({
         url: "https://api.zhongcaoyaominglu.com/api/category/children",
@@ -338,8 +342,10 @@ export default {
         },
       });
       this.childCategory = data.data;
+      if (this.childTouchedIndex) this.childTouchedIndex = ""
     },
     async selectChildCategory(e) {
+      e.stopPropagation()
       this.childTouchedIndex = e.currentTarget.id;
       const { data } = await Taro.request({
         url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine",

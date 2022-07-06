@@ -197,13 +197,13 @@ page {
 }
 
 .content-item {
-  margin-left: 8%;
   font-size: 40px;
   font-family: 'kaiti';
   color: #6e4015;
-  margin-bottom: 50px;
   font-weight:900;
   height: 100%;
+  width: 90%;
+  margin: auto auto 50px auto;
 }
 .content-title {
   letter-spacing: 4px;
