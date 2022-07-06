@@ -34,7 +34,9 @@ export class ChineseMedicineService {
     @InjectRepository(ChineseMedicine)
     private readonly chineseMedicineRepo: Repository<ChineseMedicine>,
   ) {
-    this.initRecommendList();
+    this.initRecommendList().then(() => {
+      this.recommendProcess();
+    });
   }
   async create(createChineseMedicineDto: CreateChineseMedicineDto) {
     const chineseMedicine = new ChineseMedicine();
@@ -116,6 +118,13 @@ export class ChineseMedicineService {
         total,
       },
     };
+  }
+
+  async getRecommend() {
+    if (this.recommend) return this.recommend;
+    await this.initRecommendList();
+    await this.recommendProcess();
+    return this.recommend;
   }
 
   findOne(id: number) {
@@ -209,7 +218,7 @@ export class ChineseMedicineService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   // @Cron(CronExpression.EVERY_5_SECONDS)
-  async handleCron() {
+  async recommendProcess() {
     if (this.recommendList.length <= 0) await this.initRecommendList();
     this.recommend =
       this.recommendList[Math.floor(Math.random() * this.recommendList.length)];
