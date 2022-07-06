@@ -37,7 +37,6 @@ export class ChineseMedicineController {
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard('jwt'))
   findOne(@Param('id') id: string) {
     return this.chineseMedicineService.findOne(+id);
   }

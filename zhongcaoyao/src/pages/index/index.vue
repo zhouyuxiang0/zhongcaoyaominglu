@@ -8,21 +8,27 @@
         <view class="calendar">
           <text>{{ today }}</text>
         </view>
-        <view class="cover" @touchstart="coverTouch" :animation="coverAnimation">
+        <view
+          class="cover"
+          @tap="coverTouch"
+          :animation="coverAnimation"
+        >
           <text class="cover-title">今日药材小知识</text>
         </view>
-        <view class="page" @touchstart="pageTouch" :animation="pageAnimation">
+        <view class="page" @tap="pageTouch" @longpress="jumpDetail" :animation="pageAnimation">
           <view class="nest-page">
             <view class="pinyin-title">
-              <text>mu gua</text>
+              <text>{{ recommend ? recommend.pinyin : "" }}</text>
             </view>
             <view class="hanzi-title">
-              <text>木瓜</text>
+              <text>{{ recommend ? recommend.name : "" }}</text>
             </view>
-            <image :src="imgUrl" alt="" class="img">
-            </image>
+            <image :src="recommend ? recommend.images[0].url : ''" alt="" class="img"> </image>
           </view>
-          <image src="https://brand-guide.shuyun.com/IAM/44e57334bb0f.png" class="eye"></image>
+          <image
+            src="https://brand-guide.shuyun.com/IAM/44e57334bb0f.png"
+            class="eye"
+          ></image>
         </view>
       </view>
     </view>
@@ -138,10 +144,9 @@ export default {
     const month = now.getMonth();
     const day = now.getDate();
     const { gzYear, gzMonth, gzDay } = solarLunar.solar2lunar(year, month, day);
-    const initAnimation = Taro.createAnimation({
-    })
+    const initAnimation = Taro.createAnimation({});
     initAnimation.rotate3d(0, 1, 0, 90);
-    initAnimation.step()
+    initAnimation.step();
     return {
       listStylesWithRow: [
         {
@@ -312,23 +317,16 @@ export default {
       list: [],
       childCategory: [],
       category: [],
-      coverAnimation: '',
+      coverAnimation: "",
       pageAnimation: initAnimation.export(),
-      imgUrl: "https://img1.baidu.com/it/u=2134124050,2944533276&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=500"
+      recommend: null,
     };
   },
   methods: {
     jumpDetail(e) {
       this.selectedIndex = e.currentTarget.id;
-      const parentCategory = this.category.find(
-        (v) => v.id == this.touchedIndex
-      ).name;
-      const childCategory = this.childCategory.find(
-        (v) => v.id == this.childTouchedIndex
-      ).name;
-      const name = this.list.find((v) => v.id == this.selectedIndex).name;
       Taro.navigateTo({
-        url: `../detail/detail?name=${name}&parentCategory=${parentCategory}&childCategory=${childCategory}`,
+        url: `../detail/detail?id=${this.selectIndex}`,
       });
     },
     async selectParentCategory(e) {
@@ -354,35 +352,44 @@ export default {
       this.list = data.data.list;
     },
     async coverTouch(e) {
+      if (!this.recommend) {
+        const { data } = await Taro.request({
+          url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine/recommend",
+        });
+        this.recommend = {
+          ...data,
+          pinyin: pinyin(data.name, { toneType: "none" }),
+        };
+      }
       const coverAnimation = Taro.createAnimation({
-        duration: 350
-      })
+        duration: 350,
+      });
       coverAnimation.rotate3d(0, 1, 0, 90);
-      coverAnimation.step()
-      this.coverAnimation = coverAnimation.export()
+      coverAnimation.step();
+      this.coverAnimation = coverAnimation.export();
       const pageAnimation = Taro.createAnimation({
         duration: 350,
-        delay: 350
-      })
-      pageAnimation.rotate3d(0,1,0,0)
-      pageAnimation.step()
-      this.pageAnimation = pageAnimation.export()
+        delay: 350,
+      });
+      pageAnimation.rotate3d(0, 1, 0, 0);
+      pageAnimation.step();
+      this.pageAnimation = pageAnimation.export();
     },
     async pageTouch(e) {
       const coverAnimation = Taro.createAnimation({
         duration: 350,
-        delay: 350
-      })
+        delay: 350,
+      });
       coverAnimation.rotate3d(0, 1, 0, 0);
-      coverAnimation.step()
-      this.coverAnimation = coverAnimation.export()
+      coverAnimation.step();
+      this.coverAnimation = coverAnimation.export();
       const pageAnimation = Taro.createAnimation({
         duration: 350,
-      })
-      pageAnimation.rotate3d(0,1,0,90)
-      pageAnimation.step()
-      this.pageAnimation = pageAnimation.export()
-    }
+      });
+      pageAnimation.rotate3d(0, 1, 0, 90);
+      pageAnimation.step();
+      this.pageAnimation = pageAnimation.export();
+    },
   },
 };
 </script>
