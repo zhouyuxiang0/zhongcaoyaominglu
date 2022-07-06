@@ -67,6 +67,14 @@ import { Current } from "@tarojs/taro";
 import { pinyin } from "pinyin-pro";
 
 export default {
+  async created() {
+    const {id} = Current.router.params
+    const {data} = Taro.request({
+      url: `https://api.zhongcaoyaominglu.com/api/chinese-medicine/${id}`
+    })
+    const {data: {name, images}} = data
+    // this.images =
+  },
   data() {
     const {name, parentCategory, childCategory} = Current.router.params
     this.data = {

@@ -135,6 +135,7 @@ export class ChineseMedicineService {
         'alias',
         'passage',
         'category',
+        'category.parent',
         'nature',
         'taste',
         'meridianTropism',
