@@ -11,7 +11,7 @@
         <view class="cover" @touchstart="coverTouch" :animation="coverAnimation">
           <text class="cover-title">今日药材小知识</text>
         </view>
-        <view class="page" @touchstart="pageTouch" :animation="pageAnimation" style="background-color: #40880a;">
+        <view class="page" @touchstart="pageTouch" :animation="pageAnimation">
           <view class="nest-page">
             <view class="pinyin-title">
               <text>mu gua</text>
@@ -355,14 +355,14 @@ export default {
     },
     async coverTouch(e) {
       const coverAnimation = Taro.createAnimation({
-        duration: 500
+        duration: 350
       })
       coverAnimation.rotate3d(0, 1, 0, 90);
       coverAnimation.step()
       this.coverAnimation = coverAnimation.export()
       const pageAnimation = Taro.createAnimation({
-        duration: 500,
-        delay: 500
+        duration: 350,
+        delay: 350
       })
       pageAnimation.rotate3d(0,1,0,0)
       pageAnimation.step()
@@ -370,14 +370,14 @@ export default {
     },
     async pageTouch(e) {
       const coverAnimation = Taro.createAnimation({
-        duration: 500,
-        delay: 500
+        duration: 350,
+        delay: 350
       })
       coverAnimation.rotate3d(0, 1, 0, 0);
       coverAnimation.step()
       this.coverAnimation = coverAnimation.export()
       const pageAnimation = Taro.createAnimation({
-        duration: 500,
+        duration: 350,
       })
       pageAnimation.rotate3d(0,1,0,90)
       pageAnimation.step()

@@ -22,7 +22,7 @@
   font-size: 50px;
 }
 
-.calendar {
+.calendar > text {
   padding-top: 50px;
   font-size: 30px;
   color: #40880a;
@@ -54,10 +54,7 @@
   margin: 40px auto auto auto;
   height: 555px;
   width: 50%;
-  background-image: url("https://brand-guide.shuyun.com/IAM/ea304f3c39ee.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
+  background-color: #9fc367;
   padding-top: 10px;
 }
 .nest-page {

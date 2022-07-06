@@ -2,8 +2,10 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
@@ -21,12 +23,19 @@ import { ChineseMedicine } from './entities/chinese-medicine.entity';
 
 @Injectable()
 export class ChineseMedicineService {
-  @InjectRepository(ChineseMedicine)
-  private readonly chineseMedicineRepo: Repository<ChineseMedicine>;
+  private readonly logger = new Logger(ChineseMedicineService.name);
   @InjectRepository(ChineseMedicineAlias)
   private readonly chineseMedicineAliasRepo: Repository<ChineseMedicineAlias>;
   @InjectRepository(Image) private readonly imageRepo: Repository<Image>;
   @Inject() private readonly categoryService: CategoryService;
+  private recommendList: ChineseMedicine[] = [];
+  private recommend: ChineseMedicine = null;
+  constructor(
+    @InjectRepository(ChineseMedicine)
+    private readonly chineseMedicineRepo: Repository<ChineseMedicine>,
+  ) {
+    this.initRecommendList();
+  }
   async create(createChineseMedicineDto: CreateChineseMedicineDto) {
     const chineseMedicine = new ChineseMedicine();
     chineseMedicine.name = createChineseMedicineDto.name;
@@ -196,5 +205,28 @@ export class ChineseMedicineService {
       statusCode: HttpStatus.OK,
       data: removed,
     };
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  // @Cron(CronExpression.EVERY_5_SECONDS)
+  async handleCron() {
+    if (this.recommendList.length <= 0) await this.initRecommendList();
+    this.recommend =
+      this.recommendList[Math.floor(Math.random() * this.recommendList.length)];
+    this.recommendList = this.recommendList.filter(
+      (v) => v.id != this.recommend.id,
+    );
+    this.logger.log(`今日药材小知识：${JSON.stringify(this.recommend)}`);
+  }
+
+  async initRecommendList() {
+    this.chineseMedicineRepo
+      .find({
+        select: ['id', 'name', 'images'],
+        relations: ['images'],
+      })
+      .then((v) => {
+        this.recommendList = v;
+      });
   }
 }
