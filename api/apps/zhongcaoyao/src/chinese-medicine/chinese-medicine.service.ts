@@ -127,8 +127,19 @@ export class ChineseMedicineService {
     return this.recommend;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} chineseMedicine`;
+  async findOne(id: number) {
+    return await this.chineseMedicineRepo.findOne({
+      where: { id },
+      relations: [
+        'images',
+        'alias',
+        'passage',
+        'category',
+        'nature',
+        'taste',
+        'meridianTropism',
+      ],
+    });
   }
 
   async update(id: number, updateChineseMedicineDto: UpdateChineseMedicineDto) {
