@@ -47,7 +47,7 @@
           class="item-container"
           @tap="selectParentCategory"
           :id="item.id"
-          :class="{ touched: item.id == touchedIndex }"
+          :class="{ touched: item.id == touchedIndex, shadow: item.id == touchedIndex }"
           :style="{ marginBottom: listStylesWithRow[index].marginBottom }"
         >
           <view
@@ -137,6 +137,12 @@ export default {
         ...v,
         pinyin: pinyin(v.name, { toneType: "none" }),
       }));
+      setInterval(async () => {
+        const {data} = Taro.request({
+          url: 'https://api.zhongcaoyaominglu.com/api/chinese-medicine/random-placeholder'
+        })
+        console.log(data);
+      }, 5000)
     } catch (e) {
       console.log(e);
     }

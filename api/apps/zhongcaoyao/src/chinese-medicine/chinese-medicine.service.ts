@@ -29,6 +29,7 @@ export class ChineseMedicineService {
   @InjectRepository(Image) private readonly imageRepo: Repository<Image>;
   @Inject() private readonly categoryService: CategoryService;
   private recommendList: ChineseMedicine[] = [];
+  private placeholderList: ChineseMedicine[] = [];
   private recommend: ChineseMedicine = null;
   constructor(
     @InjectRepository(ChineseMedicine)
@@ -125,6 +126,18 @@ export class ChineseMedicineService {
     await this.initRecommendList();
     await this.recommendProcess();
     return this.recommend;
+  }
+
+  async getRandomPlaceholder() {
+    if (this.placeholderList.length <= 0) await this.initPlaceholderList();
+    const random =
+      this.placeholderList[
+        Math.floor(Math.random() * this.placeholderList.length)
+      ];
+    this.placeholderList = this.placeholderList.filter(
+      (v) => v.id !== random.id,
+    );
+    return random;
   }
 
   async findOne(id: number) {
@@ -247,7 +260,15 @@ export class ChineseMedicineService {
   async initRecommendList() {
     this.chineseMedicineRepo
       .find({
-        select: ['id', 'name', 'images'],
+        relations: ['images'],
+      })
+      .then((v) => {
+        this.recommendList = v;
+      });
+  }
+  async initPlaceholderList() {
+    this.chineseMedicineRepo
+      .find({
         relations: ['images'],
       })
       .then((v) => {
