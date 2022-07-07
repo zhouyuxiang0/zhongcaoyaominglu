@@ -14,15 +14,9 @@ const App = {
         weight: 'normal',
         variant: 'normal',
       },
-      success: (res) => {
-        console.log('-------', res);
-      },
       fail: (res) => {
-        console.log('-----', res)
+        console.log(res)
       },
-      complete: (res) => {
-        console.log('----', res);
-      }
     })
   },
   onShow(options) {

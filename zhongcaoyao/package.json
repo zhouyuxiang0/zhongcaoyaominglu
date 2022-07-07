@@ -40,6 +40,7 @@
     "@tarojs/plugin-framework-vue2": "3.4.9",
     "@tarojs/runtime": "3.4.9",
     "@tarojs/taro": "3.4.9",
+    "fuse.js": "^6.6.2",
     "pinyin-pro": "^3.10.1",
     "solarlunar": "^2.0.7",
     "vue": "^2.5.0",
