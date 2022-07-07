@@ -258,17 +258,19 @@ export class ChineseMedicineService {
   }
 
   async initRecommendList() {
-    this.chineseMedicineRepo
-      .find({
-        relations: ['images'],
-      })
-      .then((v) => {
-        this.recommendList = v;
-      });
+    this.recommendList = await this.chineseMedicineRepo.find({
+      relations: [
+        'images',
+        'alias',
+        'passage',
+        'category',
+        'nature',
+        'taste',
+        'meridianTropism',
+      ],
+    });
   }
   async initPlaceholderList() {
-    this.chineseMedicineRepo.find().then((v) => {
-      this.recommendList = v;
-    });
+    this.placeholderList = await this.chineseMedicineRepo.find();
   }
 }
