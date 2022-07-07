@@ -122,7 +122,11 @@ export class ChineseMedicineService {
   }
 
   async getRecommend() {
-    if (this.recommend) return this.recommend;
+    if (this.recommend)
+      return {
+        statusCode: HttpStatus.OK,
+        data: this.recommend,
+      };
     await this.initRecommendList();
     await this.recommendProcess();
     return {

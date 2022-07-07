@@ -137,13 +137,13 @@ export default {
         ...v,
         pinyin: pinyin(v.name, { toneType: "none" }),
       }));
-      setInterval(async () => {
-        const {data} = await Taro.request({
-          url: 'https://api.zhongcaoyaominglu.com/api/chinese-medicine/random-placeholder'
-        })
-        const {name,taste, nature} = data.data
-        console.log(name, taste, nature);
-      }, 5000)
+      // setInterval(async () => {
+      //   const {data} = await Taro.request({
+      //     url: 'https://api.zhongcaoyaominglu.com/api/chinese-medicine/random-placeholder'
+      //   })
+      //   const {name,taste, nature} = data.data
+      //   console.log(name, taste, nature);
+      // }, 5000)
     } catch (e) {
       console.log(e);
     }
@@ -369,9 +369,10 @@ export default {
         const { data } = await Taro.request({
           url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine/recommend",
         });
+        console.log(data);
         this.recommend = {
-          ...data,
-          pinyin: pinyin(data.name, { toneType: "none" }),
+          ...data.data,
+          pinyin: pinyin(data.data.name, { toneType: "none" }),
         };
       }
       const coverAnimation = Taro.createAnimation({
