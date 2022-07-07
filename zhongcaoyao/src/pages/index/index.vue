@@ -137,12 +137,13 @@ export default {
         ...v,
         pinyin: pinyin(v.name, { toneType: "none" }),
       }));
-      // setInterval(async () => {
-      //   const {data} = Taro.request({
-      //     url: 'https://api.zhongcaoyaominglu.com/api/chinese-medicine/random-placeholder'
-      //   })
-      //   console.log(data);
-      // }, 5000)
+      setInterval(async () => {
+        const {data} = await Taro.request({
+          url: 'https://api.zhongcaoyaominglu.com/api/chinese-medicine/random-placeholder'
+        })
+        const {name,taste, nature} = data.data
+        console.log(name, taste, nature);
+      }, 5000)
     } catch (e) {
       console.log(e);
     }

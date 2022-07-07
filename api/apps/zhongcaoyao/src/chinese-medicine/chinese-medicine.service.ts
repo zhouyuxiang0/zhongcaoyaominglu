@@ -125,7 +125,10 @@ export class ChineseMedicineService {
     if (this.recommend) return this.recommend;
     await this.initRecommendList();
     await this.recommendProcess();
-    return this.recommend;
+    return {
+      statusCode: HttpStatus.OK,
+      data: this.recommend,
+    };
   }
 
   async getRandomPlaceholder() {
@@ -137,7 +140,10 @@ export class ChineseMedicineService {
     this.placeholderList = this.placeholderList.filter(
       (v) => v.id !== random.id,
     );
-    return random;
+    return {
+      statusCode: HttpStatus.OK,
+      data: random,
+    };
   }
 
   async findOne(id: number) {
