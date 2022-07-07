@@ -267,12 +267,8 @@ export class ChineseMedicineService {
       });
   }
   async initPlaceholderList() {
-    this.chineseMedicineRepo
-      .find({
-        relations: ['images'],
-      })
-      .then((v) => {
-        this.recommendList = v;
-      });
+    this.chineseMedicineRepo.find().then((v) => {
+      this.recommendList = v;
+    });
   }
 }
