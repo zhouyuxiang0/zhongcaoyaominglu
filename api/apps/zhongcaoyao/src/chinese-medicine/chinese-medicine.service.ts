@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
 import { Category } from '../category/entities/category.entity';
 import { Image } from '../common/entities/image.entity';
@@ -20,6 +20,7 @@ import { SearchChineseMedicineDto } from './dto/search-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 import { ChineseMedicineAlias } from './entities/chinese-medicine-alias.entity';
 import { ChineseMedicine } from './entities/chinese-medicine.entity';
+import { data } from '../../../../../ee';
 
 @Injectable()
 export class ChineseMedicineService {
@@ -34,7 +35,18 @@ export class ChineseMedicineService {
   constructor(
     @InjectRepository(ChineseMedicine)
     private readonly chineseMedicineRepo: Repository<ChineseMedicine>,
+    @InjectRepository(Nature)
+    private readonly natureRepo: Repository<Nature>,
+    @InjectRepository(Taste)
+    private readonly tasteRepo: Repository<Taste>,
+    @InjectRepository(MeridianTropism)
+    private readonly meridianTropismRepo: Repository<MeridianTropism>,
+    @InjectRepository(Passage)
+    private readonly passageRepo: Repository<Passage>,
+    @InjectRepository(Category)
+    private readonly categoryRepo: Repository<Category>,
   ) {
+    this.init();
     this.initRecommendList().then(() => {
       this.recommendProcess();
     });
@@ -282,5 +294,36 @@ export class ChineseMedicineService {
   }
   async initPlaceholderList() {
     this.placeholderList = await this.chineseMedicineRepo.find();
+  }
+
+  async init() {
+    data.forEach(async (v) => {
+      const exist = await this.chineseMedicineRepo.findOneBy({ name: v.name });
+      if (!exist) {
+        const createDto = new CreateChineseMedicineDto();
+        createDto.alias = v.alias;
+        const category = await this.categoryRepo.findOneBy({
+          name: v.category[1],
+        });
+        if (category) {
+          createDto.categoryId = category?.id;
+          createDto.images = v.images;
+          // // createDto.meridianTropismIds =
+          createDto.name = v.name;
+          if (!v.passage) throw new Error('123');
+          createDto.passages = v.passage;
+          createDto.alias = v.alias;
+          createDto.natureIds = [];
+          createDto.meridianTropismIds = [];
+          createDto.tasteIds = [];
+          const { data } = await this.create(createDto);
+          // createDto.natureIds = (
+          //   await this.natureRepo.findBy({
+          //     name: In(v.nature),
+          //   })
+          // ).map((n) => n.id);
+        }
+      }
+    });
   }
 }
