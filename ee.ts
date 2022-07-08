@@ -357,7 +357,6 @@ export const data = [
 			"升阳菜薄苛",
 			"夜息药",
 			"仁丹草",
-			"见肿消",
 			"水益母",
 			"接骨草",
 			"土薄荷",
@@ -1690,7 +1689,6 @@ export const data = [
 			"麻子仁",
 			"大麻子",
 			"白麻子",
-			"冬麻子",
 			"火麻子",
 			"麻于仁",
 			"麻仁",
@@ -1935,7 +1933,6 @@ export const data = [
 		name: "商陆",
 		alias: [
 			"花商陆",
-			"见肿消",
 			"土冬瓜",
 			"抱母鸡",
 			"土母鸡",
@@ -4789,7 +4786,6 @@ export const data = [
 			"练实",
 			"仁枣",
 			"苦楝子",
-			"苦楝子",
 			"楝子",
 			"石茱萸",
 			"楝树果",
@@ -6200,7 +6196,6 @@ export const data = [
 			"蜂糖罐",
 			"郄蝉草",
 			"赤参",
-			"木羊乳",
 			"奔马草",
 			"精选酒壶根",
 		],
@@ -8181,7 +8176,7 @@ export const data = [
 	},
 	{
 		name: "珍珠",
-		alias: ["真朱", "真珠", "蚌珠", "珠子", "濂珠", "蚌珠", "真珠子", "药珠"],
+		alias: ["真朱", "真珠", "蚌珠", "珠子", "濂珠", "真珠子", "药珠"],
 		images: [
 			"https://bkimg.cdn.bcebos.com/pic/11385343fbf2b211879dfc1cce8065380cd78e34?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg",
 		],
@@ -9695,7 +9690,7 @@ export const data = [
 	},
 	{
 		name: "女贞子",
-		alias: ["爆格蚤", "冬青子", "女贞实", "冬青子", "白蜡树子", "鼠梓子"],
+		alias: ["爆格蚤", "冬青子", "女贞实", "白蜡树子", "鼠梓子"],
 		images: ["http://p.ayxbk.com/images/thumb/a/a1/Bk34x.jpg/220px-Bk34x.jpg"],
 		category: ["补益", "补阴"],
 		nature: ["平"],
