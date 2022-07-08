@@ -227,14 +227,18 @@ export class SampleComponent implements OnInit, AfterViewInit {
         },
       ],
       data: {
-        name: rowItem.name,
-        aliasTags: rowItem.alias,
-        imgList: rowItem.images,
-        categories: [`${rowItem.category.parent.name} / ${rowItem.category.name}`, rowItem.category.parent.id, rowItem.category.id],
-        natureSelects: rowItem.nature.map((v) => ({ name: v.name, value: v.id })),
-        tasteSelects: rowItem.taste.map((v) => ({ name: v.name, value: v.id })),
-        meridianTropismSelects: rowItem.meridianTropism.map((v) => ({ name: v.name, value: v.id })),
-        contents: rowItem.passage,
+        name: rowItem?.name,
+        aliasTags: rowItem?.alias,
+        imgList: rowItem?.images,
+        categories: [
+          `${rowItem?.category?.parent?.name} / ${rowItem?.category?.name}`,
+          rowItem?.category?.parent?.id,
+          rowItem?.category?.id,
+        ],
+        natureSelects: rowItem?.nature?.map((v) => ({ name: v.name, value: v.id })),
+        tasteSelects: rowItem?.taste?.map((v) => ({ name: v.name, value: v.id })),
+        meridianTropismSelects: rowItem?.meridianTropism?.map((v) => ({ name: v.name, value: v.id })),
+        contents: rowItem?.passage,
         canConfirm: (value: boolean) => {
           results.modalInstance.updateButtonOptions([{ disabled: !value }]);
         },
