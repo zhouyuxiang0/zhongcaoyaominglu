@@ -31,6 +31,7 @@ export class ChineseMedicineController {
   findAll(@Query() searchChineseMedicineDto: SearchChineseMedicineDto) {
     return this.chineseMedicineService.findAll(searchChineseMedicineDto);
   }
+
   @Get('recommend')
   getRecommend() {
     return this.chineseMedicineService.getRecommend();

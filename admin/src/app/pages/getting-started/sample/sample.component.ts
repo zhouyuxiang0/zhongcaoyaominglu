@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { DialogService, ToastService } from 'ng-devui';
+import { CascaderItem, DialogService, ToastService } from 'ng-devui';
+import { CategoryService } from 'src/app/@core/services/category.service';
 import { ChineseMedicineService } from 'src/app/@core/services/chinese-medicine.service';
 import { JoinPipe } from 'src/app/@shared/pipe/join.pipe';
 import { MapPipe } from 'src/app/@shared/pipe/map.pipe';
@@ -15,22 +16,64 @@ export class SampleComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly dialogService: DialogService,
     private readonly chineseMedicineService: ChineseMedicineService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private readonly categoryService: CategoryService
+  ) {
+    this.categoryService.getAllParent().subscribe((data) => {
+      this.options = data.map((v) => ({ label: v.name, value: v.id }));
+      // if (this.categories.length > 0) {
+      //   const [tmp, parentCategoryId, childrenCategoryId] = this.categories;
+      //   this.loadChildren({ value: parentCategoryId, label: '' }).then((v) => {
+      //     for (let i = 0; i < options.length; i++) {
+      //       const element = options[i];
+      //       if (element.value == this.categories[1]) {
+      //         options[i]['children'] = v;
+      //         break;
+      //       }
+      //     }
+      //     this.options = options;
+      //     this.categories = [parentCategoryId, childrenCategoryId];
+      //   });
+      // } else {
+      //   this.options = options;
+      // }
+    });
+  }
   chineseMedicines = [];
+  search = {
+    name: '',
+    categories: [],
+  };
+  // categories = [];
+  options = [];
   ngOnInit(): void {
     this.loadList();
   }
+  loadChildren: (val: CascaderItem) => Promise<CascaderItem[]> = (val: CascaderItem) => {
+    const { label, value } = val;
+    return new Promise((resolve, reject) => {
+      this.categoryService.getChildrenByParent(value as number).subscribe((data) => {
+        return resolve(data.map((v) => ({ label: v.name, value: v.id, isLeaf: true })));
+      });
+    });
+  };
 
   ngAfterViewInit(): void {
     window.dispatchEvent(new Event('resize'));
   }
 
-  loadList(page = 1, size = 10) {
-    this.chineseMedicineService.getMany(page, size).subscribe((val) => {
+  loadList(page = 1) {
+    const searchDto = {};
+    if (this.search.name) searchDto['name'] = this.search.name;
+    if (this.search?.categories[1]) searchDto['categoryId'] = this.search?.categories[1];
+    // const searchDto = {
+    //   name: this.search.name,
+    //   category: this.search?.categories[1]
+    // }
+    this.chineseMedicineService.getMany(page, this.pager.pageSize, searchDto).subscribe((val) => {
       this.pager.total = val.total;
-      this.pager.pageIndex = page;
-      this.pager.pageSize = size;
+      // this.pager.pageIndex = page;
+      // this.pager.pageSize = size;
       this.chineseMedicines = val.list.map((v) => ({
         id: v.id,
         name: v.name,
@@ -44,6 +87,12 @@ export class SampleComponent implements OnInit, AfterViewInit {
         images: v.images,
       }));
     });
+  }
+  clear() {
+    this.search = {
+      categories: [],
+      name: '',
+    };
   }
 
   deleteItem(rowItem) {
@@ -283,9 +332,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
   pageIndexChange(pageIndex) {
-    this.loadList(pageIndex, this.pager.pageSize);
+    this.loadList(pageIndex);
   }
   pageSizeChange(pageSize) {
-    this.loadList(this.pager.pageIndex, pageSize);
+    this.loadList(this.pager.pageIndex);
   }
 }

@@ -7,12 +7,13 @@ import { ApiResponse } from '../data/response';
 
 @Injectable()
 export class ChineseMedicineService {
-  getMany(page: number, size: number) {
+  getMany(page: number, size: number, searchDto = {}) {
     return this.httpClient
       .get<ApiResponse<{ list: any[]; total: number }>>(environment.api.getChineseMedicine, {
         params: {
           page,
           size,
+          ...searchDto,
         },
       })
       .pipe(

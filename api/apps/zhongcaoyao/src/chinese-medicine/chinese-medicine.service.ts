@@ -114,9 +114,8 @@ export class ChineseMedicineService {
         'meridianTropism',
       ],
       where: {
-        category: searchChineseMedicineDto.categoryId
-          ? { id: searchChineseMedicineDto.categoryId }
-          : void 0,
+        category: { id: searchChineseMedicineDto?.categoryId || void 0 },
+        name: searchChineseMedicineDto?.name || void 0,
       },
       skip: (page - 1) * size,
       take: size,

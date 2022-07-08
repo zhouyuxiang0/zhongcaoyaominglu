@@ -23,6 +23,33 @@
   <div class="da-content-card" style="height: 100%">
     <da-layout-row [daGutter]="[24, 24]">
       <da-col-item [daSpan]="3" [daXs]="3">
+        <input
+            dTextInput
+            autocomplete="off"
+            name="name"
+            placeholder="请输入中药名"
+            [(ngModel)]="search.name"
+          />
+      </da-col-item>
+      <da-col-item [daSpan]="5" [daXs]="5">
+          <d-cascader
+            [options]="options"
+            [placeholder]="'请选择分类'"
+            name="categories"
+            [(ngModel)]="search.categories"
+            [trigger]="'click'"
+            [showPath]="true"
+            [allowClear]="true"
+            [loadChildrenFn]="loadChildren"
+          ></d-cascader>
+      </da-col-item>
+      <da-col-item [daSpan]="2" [daXs]="2">
+        <d-button (click)="loadList()">查询</d-button>
+      </da-col-item>
+      <da-col-item [daSpan]="2" [daXs]="2">
+        <d-button (click)="clear()">清空</d-button>
+      </da-col-item>
+      <da-col-item [daSpan]="3" [daXs]="3">
         <d-button (click)="openstandardDialog('standard')">新增</d-button>
       </da-col-item>
       <da-col-item [daSpan]="24" [daXs]="24">

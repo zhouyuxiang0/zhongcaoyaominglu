@@ -1,4 +1,4 @@
-import { IsInt, IsOptional } from 'class-validator';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class SearchChineseMedicineDto {
   @IsInt()
@@ -10,4 +10,7 @@ export class SearchChineseMedicineDto {
   @IsInt()
   @IsOptional()
   categoryId: number;
+  @IsString()
+  @IsOptional()
+  name: string;
 }
