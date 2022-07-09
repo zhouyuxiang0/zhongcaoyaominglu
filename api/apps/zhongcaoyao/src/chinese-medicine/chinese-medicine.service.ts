@@ -20,6 +20,7 @@ import { SearchChineseMedicineDto } from './dto/search-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 import { ChineseMedicineAlias } from './entities/chinese-medicine-alias.entity';
 import { ChineseMedicine } from './entities/chinese-medicine.entity';
+import { data } from '../../../../../ee';
 
 @Injectable()
 export class ChineseMedicineService {
@@ -45,6 +46,7 @@ export class ChineseMedicineService {
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
   ) {
+    // this.init();
     this.initRecommendList().then(() => {
       this.recommendProcess();
     });
@@ -124,7 +126,16 @@ export class ChineseMedicineService {
     return {
       statusCode: HttpStatus.OK,
       data: {
-        list,
+        list: await Promise.all(
+          list.map(async (v) => {
+            if (!v.category.parent) {
+              v.category.parent = (
+                await this.categoryService.findParentByChildId(v.category.id)
+              ).data;
+            }
+            return v;
+          }),
+        ),
         total,
       },
     };
@@ -291,5 +302,35 @@ export class ChineseMedicineService {
   }
   async initPlaceholderList() {
     this.placeholderList = await this.chineseMedicineRepo.find();
+  }
+  async init() {
+    data.forEach(async (v) => {
+      const exist = await this.chineseMedicineRepo.findOneBy({ name: v.name });
+      if (!exist) {
+        const createDto = new CreateChineseMedicineDto();
+        createDto.alias = v.alias;
+        const category = await this.categoryRepo.findOneBy({
+          name: v.category[1],
+        });
+        if (category) {
+          createDto.categoryId = category?.id;
+          createDto.images = v.images;
+          // // createDto.meridianTropismIds =
+          createDto.name = v.name;
+          if (!v.passage) throw new Error('123');
+          createDto.passages = v.passage;
+          createDto.alias = v.alias;
+          createDto.natureIds = [];
+          createDto.meridianTropismIds = [];
+          createDto.tasteIds = [];
+          const { data } = await this.create(createDto);
+          // createDto.natureIds = (
+          //   await this.natureRepo.findBy({
+          //     name: In(v.nature),
+          //   })
+          // ).map((n) => n.id);
+        }
+      }
+    });
   }
 }

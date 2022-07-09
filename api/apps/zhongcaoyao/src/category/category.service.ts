@@ -58,6 +58,19 @@ export class CategoryService {
     };
   }
 
+  async findParentByChildId(childId: number) {
+    const categoryTreeRepo =
+      this.categoryRepo.manager.getTreeRepository(Category);
+    const children = await categoryTreeRepo.findOne({
+      where: { id: childId },
+      relations: ['parent'],
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      data: children.parent,
+    };
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} category`;
   }
