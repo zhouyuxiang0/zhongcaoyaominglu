@@ -97,7 +97,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
 
   deleteItem(rowItem) {
     this.chineseMedicineService.delete(rowItem.id).subscribe((val) => {
-      if (val) this.loadList();
+      if (val) this.loadList(this.pager.pageIndex);
     });
   }
   openstandardDialog(dialogtype?: string) {
@@ -133,7 +133,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
               )
               .subscribe((data) => {
                 results.modalInstance.hide();
-                this.loadList();
+                this.loadList(this.pager.pageIndex);
               });
           },
         },
@@ -213,7 +213,7 @@ export class SampleComponent implements OnInit, AfterViewInit {
                   ],
                   life: 2000,
                 });
-                this.loadList();
+                this.loadList(this.pager.pageIndex);
               });
           },
         },
