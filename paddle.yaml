@@ -1,0 +1,117 @@
+host: 0.0.0.0
+port: 8090
+
+protocol: "http"
+engine_list:
+  ["asr_python", "tts_python", "cls_python", "text_python", "vector_python"]
+
+asr_python:
+  model: "conformer_wenetspeech"
+  lang: "zh"
+  sample_rate: 16000
+  cfg_path:
+  ckpt_path:
+  decode_method: "attention_rescoring"
+  force_yes: True
+  device:
+
+asr_inference:
+  model_type: "deepspeech2offline_aishell"
+  am_model:
+  am_params:
+  lang: "zh"
+  sample_rate: 16000
+  cfg_path:
+  decode_method:
+  force_yes: True
+
+  am_predictor_conf:
+    device:
+    switch_ir_optim: True
+    glog_info: False
+    summary: True
+
+tts_python:
+  am: "fastspeech2_csmsc"
+  am_config:
+  am_ckpt:
+  am_stat:
+  phones_dict:
+  tones_dict:
+  speaker_dict:
+  spk_id: 0
+
+  voc: "pwgan_csmsc"
+  voc_config:
+  voc_ckpt:
+  voc_stat:
+
+  lang: "zh"
+  device:
+
+tts_inference:
+  am: "fastspeech2_csmsc"
+  am_model:
+  am_params:
+  am_sample_rate: 24000
+  phones_dict:
+  tones_dict:
+  speaker_dict:
+  spk_id: 0
+
+  am_predictor_conf:
+    device:
+    switch_ir_optim: True
+    glog_info: False
+    summary: True
+
+  voc: "pwgan_csmsc"
+  voc_model:
+  voc_params:
+  voc_sample_rate: 24000
+
+  voc_predictor_conf:
+    device:
+    switch_ir_optim: True
+    glog_info: False
+    summary: True
+
+  lang: "zh"
+
+cls_python:
+  model: "panns_cnn14"
+  cfg_path:
+  ckpt_path:
+  label_file:
+  device:
+
+cls_inference:
+  model_type: "panns_cnn14"
+  cfg_path:
+  model_path:
+  params_path:
+  label_file:
+
+  predictor_conf:
+    device:
+    switch_ir_optim: True
+    glog_info: False
+    summary: True
+
+text_python:
+  task: punc
+  model_type: "ernie_linear_p3_wudao"
+  lang: "zh"
+  sample_rate: 16000
+  cfg_path:
+  ckpt_path:
+  vocab_file:
+  device:
+
+vector_python:
+  task: spk
+  model_type: "ecapatdnn_voxceleb12"
+  sample_rate: 16000
+  cfg_path:
+  ckpt_path:
+  device:
