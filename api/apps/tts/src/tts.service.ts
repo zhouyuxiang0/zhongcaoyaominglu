@@ -6,7 +6,9 @@ import { Response } from 'express';
 export class TtsService {
   async getHello(res: Response, msg: string) {
     // const buf = execSync(`paddlespeech tts --input ${msg} --output a.wav`);
-    const buf = execSync(`/root/miniconda3/bin/paddlespeech -h`).toString();
+    const buf = execSync(
+      `/root/miniconda3/bin/paddlespeech tts --input ${msg} --output a.wav`,
+    ).toString();
     console.log(buf);
 
     return buf;
