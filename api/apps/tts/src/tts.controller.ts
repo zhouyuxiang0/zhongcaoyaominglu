@@ -8,6 +8,6 @@ export class TtsController {
 
   @Get()
   getHello(@Body() body, @Res() res: Response) {
-    return this.ttsService.getHello(res);
+    return this.ttsService.getHello(res, body.msg);
   }
 }
