@@ -18,6 +18,7 @@ import { Passage } from './entities/passage.entity';
       autoLoadEntities: true,
       synchronize: true,
       cache: true,
+      maxQueryExecutionTime: 1000,
     }),
     ThrottlerModule.forRoot({
       ttl: 60,
