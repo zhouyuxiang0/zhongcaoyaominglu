@@ -21,6 +21,8 @@ import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 import { ChineseMedicineAlias } from './entities/chinese-medicine-alias.entity';
 import { ChineseMedicine } from './entities/chinese-medicine.entity';
 import { data } from '../../../../../ee';
+import { HttpService } from '@nestjs/axios';
+import { PORTS } from 'apps/ports';
 
 @Injectable()
 export class ChineseMedicineService {
@@ -29,6 +31,7 @@ export class ChineseMedicineService {
   private readonly chineseMedicineAliasRepo: Repository<ChineseMedicineAlias>;
   @InjectRepository(Image) private readonly imageRepo: Repository<Image>;
   @Inject() private readonly categoryService: CategoryService;
+  @Inject() private readonly httpService: HttpService;
   private recommendList: ChineseMedicine[] = [];
   private placeholderList: ChineseMedicine[] = [];
   private recommend: ChineseMedicine = null;
@@ -153,6 +156,24 @@ export class ChineseMedicineService {
       statusCode: HttpStatus.OK,
       data: this.recommend,
     };
+  }
+
+  async video(id: number) {
+    const chineseMedicine = await this.chineseMedicineRepo.findOneBy({ id });
+    const msg = `${chineseMedicine.name}：性${chineseMedicine.nature
+      .map((v) => v.name)
+      .join('，')}，味${chineseMedicine.taste
+      .map((v) => v.name)
+      .join('，')}，归${chineseMedicine.meridianTropism
+      .map((v) => v.name)
+      .join('，')}经;${chineseMedicine.passage
+      .map((v) => `${v.title}，${v.content}`)
+      .join('；')}`;
+    return this.httpService.get(`127.0.0.1:${PORTS.TTS}`, {
+      params: {
+        msg,
+      },
+    });
   }
 
   async getRandomPlaceholder() {

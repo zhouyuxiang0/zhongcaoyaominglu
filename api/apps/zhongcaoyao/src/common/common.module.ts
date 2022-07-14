@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { CacheModule, Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -30,8 +31,9 @@ import { Passage } from './entities/passage.entity';
       signOptions: { expiresIn: '1d' },
     }),
     TypeOrmModule.forFeature([Image, Passage]),
+    HttpModule,
   ],
   providers: [CommonService],
-  exports: [JwtModule, TypeOrmModule],
+  exports: [JwtModule, TypeOrmModule, HttpModule],
 })
 export class CommonModule {}

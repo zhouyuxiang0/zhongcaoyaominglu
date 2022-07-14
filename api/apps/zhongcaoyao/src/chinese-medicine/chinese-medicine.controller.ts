@@ -37,6 +37,11 @@ export class ChineseMedicineController {
     return this.chineseMedicineService.getRecommend();
   }
 
+  @Get('video/:id')
+  video(@Param('id') id: number) {
+    return this.chineseMedicineService.video(id);
+  }
+
   @Get('random-placeholder')
   getRandomPlaceholder() {
     return this.chineseMedicineService.getRandomPlaceholder();
