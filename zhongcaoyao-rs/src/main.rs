@@ -33,16 +33,18 @@ async fn main() -> std::io::Result<()> {
     let auth = HttpAuthentication::bearer(validator);
     log::info!("server listening on http://127.0.0.1:{}", 3000);
     HttpServer::new(move || {
-        App::new()
-            .app_data(web::Data::new(state.clone()))
-            .service(create_token)
-            .service(
-                web::scope("api")
-                    .wrap(auth.clone())
-                    .service(category::get_all_parent)
-                    .service(category::create)
-                    .service(category::update),
-            )
+        App::new().app_data(web::Data::new(state.clone())).service(
+            web::scope("api")
+                .service(category::get_all_parent)
+                .service(category::get_child_by_parent_id)
+                .service(create_token)
+                .service(
+                    web::scope("")
+                        .wrap(auth.clone())
+                        .service(category::create)
+                        .service(category::update),
+                ),
+        )
     })
     .bind(("127.0.0.1", 3000))?
     .run()
