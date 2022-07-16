@@ -104,7 +104,6 @@ customPinyin({ 咳: "ke" });
 export default {
   fuse: null,
   async created() {
-    try {
       this.category = (
         await Taro.request({
           url: "https://api.zhongcaoyaominglu.com/api/category/all-parent",
@@ -130,7 +129,8 @@ export default {
           return fn()
         }
         const pick = pickList[Math.floor(Math.random() * pickList.length)];
-        this.placeholder = `${pick.name}丶|性${pick.nature[0].name}丶|味${pick.taste[0].name}丶|......`;
+        const {name, taste: {name: tasteName}, nature: {name: natureName}} = pick
+        this.placeholder = `${name}丶|性${natureName}丶|味${tasteName}丶|......`;
         this.oldPlaceholder.set(pick.id, pick);
       };
       fn();
@@ -139,9 +139,6 @@ export default {
         shouldSort: true,
         keys: ["name", ['nature', 'name'], ['alias', 'name'], ['taste', 'name']],
       });
-    } catch (e) {
-      console.log(e);
-    }
   },
   data() {
     const now = new Date();
