@@ -349,19 +349,18 @@ export default {
       });
       this.childCategory = data.data;
       if (this.childTouchedIndex) this.childTouchedIndex = "";
+      if (this.list && this.list.length > 0) this.list = []
     },
     async selectChildCategory(e) {
       e.stopPropagation();
       this.childTouchedIndex = e.currentTarget.id;
       const { data } = await Taro.request({
-        url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine",
+        url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine/by-category",
         data: {
-          page: 1,
-          size: 99999,
           categoryId: this.childTouchedIndex,
         },
       });
-      this.list = data.data.list;
+      this.list = data.data;
     },
     async coverTouch(e) {
       if (!this.recommend) {
