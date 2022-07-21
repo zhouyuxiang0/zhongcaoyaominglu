@@ -12,6 +12,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ChineseMedicineService } from './chinese-medicine.service';
 import { CreateChineseMedicineDto } from './dto/create-chinese-medicine.dto';
+import { FindNameByCategoryDto } from './dto/find-name-by-category.dto';
 import { SearchChineseMedicineDto } from './dto/search-chinese-medicine.dto';
 import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 
@@ -30,6 +31,13 @@ export class ChineseMedicineController {
   @Get()
   findAll(@Query() searchChineseMedicineDto: SearchChineseMedicineDto) {
     return this.chineseMedicineService.findAll(searchChineseMedicineDto);
+  }
+
+  @Get('by-category')
+  findNameByCategory(@Query() findNameByCategoryDto: FindNameByCategoryDto) {
+    return this.chineseMedicineService.findNameByCategory(
+      findNameByCategoryDto,
+    );
   }
 
   @Get('recommend')

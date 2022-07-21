@@ -23,6 +23,7 @@ import { ChineseMedicine } from './entities/chinese-medicine.entity';
 import { data } from '../../../../../ee';
 import { HttpService } from '@nestjs/axios';
 import { PORTS } from 'apps/ports';
+import { FindNameByCategoryDto } from './dto/find-name-by-category.dto';
 
 @Injectable()
 export class ChineseMedicineService {
@@ -141,6 +142,16 @@ export class ChineseMedicineService {
         ),
         total,
       },
+    };
+  }
+
+  async findNameByCategory(findNameByCategoryDto: FindNameByCategoryDto) {
+    const data = await this.chineseMedicineRepo.findBy({
+      category: { id: findNameByCategoryDto.categoryId },
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      data,
     };
   }
 

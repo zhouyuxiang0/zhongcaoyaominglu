@@ -37,7 +37,7 @@
         <text class="nature">{{ nature }}</text>
         <text class="taste">{{ taste }}</text>
       </view>
-      <view class="desc">
+      <view class="desc" v-show="desc">
         <text>{{ desc }}</text>
       </view>
       <view class="guijing">
@@ -92,7 +92,9 @@ export default {
         toneType: "none",
       });
       this.childCategory = category.name;
-      this.contents = passage;
+      const desc = passage.filter(v => v.title == '描述')
+      this.desc = desc ? desc.content : ''
+      this.contents = passage.filter(v => v.title !== '描述');
       setInterval(() => {
         this.index = this.index + 1;
         const target = this.images[this.index];
@@ -113,7 +115,7 @@ export default {
       maxTitleLen: 5,
       imageId: null,
       images: [],
-      desc: "又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠又称贴梗海棠",
+      desc: "",
       guijing: null,
       contents: [],
       name: "",
