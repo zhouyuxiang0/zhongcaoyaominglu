@@ -129,7 +129,7 @@ export default {
           return fn()
         }
         const pick = pickList[Math.floor(Math.random() * pickList.length)];
-        const {name, taste: {name: tasteName}, nature: {name: natureName}} = pick
+        const {name, taste: [{name: tasteName}], nature: [{name: natureName}]} = pick
         this.placeholder = `${name}丶|性${natureName}丶|味${tasteName}丶|......`;
         this.oldPlaceholder.set(pick.id, pick);
       };
