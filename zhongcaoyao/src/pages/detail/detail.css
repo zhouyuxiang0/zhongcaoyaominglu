@@ -209,6 +209,7 @@ page {
   line-height: 30px;
   display: flex;
   width: 100%;
+  margin-bottom: 15px;
 }
 .content-title > text {
   margin-left: -22%;
