@@ -228,6 +228,7 @@ page {
 }
 .content {
   margin-top: 6px;
+  width: 100%;
 }
 .footer {
   background-color: #e5edd8;

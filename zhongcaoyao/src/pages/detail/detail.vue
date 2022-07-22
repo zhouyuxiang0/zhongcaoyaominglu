@@ -48,12 +48,12 @@
         <view class="content-title">
           <view class="content-title-tag"><text>{{ content.title }}</text></view>
           <text>{{
-              content.title.length !== maxTitleLen
+              (content.title.length !== maxTitleLen
                 ? "&emsp;".repeat(maxTitleLen - content.title.length)
-                : "" + content.title
+                : "") + content.title
           }}</text>
         </view>
-        <view class="content">{{ content.content }}</view>
+        <textarea auto-height="true" disabled="true" maxlength="-1" class="content" v-model="content.content"></textarea>
       </view>
     </view>
     <view class="footer">

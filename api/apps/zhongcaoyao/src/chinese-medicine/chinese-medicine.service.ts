@@ -148,6 +148,7 @@ export class ChineseMedicineService {
   async getSearchData() {
     const data = await this.chineseMedicineRepo.find({
       relations: ['nature', 'taste', 'alias'],
+      loadEagerRelations: false,
     });
     return {
       statusCode: HttpStatus.OK,

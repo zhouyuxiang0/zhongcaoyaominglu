@@ -113,13 +113,9 @@ export default {
         pinyin: pinyin(v.name, { toneType: "none" }),
       }));
       const { data } = await Taro.request({
-        url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine",
-        data: {
-          page: 1,
-          size: 99999,
-        },
+        url: "https://api.zhongcaoyaominglu.com/api/chinese-medicine/search-data",
       });
-      this.placeholderList = data.data.list;
+      this.placeholderList = data.data;
       const fn = () => {
         const pickList = this.placeholderList.filter(
           (v) => !this.oldPlaceholder.get(v.id)
@@ -135,7 +131,7 @@ export default {
       };
       fn();
       setInterval(fn, 5000);
-      this.fuse = new Fuse(data.data.list, {
+      this.fuse = new Fuse(data.list, {
         shouldSort: true,
         keys: ["name", ['nature', 'name'], ['alias', 'name'], ['taste', 'name']],
       });
