@@ -72,7 +72,6 @@ import Taro from "@tarojs/taro";
 export default {
   async created() {
     try {
-      Taro.hideHomeButton
       const { id } = Current.router.params;
       const { data } = await Taro.request({
         url: `https://api.zhongcaoyaominglu.com/api/chinese-medicine/${id}`,

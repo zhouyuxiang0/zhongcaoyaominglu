@@ -131,7 +131,7 @@ export default {
       };
       fn();
       setInterval(fn, 5000);
-      this.fuse = new Fuse(data.list, {
+      this.fuse = new Fuse(data.data, {
         shouldSort: true,
         keys: ["name", ['nature', 'name'], ['alias', 'name'], ['taste', 'name']],
       });
