@@ -145,6 +145,16 @@ export class ChineseMedicineService {
     };
   }
 
+  async getSearchData() {
+    const data = await this.chineseMedicineRepo.find({
+      relations: ['nature', 'taste', 'alias'],
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      data,
+    };
+  }
+
   async findNameByCategory(findNameByCategoryDto: FindNameByCategoryDto) {
     const data = await this.chineseMedicineRepo.findBy({
       category: { id: findNameByCategoryDto.categoryId },

@@ -33,6 +33,11 @@ export class ChineseMedicineController {
     return this.chineseMedicineService.findAll(searchChineseMedicineDto);
   }
 
+  @Get('search-data')
+  getSearchData() {
+    return this.chineseMedicineService.getSearchData();
+  }
+
   @Get('by-category')
   findNameByCategory(@Query() findNameByCategoryDto: FindNameByCategoryDto) {
     return this.chineseMedicineService.findNameByCategory(

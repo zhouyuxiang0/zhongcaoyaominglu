@@ -93,7 +93,7 @@ export default {
       });
       this.childCategory = category.name;
       const desc = passage.filter(v => v.title == '描述')
-      this.desc = desc ? desc[0].content : ''
+      this.desc = desc.length > 0 ? desc[0].content : ''
       this.contents = passage.filter(v => v.title !== '描述');
       setInterval(() => {
         this.index = this.index + 1;
