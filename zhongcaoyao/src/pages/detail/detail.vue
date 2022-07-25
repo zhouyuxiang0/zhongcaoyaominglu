@@ -128,7 +128,8 @@ export default {
   },
   methods: {
     back() {
-      Taro.navigateBack()
+      Taro.navigateBack({url: '../index/index'})
+      // Taro.navigateBack()
     }
   },
 };
