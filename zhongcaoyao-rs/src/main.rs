@@ -1,3 +1,5 @@
+#![feature(future_poll_fn)]
+#![feature(future_join)]
 use crate::claims::Claims;
 use actix_web::{dev::ServiceRequest, post, web, App, Error, HttpServer};
 use actix_web_grants::permissions::AttachPermissions;
@@ -9,6 +11,7 @@ mod category;
 mod claims;
 mod common;
 mod entity;
+mod medicine;
 
 #[derive(Debug, Clone)]
 pub struct AppState {

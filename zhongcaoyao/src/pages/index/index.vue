@@ -416,5 +416,15 @@ export default {
   onPageScroll(e) {
     this.scrollTop = e.scrollTop
   },
+  onShareAppMessage(res) {
+    return {
+      title: '中草药名录',
+      path: '/page/index'
+    }
+  },
+  onShareTimeline(res) {
+    return {
+    }
+  }
 };
 </script>

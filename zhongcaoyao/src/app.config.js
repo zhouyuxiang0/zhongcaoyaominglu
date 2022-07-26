@@ -9,5 +9,7 @@ export default defineAppConfig({
     navigationBarTitleText: '中草药名录',
     navigationBarTextStyle: 'black',
     navigationStyle: 'custom'
-  }
+  },
+  enableShareAppMessage: true,
+  enableShareTimeline: true
 })

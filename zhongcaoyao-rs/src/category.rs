@@ -1,3 +1,5 @@
+use std::future::join;
+
 use crate::{entity, AppState};
 use actix_web::{get, post, put, web, Error, Responder, Result};
 use sea_orm::{prelude::*, Condition};
@@ -21,8 +23,8 @@ struct GetChildResp {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct GetChildRespData {
-    child: Option<Vec<entity::category::Model>>,
-    parent: entity::category::Model,
+    child: Vec<entity::category::Model>,
+    parent: Option<entity::category::Model>,
 }
 
 #[get("/category/parent")]
@@ -32,34 +34,31 @@ pub async fn get_all_parent(data: web::Data<AppState>) -> Result<impl Responder,
         .all(&data.conn)
         .await
         .expect("msg");
-    Ok("")
-    // let parent = category.
-    // // let child = category.drain_filter(x | x.parent_id).collect();
-    // Ok(web::Json(GetChildResp {
-    //     status_code: 200,
-    //     data: Some(GetChildRespData { parent, child }),
-    //     message: None,
-    // }))
+    Ok(web::Json(GetAllParentResp {
+        status_code: 200,
+        data: Some(category),
+        message: None,
+    }))
 }
 
 #[get("/category/child/{id}")]
 pub async fn get_child_by_parent_id(
     data: web::Data<AppState>,
-    info: web::Path<(u32,)>,
+    info: web::Path<(i32,)>,
 ) -> Result<impl Responder, Error> {
     let info = info.into_inner();
-    let category = entity::category::Entity::find()
-        .filter(
-            Condition::any()
-                .add(entity::category::Column::ParentId.eq(info.0))
-                .add(entity::category::Column::Id.eq(info.0)),
-        )
-        .all(&data.conn)
-        .await
-        .expect("服务器内部错误");
-    Ok(web::Json(GetAllParentResp {
+    let (child, parent) = join!(
+        entity::category::Entity::find()
+            .filter(entity::category::Column::ParentId.eq(info.0))
+            .all(&data.conn),
+        entity::category::Entity::find_by_id(info.0).one(&data.conn)
+    )
+    .await;
+    let child = child.expect("服务器内部错误");
+    let parent = parent.expect("服务器内部错误");
+    Ok(web::Json(GetChildResp {
         status_code: 200,
-        data: Some(category),
+        data: Some(GetChildRespData { parent, child }),
         message: None,
     }))
 }

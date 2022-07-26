@@ -18,6 +18,12 @@ const App = {
         console.log(res)
       },
     })
+    Taro.showShareMenu(
+      {
+        withShareTicket: true,
+        menus: ["shareAppMessage", "shareTimeline"],
+      }
+    )
   },
   onShow(options) {
 

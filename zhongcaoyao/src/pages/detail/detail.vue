@@ -73,6 +73,7 @@ export default {
   async created() {
     try {
       const { id } = Current.router.params;
+      this.id = id;
       const { data } = await Taro.request({
         url: `https://api.zhongcaoyaominglu.com/api/chinese-medicine/${id}`,
       });
@@ -110,6 +111,7 @@ export default {
   },
   data() {
     return {
+      id: null,
       index: 0,
       maxTitleLen: 5,
       imageId: null,
@@ -131,5 +133,18 @@ export default {
       Taro.navigateBack()
     }
   },
+  onShareAppMessage(res) {
+    return {
+      title: `中草药名录：${this.name}`,
+      path: `/page/detail?id=${this.id}`,
+    }
+  },
+  onShareTimeline(res) {
+    return {
+      title: `中草药名录：${this.name}`,
+      path: `/page/detail?id=${this.id}`,
+      imageUrl: this.images[0].url
+    }
+  }
 };
 </script>
