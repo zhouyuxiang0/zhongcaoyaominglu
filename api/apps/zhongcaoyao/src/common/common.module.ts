@@ -25,7 +25,9 @@ import { Passage } from './entities/passage.entity';
       ttl: 60,
       limit: 10,
     }),
-    CacheModule.register(),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     JwtModule.register({
       secret: '123',
       signOptions: { expiresIn: '1d' },

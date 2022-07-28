@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  CacheTTL,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ChineseMedicineService } from './chinese-medicine.service';
@@ -34,6 +35,7 @@ export class ChineseMedicineController {
   }
 
   @Get('search-data')
+  @CacheTTL(24 * 60 * 60 * 1000)
   getSearchData() {
     return this.chineseMedicineService.getSearchData();
   }
