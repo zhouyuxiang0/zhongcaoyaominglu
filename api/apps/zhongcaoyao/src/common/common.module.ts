@@ -1,5 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
-import { CacheModule, Global, Module } from '@nestjs/common';
+import { CacheInterceptor, CacheModule, Global, Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -35,7 +36,13 @@ import { Passage } from './entities/passage.entity';
     TypeOrmModule.forFeature([Image, Passage]),
     HttpModule,
   ],
-  providers: [CommonService],
-  exports: [JwtModule, TypeOrmModule, HttpModule],
+  providers: [
+    CommonService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
+  exports: [JwtModule, TypeOrmModule, HttpModule, ThrottlerModule],
 })
 export class CommonModule {}

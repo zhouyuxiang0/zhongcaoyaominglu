@@ -1,14 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
+  CacheKey,
+  CacheStore,
   CacheTTL,
+  CACHE_MANAGER,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ChineseMedicineService } from './chinese-medicine.service';
@@ -21,6 +25,7 @@ import { UpdateChineseMedicineDto } from './dto/update-chinese-medicine.dto';
 export class ChineseMedicineController {
   constructor(
     private readonly chineseMedicineService: ChineseMedicineService,
+    @Inject(CACHE_MANAGER) private cacheManager: CacheStore,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
@@ -35,8 +40,8 @@ export class ChineseMedicineController {
   }
 
   @Get('search-data')
-  @CacheTTL(24 * 60 * 60 * 1000)
-  getSearchData() {
+  @CacheTTL(12 * 60 * 60)
+  async getSearchData() {
     return this.chineseMedicineService.getSearchData();
   }
 
