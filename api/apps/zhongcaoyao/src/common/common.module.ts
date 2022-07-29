@@ -1,8 +1,8 @@
 import { HttpModule } from '@nestjs/axios';
 import { CacheInterceptor, CacheModule, Global, Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonService } from './common.service';
 import { Image } from './entities/image.entity';
@@ -23,8 +23,8 @@ import { Passage } from './entities/passage.entity';
       maxQueryExecutionTime: 1000,
     }),
     ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 10,
+      ttl: 5,
+      limit: 5,
     }),
     CacheModule.register({
       isGlobal: true,
@@ -41,6 +41,10 @@ import { Passage } from './entities/passage.entity';
     {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
   exports: [JwtModule, TypeOrmModule, HttpModule, ThrottlerModule],
